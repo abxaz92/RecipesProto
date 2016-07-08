@@ -2,6 +2,8 @@
 /.idea
 /target
 /bin
+/recept.iml
+/recept-server.iml
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
