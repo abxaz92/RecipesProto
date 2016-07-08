@@ -47,6 +47,17 @@
             <version>7.0</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>net.iryndin</groupId>
+            <artifactId>jdbf</artifactId>
+            <version>2.1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jamel.dbf</groupId>
+            <artifactId>dbf-reader</artifactId>
+            <version>0.1.0</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>recept</finalName>

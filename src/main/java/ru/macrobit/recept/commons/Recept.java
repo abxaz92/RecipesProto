@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import java.io.*;
 import java.util.Iterator;
 
 /**
@@ -27,5 +28,19 @@ public class Recept {
             }
         }
         return mainNode;
+    }
+
+    public static File createFile(InputStream is, String fileName) throws IOException {
+        File file = new File(fileName);
+        OutputStream os = new FileOutputStream(file);
+        int length;
+        byte[] bytes = new byte[1024];
+        while ((length = is.read(bytes)) != -1) {
+            os.write(bytes, 0, length);
+        }
+        is.close();
+        os.flush();
+        os.close();
+        return file;
     }
 }

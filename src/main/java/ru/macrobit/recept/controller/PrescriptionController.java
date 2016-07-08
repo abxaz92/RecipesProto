@@ -7,17 +7,16 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 
 /**
  * Created by david on 08.07.16.
  */
 @ApplicationScoped
 @Path("/prescription")
+@Produces(MediaType.APPLICATION_JSON) // тип возврщаемых данных JSON
 public class PrescriptionController {
-
     @Inject
     private PrescriptionService prescriptionService;
 
@@ -27,6 +26,12 @@ public class PrescriptionController {
     @GET
     @Path("/{id}")
     public Object getById(@PathParam("id") Long id) {
-        return em.find(Prescription.class, id);
+        return prescriptionService.findById(id);
+    }
+
+    @POST
+    public Prescription post(Prescription prescription) throws Exception {
+        prescriptionService.insert(prescription);
+        return prescription;
     }
 }
