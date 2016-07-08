@@ -1,4 +1,0 @@
-<jboss-web>
-    <default-encoding>UTF-8</default-encoding>
-    <security-domain>example-jaas-realm</security-domain>
-</jboss-web>
