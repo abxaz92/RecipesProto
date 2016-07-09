@@ -38,14 +38,8 @@ public class LpuController {
                              @QueryParam("count") String count, @QueryParam("skip") Integer skip,
                              @QueryParam("limit") Integer limit, @QueryParam("sort") String sortProperties,
                              @QueryParam("direction") String sortDirection) throws IOException {
-        Order order;
-        if (sortProperties != null) {
-            order = Order.asc(sortProperties);
-        } else {
-            order = Order.asc("id");
-        }
-        log.info(String.valueOf(lpuService == null));
-        return lpuService.findAll(null, skip, limit, order);
+
+        return lpuService.findAll(null, skip, limit, sortProperties, sortDirection);
     }
 
     @POST

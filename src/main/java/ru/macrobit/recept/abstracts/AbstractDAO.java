@@ -69,7 +69,7 @@ public class AbstractDAO<T extends EntityInterface> extends ExceptionFactory {
 
     }
 
-    public List<T> findAll(Map<String, Object> queryMap, Integer skip, Integer limit, Order order) {
+    public List<T> findAll(Map<String, Object> queryMap, Integer skip, Integer limit, String sortProperties, String sortDirection) {
         Session session = em.unwrap(Session.class);
         Criteria criteria = session.createCriteria(type);
         if (queryMap != null)
@@ -78,8 +78,10 @@ public class AbstractDAO<T extends EntityInterface> extends ExceptionFactory {
             criteria.setFirstResult(skip);
         if (limit != null)
             criteria.setMaxResults(limit);
-        if (order != null)
-            criteria.addOrder(order);
+
+        if (sortProperties != null) {
+            criteria.addOrder("asc".equals(sortDirection) ? Order.asc(sortProperties) : Order.desc(sortProperties));
+        }
         List<T> list = criteria.list();
         session.close();
         return list;
