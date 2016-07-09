@@ -15,7 +15,6 @@ import javax.persistence.Id;
 @Entity
 public class Lpu implements EntityInterface {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
     private String OGRN;

@@ -2,7 +2,10 @@ package ru.macrobit.recept.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.sun.xml.internal.ws.api.message.Attachment;
+import org.hibernate.criterion.Order;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.macrobit.recept.pojo.Lpu;
 import ru.macrobit.recept.service.LpuService;
 
@@ -13,11 +16,13 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Created by david on 7/8/16.
+ * Created by david on 7/8/16
  */
 @Path("/lpu")
 @Produces(MediaType.APPLICATION_JSON)
 public class LpuController {
+    private static final Logger log = LoggerFactory.getLogger(LpuController.class);
+
     @Inject
     private LpuService lpuService;
 
@@ -27,14 +32,21 @@ public class LpuController {
         return lpuService.findById(id);
     }
 
-/*    @GET
+    @GET
     @Path("/")
     public Object getByQuery(@QueryParam("query") String jsonQuery,
                              @QueryParam("count") String count, @QueryParam("skip") Integer skip,
                              @QueryParam("limit") Integer limit, @QueryParam("sort") String sortProperties,
                              @QueryParam("direction") String sortDirection) throws IOException {
-        return LPUDAO.getByQuery(jsonQuery, count, skip, limit, sortProperties, sortDirection);
-    }*/
+        Order order;
+        if (sortProperties != null) {
+            order = Order.asc(sortProperties);
+        } else {
+            order = Order.asc("id");
+        }
+        log.info(String.valueOf(lpuService == null));
+        return lpuService.findAll(null, skip, limit, order);
+    }
 
     @POST
     public Lpu post(Lpu lpu) throws Exception {

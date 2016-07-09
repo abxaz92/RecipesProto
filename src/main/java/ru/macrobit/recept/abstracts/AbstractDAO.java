@@ -1,6 +1,10 @@
 package ru.macrobit.recept.abstracts;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.macrobit.recept.commons.ExceptionFactory;
@@ -14,6 +18,7 @@ import javax.persistence.TypedQuery;
 import javax.transaction.UserTransaction;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Основной каркас для работы с базой данных
@@ -45,7 +50,11 @@ public class AbstractDAO<T extends EntityInterface> extends ExceptionFactory {
     }
 
     public void insert(List<T> entities) throws Exception {
-        persist(entities);
+        Session session = em.unwrap(Session.class);
+        session.beginTransaction();
+        entities.stream().forEach(session::save);
+        session.getTransaction().commit();
+        session.close();
     }
 
     public void deleteById(Long id) throws Exception {
@@ -60,22 +69,27 @@ public class AbstractDAO<T extends EntityInterface> extends ExceptionFactory {
 
     }
 
-    public Object findAll(Integer skip, Integer limit, String count) {
-        if (count == null) {
-
-            TypedQuery<T> query = em.createNamedQuery(tablename + ".getAll", type);
-            if (skip != null)
-                query.setFirstResult(skip);
-            if (limit != null)
-                query.setMaxResults(limit);
-            return query.getResultList();
-        } else {
-            String sql = "SELECT COUNT(d) FROM " + tablename + " d";
-            Query query = em.createQuery(sql);
-            return query.getSingleResult();
-        }
+    public List<T> findAll(Map<String, Object> queryMap, Integer skip, Integer limit, Order order) {
+        Session session = em.unwrap(Session.class);
+        Criteria criteria = session.createCriteria(type);
+        if (queryMap != null)
+            combineCriteria(queryMap, criteria);
+        if (skip != null)
+            criteria.setFirstResult(skip);
+        if (limit != null)
+            criteria.setMaxResults(limit);
+        if (order != null)
+            criteria.addOrder(order);
+        List<T> list = criteria.list();
+        session.close();
+        return list;
     }
 
+    public void combineCriteria(Map<String, Object> queryMap, Criteria criteria) {
+        for (String key : queryMap.keySet()) {
+            criteria.add(Restrictions.eq(key, queryMap.get(key)));
+        }
+    }
 
     public void update(T entity) throws Exception {
         try {

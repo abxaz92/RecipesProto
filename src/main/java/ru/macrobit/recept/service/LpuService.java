@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by david on 7/8/16.
+ * Created by david on 7/8/16
  */
 @ApplicationScoped
 public class LpuService extends AbstractDAO<Lpu> {
@@ -37,15 +37,11 @@ public class LpuService extends AbstractDAO<Lpu> {
             try (InputStream inputStream = inputPart.getBody(InputStream.class, null)) {
                 List<Lpu> lpus = DbfProcessor.loadData(Recept.createFile(inputStream, "/tmp/lpu.dbf"), new LpuRowMapper());
                 res.addAll(lpus);
-                lpus.stream().forEach(lpu -> {
-                    try {
-                        utx.begin();
-                        em.merge(lpu);
-                        utx.commit();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                });
+                try {
+                    insert(lpus);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
