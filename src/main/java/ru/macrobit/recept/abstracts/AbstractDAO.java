@@ -17,6 +17,7 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.transaction.UserTransaction;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -69,11 +70,11 @@ public class AbstractDAO<T extends EntityInterface> extends ExceptionFactory {
 
     }
 
-    public List<T> findAll(Map<String, Object> queryMap, Integer skip, Integer limit, String sortProperties, String sortDirection) {
+    public List<T> findAll(JsonNode jsonQuery, Integer skip, Integer limit, String sortProperties, String sortDirection) {
         Session session = em.unwrap(Session.class);
         Criteria criteria = session.createCriteria(type);
-        if (queryMap != null)
-            combineCriteria(queryMap, criteria);
+        if (jsonQuery != null)
+            combineCriteria(jsonQuery, criteria);
         if (skip != null)
             criteria.setFirstResult(skip);
         if (limit != null)
@@ -87,10 +88,9 @@ public class AbstractDAO<T extends EntityInterface> extends ExceptionFactory {
         return list;
     }
 
-    public void combineCriteria(Map<String, Object> queryMap, Criteria criteria) {
-        for (String key : queryMap.keySet()) {
-            criteria.add(Restrictions.eq(key, queryMap.get(key)));
-        }
+    public void combineCriteria(JsonNode jsonQuery, Criteria criteria) {
+        log.info("{} {}", jsonQuery.size(), jsonQuery.get(0));
+        jsonQuery.fieldNames().forEachRemaining(s -> criteria.add(Restrictions.eq(s, jsonQuery.get(s))));
     }
 
     public void update(T entity) throws Exception {

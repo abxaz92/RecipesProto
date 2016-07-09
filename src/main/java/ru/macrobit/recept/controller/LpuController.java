@@ -6,6 +6,7 @@ import org.hibernate.criterion.Order;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.macrobit.recept.commons.Recept;
 import ru.macrobit.recept.pojo.Lpu;
 import ru.macrobit.recept.service.LpuService;
 
@@ -38,8 +39,8 @@ public class LpuController {
                              @QueryParam("count") String count, @QueryParam("skip") Integer skip,
                              @QueryParam("limit") Integer limit, @QueryParam("sort") String sortProperties,
                              @QueryParam("direction") String sortDirection) throws IOException {
-
-        return lpuService.findAll(null, skip, limit, sortProperties, sortDirection);
+        log.info(jsonQuery);
+        return lpuService.findAll(Recept.MAPPER.convertValue(jsonQuery, JsonNode.class), skip, limit, sortProperties, sortDirection);
     }
 
     @POST
