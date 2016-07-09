@@ -54,6 +54,7 @@ public class AbstractDAO<T extends EntityInterface> extends ExceptionFactory {
             em.remove(findById(id));
             utx.commit();
         } catch (Exception e) {
+            e.printStackTrace();
             utx.rollback();
         }
 
@@ -82,6 +83,7 @@ public class AbstractDAO<T extends EntityInterface> extends ExceptionFactory {
             em.merge(entity);
             utx.commit();
         } catch (Exception e) {
+            e.printStackTrace();
             utx.rollback();
         }
     }

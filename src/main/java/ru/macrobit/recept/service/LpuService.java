@@ -37,11 +37,15 @@ public class LpuService extends AbstractDAO<Lpu> {
             try (InputStream inputStream = inputPart.getBody(InputStream.class, null)) {
                 List<Lpu> lpus = DbfProcessor.loadData(Recept.createFile(inputStream, "/tmp/lpu.dbf"), new LpuRowMapper());
                 res.addAll(lpus);
-                try {
-                    insert(lpus);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                lpus.stream().forEach(lpu -> {
+                    try {
+                        utx.begin();
+                        em.merge(lpu);
+                        utx.commit();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
             } catch (IOException e) {
                 e.printStackTrace();
             }
