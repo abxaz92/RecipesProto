@@ -16,6 +16,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 import java.io.IOException;
 import java.util.Iterator;
@@ -51,42 +52,55 @@ public class AbstractDAO<T extends EntityInterface> extends ExceptionFactory {
         persist(entity);
     }
 
-    public void insert(List<T> entities) throws Exception {
-        Session session = em.unwrap(Session.class);
-        session.beginTransaction();
-        entities.stream().forEach(session::save);
-        session.getTransaction().commit();
-        session.close();
+    public void insert(List<T> entities) {
+        try (Session session = em.unwrap(Session.class)) {
+            session.beginTransaction();
+            entities.stream().forEach(session::save);
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException();
+        }
+
     }
 
-    public void deleteById(Long id) throws Exception {
+    public void deleteById(Long id) {
         try {
             utx.begin();
             em.remove(findById(id));
             utx.commit();
         } catch (Exception e) {
             e.printStackTrace();
-            utx.rollback();
+            try {
+                utx.rollback();
+            } catch (SystemException e1) {
+                e1.printStackTrace();
+            }
+            throw new RuntimeException();
         }
 
     }
 
     public List<T> findAll(JSONObject jsonQuery, Integer skip, Integer limit, String sortProperties, String sortDirection) {
-        Session session = em.unwrap(Session.class);
-        Criteria criteria = session.createCriteria(type);
-        if (jsonQuery != null)
-            combineCriteria(jsonQuery, criteria);
-        if (skip != null)
-            criteria.setFirstResult(skip);
-        if (limit != null)
-            criteria.setMaxResults(limit);
+        try (Session session = em.unwrap(Session.class)) {
+            Criteria criteria = session.createCriteria(type);
+            if (jsonQuery != null)
+                combineCriteria(jsonQuery, criteria);
+            if (skip != null)
+                criteria.setFirstResult(skip);
+            if (limit != null)
+                criteria.setMaxResults(limit);
 
-        if (sortProperties != null) {
-            criteria.addOrder("asc".equals(sortDirection) ? Order.asc(sortProperties) : Order.desc(sortProperties));
+            if (sortProperties != null) {
+                criteria.addOrder("asc".equals(sortDirection) ? Order.asc(sortProperties) : Order.desc(sortProperties));
+            }
+            List<T> list = criteria.list();
+            session.close();
+            return list;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException();
         }
-        List<T> list = criteria.list();
-        session.close();
-        return list;
     }
 
 
