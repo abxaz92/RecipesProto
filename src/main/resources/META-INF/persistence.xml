@@ -7,10 +7,14 @@
     <persistence-unit name="PostgrePool">
         <jta-data-source>java:/PostGreDS</jta-data-source>
         <properties>
-            <property name="hibernate.hbm2ddl.auto" value="auto"/>
-            <property name="hibernate.show_sql" value="false"/>
+            <property name="hibernate.hbm2ddl.auto" value="create"/>
+            <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.temp.use_jdbc_metadata_defaults" value="false"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL94Dialect"/>
+            <property name="hibernate.jdbc.batch_size" value="30"/>
+            <property name="hibernate.order_inserts" value="true"/>
+            <property name="hibernate.order_updates" value="true"/>
+            <property name="hibernate.jdbc.batch_versioned_data" value="true"/>
         </properties>
     </persistence-unit>
 </persistence>

@@ -1,5 +1,6 @@
 package ru.macrobit.recept.pojo;
 
+import org.hibernate.annotations.BatchSize;
 import ru.macrobit.recept.abstracts.EntityInterface;
 
 import javax.persistence.*;
@@ -30,7 +31,6 @@ public class Doctor implements EntityInterface {
     private String fio;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     public Long getId() {
         return id;
     }
