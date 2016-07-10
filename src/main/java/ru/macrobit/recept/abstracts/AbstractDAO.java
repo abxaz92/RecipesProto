@@ -5,6 +5,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.macrobit.recept.commons.ExceptionFactory;
@@ -70,7 +71,7 @@ public class AbstractDAO<T extends EntityInterface> extends ExceptionFactory {
 
     }
 
-    public List<T> findAll(JsonNode jsonQuery, Integer skip, Integer limit, String sortProperties, String sortDirection) {
+    public List<T> findAll(JSONObject jsonQuery, Integer skip, Integer limit, String sortProperties, String sortDirection) {
         Session session = em.unwrap(Session.class);
         Criteria criteria = session.createCriteria(type);
         if (jsonQuery != null)
@@ -88,9 +89,12 @@ public class AbstractDAO<T extends EntityInterface> extends ExceptionFactory {
         return list;
     }
 
-    public void combineCriteria(JsonNode jsonQuery, Criteria criteria) {
-        log.info("{} {}", jsonQuery.size(), jsonQuery.get(0));
-        jsonQuery.fieldNames().forEachRemaining(s -> criteria.add(Restrictions.eq(s, jsonQuery.get(s))));
+
+    public void combineCriteria(JSONObject jsonQuery, Criteria criteria) {
+        jsonQuery.keySet().stream().forEach(key -> {
+            log.info("{}", jsonQuery.get(key));
+            criteria.add(Restrictions.eq(key, jsonQuery.get(key)));
+        });
     }
 
     public void update(T entity) throws Exception {
