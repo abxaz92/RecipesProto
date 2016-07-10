@@ -10,12 +10,14 @@ import javax.persistence.*;
 @Entity
 public class Doctor implements EntityInterface {
     private Long id;
+    private String name;
+    private String description;
     private String secondName;
     private String middleName;
     private String post;
     private String speciality;
     private String codeDoctor;
-    private Lpu lpu;
+    private Long lpuId;
     private String codePost;
     private Long dateOrder;
     private String dateCertificate;
@@ -25,7 +27,6 @@ public class Doctor implements EntityInterface {
     private String codeDoctorFull;
     private String OGRN_LPU;
     private String OKATO;
-    @SuppressWarnings("unused")
     private String fio;
 
     @Id
@@ -150,12 +151,35 @@ public class Doctor implements EntityInterface {
         OKATO = oKATO;
     }
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    public Lpu getLpu() {
-        return lpu;
+    public Long getLpuId() {
+        return lpuId;
     }
 
-    public void setLpu(Lpu lpu) {
-        this.lpu = lpu;
+    public void setLpuId(Long lpuId) {
+        this.lpuId = lpuId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getFio() {
+        return fio;
+    }
+
+    public void setFio(String fio) {
+        this.fio = fio;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
