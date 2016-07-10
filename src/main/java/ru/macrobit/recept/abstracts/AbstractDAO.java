@@ -5,7 +5,6 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-`import org.hibernate.jdbc.Work;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,16 +14,10 @@ import ru.macrobit.recept.commons.Recept;
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Основной каркас для работы с базой данных
@@ -98,7 +91,6 @@ public class AbstractDAO<T extends EntityInterface> extends ExceptionFactory {
                 criteria.addOrder("asc".equals(sortDirection) ? Order.asc(sortProperties) : Order.desc(sortProperties));
             }
             List<T> list = criteria.list();
-            session.close();
             return list;
         } catch (Exception e) {
             e.printStackTrace();
