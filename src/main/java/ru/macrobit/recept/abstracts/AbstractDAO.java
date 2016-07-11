@@ -113,6 +113,7 @@ public class AbstractDAO<T extends EntityInterface> extends ExceptionFactory {
         } catch (Exception e) {
             e.printStackTrace();
             utx.rollback();
+            throw new RuntimeException();
         }
     }
 
