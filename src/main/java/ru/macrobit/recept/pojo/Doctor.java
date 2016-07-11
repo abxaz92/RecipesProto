@@ -1,15 +1,16 @@
 package ru.macrobit.recept.pojo;
 
-import org.hibernate.annotations.BatchSize;
 import ru.macrobit.recept.abstracts.EntityInterface;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 /**
  * Created by david on 7/8/16.
  */
 @Entity
 public class Doctor implements EntityInterface {
+    @Id
     private Long id;
     private String name;
     private String description;

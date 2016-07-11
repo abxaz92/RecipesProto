@@ -4,13 +4,14 @@ import ru.macrobit.recept.abstracts.EntityInterface;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by david on 08.07.16.
  */
 @Entity
 public class Prescription implements EntityInterface {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String sourceFunding; // источник финансирования (принимает следующие значения: 1. Федеральный бюджет, 2. Региональный бюджет, 3. Муниципальный бюджет)
     private Double percentagePayment;  // % оплаты из источника финансирования (может принмать следующие значения: 50% и 100%)
@@ -20,8 +21,10 @@ public class Prescription implements EntityInterface {
     private long issuedate; // Дата выписки рецепта
     private Date date;
     private long dateCreation;
-    private Lpu lpu; // ЛПУ
+    private Long lpuId; // ЛПУ
+    @ManyToOne(fetch = FetchType.EAGER)
     private Desease desease; // заболевание
+    @ManyToOne(fetch = FetchType.EAGER)
     private Doctor doctor; // врача
 
 //    private List<> drug; // препарат 1
@@ -41,8 +44,6 @@ public class Prescription implements EntityInterface {
     private String form; //форма рецепта
 
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     public Long getId() {
         return id;
     }
@@ -115,16 +116,6 @@ public class Prescription implements EntityInterface {
         this.dateCreation = dateCreation;
     }
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    public Lpu getLpu() {
-        return lpu;
-    }
-
-    public void setLpu(Lpu lpu) {
-        this.lpu = lpu;
-    }
-
-    @ManyToOne(fetch = FetchType.EAGER)
     public Desease getDesease() {
         return desease;
     }
@@ -133,7 +124,6 @@ public class Prescription implements EntityInterface {
         this.desease = desease;
     }
 
-    @ManyToOne(fetch = FetchType.EAGER)
     public Doctor getDoctor() {
         return doctor;
     }
@@ -212,5 +202,13 @@ public class Prescription implements EntityInterface {
 
     public void setForm(String form) {
         this.form = form;
+    }
+
+    public Long getLpuId() {
+        return lpuId;
+    }
+
+    public void setLpuId(Long lpuId) {
+        this.lpuId = lpuId;
     }
 }

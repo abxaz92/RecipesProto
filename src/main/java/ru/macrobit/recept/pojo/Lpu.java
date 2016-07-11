@@ -5,8 +5,6 @@ import ru.macrobit.recept.abstracts.EntityInterface;
 import ru.macrobit.recept.commons.Recept;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 /**
