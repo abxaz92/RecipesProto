@@ -1,5 +1,6 @@
 package ru.macrobit.recept.pojo;
 
+import org.hibernate.annotations.GenericGenerator;
 import ru.macrobit.recept.abstracts.EntityInterface;
 
 import javax.persistence.*;
@@ -11,8 +12,9 @@ import java.util.Date;
 @Entity
 public class Prescription implements EntityInterface {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    private String id;
     private String sourceFunding; // источник финансирования (принимает следующие значения: 1. Федеральный бюджет, 2. Региональный бюджет, 3. Муниципальный бюджет)
     private Double percentagePayment;  // % оплаты из источника финансирования (может принмать следующие значения: 50% и 100%)
     private String validity; // Срок действия рецепта (может принимать значения: 1 месяц, 2 месяца, 3 месяца)
@@ -44,11 +46,11 @@ public class Prescription implements EntityInterface {
     private String form; //форма рецепта
 
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
