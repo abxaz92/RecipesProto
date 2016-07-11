@@ -35,7 +35,7 @@ public class Exempt implements EntityInterface {
     private ExemptCategory category;
     @ManyToOne(fetch = FetchType.EAGER)
     private Desease desease;
-    private String lpuId;
+    private Long lpuId;
 
     private String polisN;
     private String polisS;
@@ -198,11 +198,11 @@ public class Exempt implements EntityInterface {
         this.desease = desease;
     }
 
-    public String getLpuId() {
+    public Long getLpuId() {
         return lpuId;
     }
 
-    public void setLpuId(String lpuId) {
+    public void setLpuId(Long lpuId) {
         this.lpuId = lpuId;
     }
 
