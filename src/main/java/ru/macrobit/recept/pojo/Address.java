@@ -1,19 +1,20 @@
 package ru.macrobit.recept.pojo;
 
-import ru.macrobit.recept.abstracts.EntityInterface;
+import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 /**
  * Created by david on 11.07.16.
  */
 @Entity
-public class Address implements EntityInterface {
+public class Address {
     @Id
-    @Column(columnDefinition = "serial")
-    private Long id;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    private String id;
     private String region;
     private String locality;
     private String street;
@@ -24,11 +25,11 @@ public class Address implements EntityInterface {
     private String mst;
     private String name;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

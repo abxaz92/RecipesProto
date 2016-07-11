@@ -99,7 +99,7 @@ public class AbstractDAO<T extends EntityInterface> extends ExceptionFactory {
     }
 
 
-    public void combineCriteria(JSONObject jsonQuery, Criteria criteria) {
+    public static void combineCriteria(JSONObject jsonQuery, Criteria criteria) {
         jsonQuery.keySet().stream().forEach(key -> {
             criteria.add(Restrictions.eq(key, jsonQuery.get(key)));
         });

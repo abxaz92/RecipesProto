@@ -169,10 +169,13 @@ public class ExemptMintrudRowMapper implements DbfRowMapper<Exempt> {
 
 
         if (Recept.isSnilsValid(snils)) {
-            exe.setSnils(snils);
-            exe.setType(ExemptType.MINTRUD);
+            exe.setInvalid(false);
             return exe;
+        } else {
+            exe.setInvalid(true);
         }
+        exe.setSnils(snils);
+        exe.setType(ExemptType.MINTRUD);
         return exe;
     }
 }

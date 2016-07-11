@@ -1,6 +1,6 @@
 package ru.macrobit.recept.pojo;
 
-import ru.macrobit.recept.abstracts.EntityInterface;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
@@ -8,16 +8,17 @@ import javax.persistence.*;
  * Created by david on 11.07.16.
  */
 @Entity
-public class Exempt implements EntityInterface {
+public class Exempt {
     @Id
-    @Column(columnDefinition = "serial")
-    private Long id;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    private String id;
     private String areaId;
     private String fileNumber;
     private String fileNumberPens;
     private Long dateBirth;
     private String gender;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     private Address address;
     private String disabilityGroup;
     private String maxLg;
@@ -26,7 +27,6 @@ public class Exempt implements EntityInterface {
     private String pasportSeries;
     private String pasportNum;
     private String phone;
-    @Column(unique = true)
     private String snils;
     private String type;
     private String fio;
@@ -43,12 +43,13 @@ public class Exempt implements EntityInterface {
     private boolean rejectLg;
     private String documentNumber;
     private String documentType;
+    private boolean invalid;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -258,5 +259,13 @@ public class Exempt implements EntityInterface {
 
     public void setDocumentType(String documentType) {
         this.documentType = documentType;
+    }
+
+    public boolean isInvalid() {
+        return invalid;
+    }
+
+    public void setInvalid(boolean invalid) {
+        this.invalid = invalid;
     }
 }
