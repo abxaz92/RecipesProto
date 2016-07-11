@@ -25,7 +25,7 @@ public class PrescriptionController {
 
     @GET
     @Path("/{id}")
-    public Object getById(@PathParam("id") Long id) {
+    public Object getById(@PathParam("id") String id) {
         return prescriptionService.findById(id);
     }
 

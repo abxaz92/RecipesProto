@@ -1,15 +1,21 @@
 package ru.macrobit.recept.pojo;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+import org.hibernate.annotations.TypeDefs;
 import ru.macrobit.recept.abstracts.EntityInterface;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.util.Date;
 
 /**
  * Created by david on 08.07.16.
  */
 @Entity
+@TypeDefs({@TypeDef(name = "DeseaseObject", typeClass = Desease.class)})
 public class Prescription implements EntityInterface {
     @Id
     @GeneratedValue(generator = "uuid")
@@ -24,9 +30,9 @@ public class Prescription implements EntityInterface {
     private Date date;
     private long dateCreation;
     private Long lpuId; // ЛПУ
-    @ManyToOne(fetch = FetchType.EAGER)
+    @Type(type = "DeseaseObject")
     private Desease desease; // заболевание
-    @ManyToOne(fetch = FetchType.EAGER)
+    @Type(type = "DoctorObject")
     private Doctor doctor; // врача
 
 //    private List<> drug; // препарат 1

@@ -1,6 +1,9 @@
 package ru.macrobit.recept.pojo;
 
+import org.hibernate.annotations.TypeDef;
+import org.hibernate.annotations.TypeDefs;
 import ru.macrobit.recept.abstracts.EntityInterface;
+import ru.macrobit.recept.pjson.PGJsonObject;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -9,7 +12,8 @@ import javax.persistence.Id;
  * Created by david on 7/8/16.
  */
 @Entity
-public class Doctor implements EntityInterface {
+@TypeDefs({@TypeDef(name = "DoctorObject", typeClass = Doctor.class)})
+public class Doctor extends PGJsonObject implements EntityInterface {
     @Id
     private Long id;
     private String name;
