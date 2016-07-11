@@ -2,10 +2,7 @@ package ru.macrobit.recept.pojo;
 
 import ru.macrobit.recept.abstracts.EntityInterface;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 /**
  * Created by david on 11.07.16.
@@ -13,6 +10,7 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Exempt implements EntityInterface {
     @Id
+    @Column(columnDefinition = "serial")
     private Long id;
     private String areaId;
     private String fileNumber;
@@ -28,6 +26,7 @@ public class Exempt implements EntityInterface {
     private String pasportSeries;
     private String pasportNum;
     private String phone;
+    @Column(unique = true)
     private String snils;
     private String type;
     private String fio;

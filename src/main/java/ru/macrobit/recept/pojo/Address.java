@@ -2,9 +2,8 @@ package ru.macrobit.recept.pojo;
 
 import ru.macrobit.recept.abstracts.EntityInterface;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 /**
@@ -13,7 +12,7 @@ import javax.persistence.Id;
 @Entity
 public class Address implements EntityInterface {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(columnDefinition = "serial")
     private Long id;
     private String region;
     private String locality;

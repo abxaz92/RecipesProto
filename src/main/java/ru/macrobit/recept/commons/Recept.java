@@ -43,4 +43,26 @@ public class Recept {
         os.close();
         return file;
     }
+
+    public static boolean isSnilsValid(String snils) {
+        if (snils == null)
+            return false;
+        if (snils.length() != 11)
+            return false;
+        if (!snils.matches("\\d+"))
+            return false;
+        int sum = 0;
+        int checkSum = Integer.parseInt(snils.substring(9));
+        // StringBuilder s = new StringBuilder();
+        int j = 9;
+        for (int i = 0; i < snils.length() - 2; i++) {
+            // s.append(Character.getNumericValue(snils.charAt(i))).append("x").append(j).append(" + ");
+            sum += Character.getNumericValue(snils.charAt(i)) * j;
+            j--;
+        }
+        int mod = (sum % 101);
+        // LOG.debug(snils + " " + " " + mod + " " + checkSum + " " +
+        // s.toString());
+        return mod == checkSum || mod == 100;
+    }
 }
