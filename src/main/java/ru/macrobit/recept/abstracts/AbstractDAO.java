@@ -40,7 +40,7 @@ public class AbstractDAO<T extends EntityInterface> extends ExceptionFactory {
         this.tablename = tablename;
     }
 
-    public T findById(Long id) {
+    public T findById(Object id) {
         return (T) em.find(type, id);
     }
 
@@ -60,7 +60,7 @@ public class AbstractDAO<T extends EntityInterface> extends ExceptionFactory {
 
     }
 
-    public void deleteById(Long id) {
+    public void deleteById(Object id) {
         try {
             utx.begin();
             em.remove(findById(id));
@@ -117,7 +117,7 @@ public class AbstractDAO<T extends EntityInterface> extends ExceptionFactory {
         }
     }
 
-    public T update(Long id, JsonNode json) throws Exception {
+    public T update(Object id, JsonNode json) throws Exception {
         T old = findById(id);
         JsonNode res = Recept.merge(Recept.MAPPER.convertValue(old, JsonNode.class), json);
         T entity = null;

@@ -1,10 +1,10 @@
 package ru.macrobit.recept.pojo;
 
+import org.hibernate.annotations.GenericGenerator;
 import ru.macrobit.recept.abstracts.EntityInterface;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 /**
@@ -12,17 +12,19 @@ import javax.persistence.Id;
  */
 @Entity
 public class Desease implements EntityInterface {
-    private Long id;
+    @Id
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    private String id;
+    private String name;
     private String code;
     private String parent;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -40,5 +42,13 @@ public class Desease implements EntityInterface {
 
     public void setParent(String parent) {
         this.parent = parent;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

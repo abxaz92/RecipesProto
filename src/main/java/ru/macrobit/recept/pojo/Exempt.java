@@ -1,6 +1,7 @@
 package ru.macrobit.recept.pojo;
 
 import org.hibernate.annotations.GenericGenerator;
+import ru.macrobit.recept.abstracts.EntityInterface;
 
 import javax.persistence.*;
 
@@ -8,7 +9,7 @@ import javax.persistence.*;
  * Created by david on 11.07.16.
  */
 @Entity
-public class Exempt {
+public class Exempt implements EntityInterface {
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")

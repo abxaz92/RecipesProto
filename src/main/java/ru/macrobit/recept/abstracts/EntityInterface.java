@@ -5,7 +5,5 @@ package ru.macrobit.recept.abstracts;
  * чтобы каркас работы с БД мог с ними работать
  */
 public interface EntityInterface {
-    Long getId();
 
-    void setId(Long id);
 }
