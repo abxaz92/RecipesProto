@@ -3,8 +3,10 @@ package ru.macrobit.recept.commons;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 
 /**
@@ -28,6 +30,19 @@ public class Recept {
             }
         }
         return mainNode;
+    }
+
+    public static String getFileName(InputPart inputPart) {
+        String[] contentDisposition = inputPart.getHeaders().getFirst("Content-Disposition").split(";");
+        for (String fileName : contentDisposition) {
+            if ((fileName.trim().startsWith("filename"))) {
+                String[] name = fileName.split("=");
+                String finalFileName = name[1].trim().replaceAll("\"", "");
+                return new String(finalFileName.getBytes(StandardCharsets.ISO_8859_1),
+                        StandardCharsets.UTF_8);
+            }
+        }
+        return "unknown";
     }
 
     public static File createFile(InputStream is, String fileName) throws IOException {

@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 /**
- * Created by david on 12.07.16.
+ * Created by [david] on 12.07.16.
  */
 @Entity
 public class Drug implements EntityInterface {
@@ -39,6 +39,10 @@ public class Drug implements EntityInterface {
     private Volume vol;
     private float volNum;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Weight weight;
+    private float weightNum;
+
     private String firm;
     private String firmCountry;
     private String pack;
@@ -53,6 +57,9 @@ public class Drug implements EntityInterface {
     private Date dateExclude;
     private Long code;
     private String documents;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private FarmGroup farmGroup;
 
     public String getId() {
         return id;
@@ -244,5 +251,29 @@ public class Drug implements EntityInterface {
 
     public void setDocuments(String documents) {
         this.documents = documents;
+    }
+
+    public Weight getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Weight weight) {
+        this.weight = weight;
+    }
+
+    public float getWeightNum() {
+        return weightNum;
+    }
+
+    public void setWeightNum(float weightNum) {
+        this.weightNum = weightNum;
+    }
+
+    public FarmGroup getFarmGroup() {
+        return farmGroup;
+    }
+
+    public void setFarmGroup(FarmGroup farmGroup) {
+        this.farmGroup = farmGroup;
     }
 }

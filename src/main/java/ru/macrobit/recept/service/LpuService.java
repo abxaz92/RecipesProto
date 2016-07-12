@@ -1,14 +1,10 @@
 package ru.macrobit.recept.service;
 
-import net.iryndin.jdbf.reader.DbfReader;
 import org.jamel.dbf.processor.DbfProcessor;
-import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
-import org.jboss.resteasy.util.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.macrobit.recept.abstracts.AbstractDAO;
-import ru.macrobit.recept.commons.DBFUploader;
 import ru.macrobit.recept.commons.Recept;
 import ru.macrobit.recept.dbfmappers.LpuRowMapper;
 import ru.macrobit.recept.pojo.Lpu;
@@ -16,7 +12,6 @@ import ru.macrobit.recept.pojo.Lpu;
 import javax.enterprise.context.ApplicationScoped;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 

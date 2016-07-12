@@ -1,10 +1,8 @@
 package ru.macrobit.recept.service;
 
-import net.iryndin.jdbf.reader.DbfReader;
 import org.jamel.dbf.processor.DbfProcessor;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 import ru.macrobit.recept.abstracts.AbstractDAO;
-import ru.macrobit.recept.commons.DBFUploader;
 import ru.macrobit.recept.commons.Recept;
 import ru.macrobit.recept.dbfmappers.DoctorRowMapper;
 import ru.macrobit.recept.pojo.Doctor;
@@ -12,7 +10,6 @@ import ru.macrobit.recept.pojo.Doctor;
 import javax.enterprise.context.ApplicationScoped;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
