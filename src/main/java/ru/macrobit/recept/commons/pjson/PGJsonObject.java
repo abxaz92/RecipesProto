@@ -1,4 +1,4 @@
-package ru.macrobit.recept.pjson;
+package ru.macrobit.recept.commons.pjson;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;

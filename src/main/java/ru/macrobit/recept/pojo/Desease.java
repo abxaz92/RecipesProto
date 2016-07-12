@@ -4,7 +4,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
 import ru.macrobit.recept.abstracts.EntityInterface;
-import ru.macrobit.recept.pjson.PGJsonObject;
+import ru.macrobit.recept.commons.pjson.PGJsonObject;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

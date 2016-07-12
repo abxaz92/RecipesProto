@@ -1,4 +1,4 @@
-package ru.macrobit.recept.pjson;
+package ru.macrobit.recept.commons.pjson;
 
 import org.hibernate.dialect.PostgreSQL9Dialect;
 

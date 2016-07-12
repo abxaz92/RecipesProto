@@ -1,4 +1,4 @@
-package ru.macrobit.recept.pjson;
+package ru.macrobit.recept.commons.pjson;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.hibernate.HibernateException;
