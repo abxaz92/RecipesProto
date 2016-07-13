@@ -3,16 +3,22 @@ package ru.macrobit.recept.commons;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.jamel.dbf.utils.DbfUtils;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.Date;
 import java.util.Iterator;
 
 /**
  * Клас для общих методов
  */
 public class Recept {
+    public static final Logger log = LoggerFactory.getLogger(Recept.class);
+
     // JSON парсер
     public static final ObjectMapper MAPPER = new ObjectMapper();
 
@@ -79,5 +85,32 @@ public class Recept {
         // LOG.debug(snils + " " + " " + mod + " " + checkSum + " " +
         // s.toString());
         return mod == checkSum || mod == 100;
+    }
+
+    public static Number getNumber(Object obj) {
+        try {
+            return ((Number) obj).longValue();
+        } catch (Exception e) {
+            log.error("{}", e);
+        }
+        return null;
+    }
+
+    public static Date getDate(Object obj) {
+        try {
+            return ((Date) obj);
+        } catch (Exception e) {
+            log.error("{}", e);
+        }
+        return null;
+    }
+
+    public static String getString(Object obj, String encoding) {
+        try {
+            return new String(DbfUtils.trimLeftSpaces((byte[]) obj), encoding);
+        } catch (UnsupportedEncodingException e) {
+            log.error("{}", e);
+        }
+        return null;
     }
 }

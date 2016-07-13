@@ -30,7 +30,7 @@ public class Drug implements EntityInterface {
     @ManyToOne(fetch = FetchType.EAGER)
     private Form form;
 
-    private float dose;
+    private String dose;
     @ManyToOne(fetch = FetchType.EAGER)
     private Dose doseType;
     private float doseNum;
@@ -109,11 +109,11 @@ public class Drug implements EntityInterface {
         this.form = form;
     }
 
-    public float getDose() {
+    public String getDose() {
         return dose;
     }
 
-    public void setDose(float dose) {
+    public void setDose(String dose) {
         this.dose = dose;
     }
 
