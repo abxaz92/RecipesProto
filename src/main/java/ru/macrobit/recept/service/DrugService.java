@@ -42,14 +42,6 @@ public class DrugService extends AbstractDAO<Drug> {
 
         });
         log.info("{}", files.keySet());
-//        DbfReader drugsReader = new DbfReader(files.get("sp_tov.dbf").getBody(InputStream.class, null));
-//        DbfReader tnamesReader = new DbfReader(files.get("Sp_trn.DBF").getBody(InputStream.class, null));
-//        DbfReader inamesReader = new DbfReader(files.get("Sp_mnn.DBF").getBody(InputStream.class, null));
-//        DbfReader formReader = new DbfReader(files.get("Sp_lf.dbf").getBody(InputStream.class, null));
-//        DbfReader doseReader = new DbfReader(files.get("Sp_doza.DBF").getBody(InputStream.class, null));
-//        DbfReader volumeReader = new DbfReader(files.get("Sp_edvlf.DBF").getBody(InputStream.class, null));
-//        DbfReader weightReader = new DbfReader(files.get("Sp_edmlf.DBF").getBody(InputStream.class, null));
-//        DbfReader farmGroupReader = new DbfReader(files.get("Sp_frgp.DBF").getBody(InputStream.class, null));
 
         List<Drug> drugs = DbfProcessor.loadData(Recept.createFile(files.get("sp_tov.dbf").getBody(InputStream.class, null), "/tmp/Sp_frgp"), new DrugRowMapper());
         List<TorgName> tnames = DbfProcessor.loadData(Recept.createFile(files.get("Sp_trn.DBF").getBody(InputStream.class, null), "/tmp/Sp_frgp"), new TorgNameRowMapper());
@@ -62,15 +54,15 @@ public class DrugService extends AbstractDAO<Drug> {
 
         try (Session session = em.unwrap(Session.class)) {
             utx.begin();
-            tnames.stream().forEach(session::save);
-            inames.stream().forEach(session::save);
-            forms.stream().forEach(session::save);
-            doses.stream().forEach(session::save);
-            volumes.stream().forEach(session::save);
-            weights.stream().forEach(session::save);
-            farmGroups.stream().forEach(session::save);
+            tnames.forEach(session::save);
+            inames.forEach(session::save);
+            forms.forEach(session::save);
+            doses.forEach(session::save);
+            volumes.forEach(session::save);
+            weights.forEach(session::save);
+            farmGroups.forEach(session::save);
             session.flush();
-            drugs.stream().forEach(session::save);
+            drugs.forEach(session::save);
             utx.commit();
         } catch (Exception e) {
 
