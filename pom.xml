@@ -138,7 +138,7 @@
                         <groupId>org.wildfly.plugins</groupId>
                         <artifactId>wildfly-maven-plugin</artifactId>
                         <configuration>
-                            <hostname>test.irtaxi.ru</hostname>
+                            <hostname>master</hostname>
                             <username>taxi</username>
                             <password>Q4862513</password>
                             <name>recept.war</name>
