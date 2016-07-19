@@ -1,0 +1,58 @@
+package ru.macrobit.recept.controller;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import ru.macrobit.recept.pojo.User;
+import ru.macrobit.recept.service.UserService;
+
+import javax.inject.Inject;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import java.io.IOException;
+
+/**
+ * Created by david on 7/8/16
+ */
+@Path("/user")
+@Produces(MediaType.APPLICATION_JSON)
+public class UserController {
+    private static final Logger log = LoggerFactory.getLogger(UserController.class);
+
+    @Inject
+    private UserService userService;
+
+    @GET
+    @Path("/{id}")
+    public User getById(@PathParam("id") Long id) {
+        return userService.findById(id);
+    }
+
+    @GET
+    @Path("/")
+    public Object getByQuery(@QueryParam("query") String jsonQuery,
+                             @QueryParam("count") String count, @QueryParam("skip") Integer skip,
+                             @QueryParam("limit") Integer limit, @QueryParam("sort") String sortProperties,
+                             @QueryParam("direction") String sortDirection) throws IOException {
+        return userService.findAll(jsonQuery == null ? null : new JSONObject(jsonQuery), skip, limit, sortProperties, sortDirection);
+    }
+
+    @POST
+    public User post(User user) throws Exception {
+        userService.insert(user);
+        return user;
+    }
+
+    @PUT
+    @Path("/{id}")
+    public void put(JsonNode user, @PathParam("id") Long id) throws Exception {
+        userService.update(id, user);
+    }
+
+    @DELETE
+    @Path("/{id}")
+    public void deleteById(@PathParam("id") Long id) throws Exception {
+        userService.deleteById(id);
+    }
+}

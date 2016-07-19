@@ -4,8 +4,8 @@
              xsi:schemaLocation="
         http://xmlns.jcp.org/xml/ns/persistence
         http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
-    <persistence-unit name="PostgrePool">
-        <jta-data-source>java:/PostGreDS</jta-data-source>
+    <persistence-unit name="recept">
+        <jta-data-source>java:/PostgresDS</jta-data-source>
         <properties>
             <property name="hibernate.hbm2ddl.auto" value="auto"/>
             <property name="hibernate.show_sql" value="true"/>
