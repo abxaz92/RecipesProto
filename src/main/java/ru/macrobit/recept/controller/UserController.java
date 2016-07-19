@@ -25,7 +25,7 @@ public class UserController {
 
     @GET
     @Path("/{id}")
-    public User getById(@PathParam("id") Long id) {
+    public User getById(@PathParam("id") String id) {
         return userService.findById(id);
     }
 
@@ -46,13 +46,13 @@ public class UserController {
 
     @PUT
     @Path("/{id}")
-    public void put(JsonNode user, @PathParam("id") Long id) throws Exception {
+    public void put(JsonNode user, @PathParam("id") String id) throws Exception {
         userService.update(id, user);
     }
 
     @DELETE
     @Path("/{id}")
-    public void deleteById(@PathParam("id") Long id) throws Exception {
+    public void deleteById(@PathParam("id") String id) throws Exception {
         userService.deleteById(id);
     }
 }
