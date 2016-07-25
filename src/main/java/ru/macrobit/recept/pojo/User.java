@@ -16,7 +16,8 @@ public class User implements EntityInterface {
     @Id
     private String username;
     private String passwd;
-
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Lpu lpu;
 
     @ElementCollection
     @CollectionTable(name = "USERROLES", joinColumns = @JoinColumn(name = "username"))
@@ -45,5 +46,13 @@ public class User implements EntityInterface {
 
     public void setPasswd(String passwd) {
         this.passwd = passwd;
+    }
+
+    public Lpu getLpu() {
+        return lpu;
+    }
+
+    public void setLpu(Lpu lpu) {
+        this.lpu = lpu;
     }
 }
