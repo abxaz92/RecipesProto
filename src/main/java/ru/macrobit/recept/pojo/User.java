@@ -19,9 +19,10 @@ public class User implements EntityInterface {
     @ManyToOne(fetch = FetchType.EAGER)
     private Lpu lpu;
 
-    @ElementCollection
-    @CollectionTable(name = "USERROLES", joinColumns = @JoinColumn(name = "username"))
-    @Fetch(FetchMode.JOIN)
+    @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
+    @JoinTable(name = "USERROLES", joinColumns = @JoinColumn(name = "username"))
+    @MapKey(name = "username")
+    @Fetch(FetchMode.SELECT)
     private List<String> roles;
 
     public String getUsername() {
