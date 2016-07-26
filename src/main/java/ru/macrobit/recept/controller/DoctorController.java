@@ -19,7 +19,6 @@ import java.io.IOException;
  */
 @Path("/doctor")
 @Produces(MediaType.APPLICATION_JSON)
-@RolesAllowed({"ADMIN"})
 public class DoctorController {
     private static final Logger log = LoggerFactory.getLogger(DoctorController.class);
 
