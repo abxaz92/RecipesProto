@@ -35,7 +35,7 @@ public class UserController {
                              @QueryParam("count") String count, @QueryParam("skip") Integer skip,
                              @QueryParam("limit") Integer limit, @QueryParam("sort") String sortProperties,
                              @QueryParam("direction") String sortDirection) throws IOException {
-        return userService.findAll(jsonQuery == null ? null : new JSONObject(jsonQuery), skip, limit, sortProperties, sortDirection);
+        return userService.findAll(jsonQuery == null ? null : new JSONObject(jsonQuery), skip, limit, count, sortProperties, sortDirection);
     }
 
     @POST

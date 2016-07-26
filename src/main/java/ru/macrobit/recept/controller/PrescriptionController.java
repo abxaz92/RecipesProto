@@ -37,7 +37,7 @@ public class PrescriptionController {
                              @QueryParam("count") String count, @QueryParam("skip") Integer skip,
                              @QueryParam("limit") Integer limit, @QueryParam("sort") String sortProperties,
                              @QueryParam("direction") String sortDirection) throws IOException {
-        return prescriptionService.findAll(jsonQuery == null ? null : new JSONObject(jsonQuery), skip, limit, sortProperties, sortDirection);
+        return prescriptionService.findAll(jsonQuery == null ? null : new JSONObject(jsonQuery), skip, limit, count, sortProperties, sortDirection);
     }
 
     @POST

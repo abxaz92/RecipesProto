@@ -36,11 +36,7 @@ public class DoctorController {
                              @QueryParam("count") String count, @QueryParam("skip") Integer skip,
                              @QueryParam("limit") Integer limit, @QueryParam("sort") String sortProperties,
                              @QueryParam("direction") String sortDirection) throws IOException {
-
-        JSONObject obj = null;
-        if (jsonQuery != null)
-            obj = new JSONObject(jsonQuery);
-        return doctorService.findAll(obj, skip, limit, sortProperties, sortDirection);
+        return doctorService.findAll(jsonQuery == null ? null : new JSONObject(jsonQuery), skip, limit, count, sortProperties, sortDirection);
     }
 
     @POST

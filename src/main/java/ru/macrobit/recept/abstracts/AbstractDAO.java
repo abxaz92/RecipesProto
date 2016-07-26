@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projection;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -77,11 +79,15 @@ public class AbstractDAO<T extends EntityInterface> extends ExceptionFactory {
 
     }
 
-    public List<T> findAll(JSONObject jsonQuery, Integer skip, Integer limit, String sortProperties, String sortDirection) {
+    public Object findAll(JSONObject jsonQuery, Integer skip, Integer limit, String count, String sortProperties, String sortDirection) {
         try (Session session = em.unwrap(Session.class)) {
             Criteria criteria = session.createCriteria(type);
             if (jsonQuery != null)
                 combineCriteria(jsonQuery, criteria);
+
+            if (count != null) {
+                return criteria.setProjection(Projections.rowCount()).uniqueResult();
+            }
             if (skip != null)
                 criteria.setFirstResult(skip);
             if (limit != null)
