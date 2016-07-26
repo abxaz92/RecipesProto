@@ -15,7 +15,7 @@ import java.util.List;
 public class User implements EntityInterface {
     @Id
     private String username;
-    private String passwd;
+    private String password;
     @ManyToOne(fetch = FetchType.EAGER)
     private Lpu lpu;
 
@@ -41,19 +41,19 @@ public class User implements EntityInterface {
         this.roles = roles;
     }
 
-    public String getPasswd() {
-        return passwd;
-    }
-
-    public void setPasswd(String passwd) {
-        this.passwd = passwd;
-    }
-
     public Lpu getLpu() {
         return lpu;
     }
 
     public void setLpu(Lpu lpu) {
         this.lpu = lpu;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
