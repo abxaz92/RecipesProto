@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import ru.macrobit.recept.pojo.User;
 import ru.macrobit.recept.service.UserService;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -17,6 +18,7 @@ import java.io.IOException;
  */
 @Path("/user")
 @Produces(MediaType.APPLICATION_JSON)
+@RolesAllowed({"ADMIN"})
 public class UserController {
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
 

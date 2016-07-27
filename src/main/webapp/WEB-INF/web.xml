@@ -15,7 +15,7 @@
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>Admin</web-resource-name>
-            <url-pattern>/rest/secure/*</url-pattern>
+            <url-pattern>/rest/user/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>ADMIN</role-name>
