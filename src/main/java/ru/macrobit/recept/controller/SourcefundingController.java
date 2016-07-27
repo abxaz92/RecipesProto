@@ -46,8 +46,8 @@ public class SourcefundingController {
 
     @PUT
     @Path("/{id}")
-    public void put(JsonNode sourcefunding, @PathParam("id") Long id) throws Exception {
-        sourcefundingService.update(id, sourcefunding);
+    public Sourcefunding put(JsonNode sourcefunding, @PathParam("id") Long id) throws Exception {
+        return sourcefundingService.update(id, sourcefunding);
     }
 
     @DELETE

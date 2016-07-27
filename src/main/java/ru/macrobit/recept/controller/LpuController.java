@@ -47,8 +47,8 @@ public class LpuController {
 
     @PUT
     @Path("/{id}")
-    public void put(JsonNode lpu, @PathParam("id") Long id) throws Exception {
-        lpuService.update(id, lpu);
+    public Lpu put(JsonNode lpu, @PathParam("id") Long id) throws Exception {
+        return lpuService.update(id, lpu);
     }
 
     @DELETE

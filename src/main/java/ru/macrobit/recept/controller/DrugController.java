@@ -47,8 +47,8 @@ public class DrugController {
 
     @PUT
     @Path("/{id}")
-    public void put(JsonNode drug, @PathParam("id") String id) throws Exception {
-        drugService.update(id, drug);
+    public Drug put(JsonNode drug, @PathParam("id") String id) throws Exception {
+        return drugService.update(id, drug);
     }
 
     @DELETE

@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import ru.macrobit.recept.pojo.Doctor;
 import ru.macrobit.recept.service.DoctorService;
 
-import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -48,8 +47,8 @@ public class DoctorController {
 
     @PUT
     @Path("/{id}")
-    public void put(JsonNode doctor, @PathParam("id") Long id) throws Exception {
-        doctorService.update(id, doctor);
+    public Doctor put(JsonNode doctor, @PathParam("id") Long id) throws Exception {
+        return doctorService.update(id, doctor);
     }
 
     @DELETE

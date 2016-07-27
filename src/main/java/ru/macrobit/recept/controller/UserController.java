@@ -46,8 +46,8 @@ public class UserController {
 
     @PUT
     @Path("/{id}")
-    public void put(JsonNode user, @PathParam("id") String id) throws Exception {
-        userService.update(id, user);
+    public User put(JsonNode user, @PathParam("id") String id) throws Exception {
+        return userService.update(id, user);
     }
 
     @DELETE

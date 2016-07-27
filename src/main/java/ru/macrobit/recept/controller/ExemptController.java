@@ -47,8 +47,8 @@ public class ExemptController {
 
     @PUT
     @Path("/{id}")
-    public void put(JsonNode exempt, @PathParam("id") String id) throws Exception {
-        exemptService.update(id, exempt);
+    public Exempt put(JsonNode exempt, @PathParam("id") String id) throws Exception {
+        return exemptService.update(id, exempt);
     }
 
     @DELETE
