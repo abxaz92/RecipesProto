@@ -54,8 +54,8 @@
         <auth-method>BASIC,FORM</auth-method>
         <realm-name>recept-jaas-realm</realm-name>
         <form-login-config>
-            <form-login-page>/login/loginform.html</form-login-page>
-            <form-error-page>/login/loginerror.html</form-error-page>
+            <form-login-page>/login/login.html</form-login-page>
+            <form-error-page>/login/loginerr.html</form-error-page>
         </form-login-config>
     </login-config>
 
