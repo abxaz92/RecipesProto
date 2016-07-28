@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.json.JSONObject;
@@ -12,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.macrobit.recept.commons.ExceptionFactory;
 import ru.macrobit.recept.commons.Recept;
+import ru.macrobit.recept.pojo.User;
 
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
@@ -44,6 +44,12 @@ public class AbstractDAO<T extends EntityInterface> extends ExceptionFactory {
 
     public T findById(Object id) {
         return (T) em.find(type, id);
+    }
+
+    public T findById(Object id, User user) {
+        try (Session session = em.unwrap(Session.class)) {
+            return (T) em.find(type, id);
+        }
     }
 
     public void insert(T entity) throws Exception {
@@ -79,7 +85,24 @@ public class AbstractDAO<T extends EntityInterface> extends ExceptionFactory {
 
     }
 
-    public Object findAll(JSONObject jsonQuery, Integer skip, Integer limit, String count, String sortProperties, String sortDirection) {
+    public void deleteById(Object id, User user) {
+        try {
+            utx.begin();
+            em.remove(findById(id, user));
+            utx.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            try {
+                utx.rollback();
+            } catch (SystemException e1) {
+                e1.printStackTrace();
+            }
+            throw new RuntimeException();
+        }
+
+    }
+
+    public Object findAll(JSONObject jsonQuery, Integer skip, Integer limit, String count, String sortProperties, String sortDirection, User user) {
         try (Session session = em.unwrap(Session.class)) {
             Criteria criteria = session.createCriteria(type);
             if (jsonQuery != null)
@@ -123,8 +146,8 @@ public class AbstractDAO<T extends EntityInterface> extends ExceptionFactory {
         }
     }
 
-    public T update(Object id, JsonNode json) throws Exception {
-        T old = findById(id);
+    public T update(Object id, JsonNode json, User user) throws Exception {
+        T old = findById(id, user);
         JsonNode res = Recept.merge(Recept.MAPPER.convertValue(old, JsonNode.class), json);
         T entity = null;
         try {
@@ -146,5 +169,9 @@ public class AbstractDAO<T extends EntityInterface> extends ExceptionFactory {
             utx.rollback();
             throw new RuntimeException();
         }
+    }
+
+    protected Criteria getUserscopeCriteria(User user) {
+        return null;
     }
 }
