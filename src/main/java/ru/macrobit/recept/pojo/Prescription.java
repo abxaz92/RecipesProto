@@ -15,7 +15,7 @@ import java.util.Date;
  * Created by david on 08.07.16.
  */
 @Entity
-@TypeDefs({@TypeDef(name = "DeseaseObject", typeClass = Desease.class)})
+//@TypeDefs({@TypeDef(name = "DeseaseObject", typeClass = Desease.class)})
 public class Prescription implements EntityInterface {
     @Id
     @GeneratedValue(generator = "uuid")
