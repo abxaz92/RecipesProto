@@ -1,9 +1,11 @@
 package ru.macrobit.recept.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.macrobit.recept.commons.JsonViews;
 import ru.macrobit.recept.pojo.User;
 import ru.macrobit.recept.service.UserService;
 
@@ -27,12 +29,14 @@ public class UserController {
 
     @GET
     @Path("/{id}")
+    @JsonView(JsonViews.Public.class)
     public User getById(@PathParam("id") String id) {
         return userService.findById(id);
     }
 
     @GET
     @Path("/")
+    @JsonView(JsonViews.Public.class)
     public Object getByQuery(@QueryParam("query") String jsonQuery,
                              @QueryParam("count") String count, @QueryParam("skip") Integer skip,
                              @QueryParam("limit") Integer limit, @QueryParam("sort") String sortProperties,
@@ -41,6 +45,7 @@ public class UserController {
     }
 
     @POST
+    @JsonView(JsonViews.Public.class)
     public User post(User user) throws Exception {
         userService.insert(user);
         return user;
@@ -48,12 +53,13 @@ public class UserController {
 
     @PUT
     @Path("/{id}")
+    @JsonView(JsonViews.Public.class)
     public User put(JsonNode user, @PathParam("id") String id) throws Exception {
         return userService.update(id, user);
     }
 
     @PUT
-    @Path("/{id}/{pass}")
+    @Path("/password/{id}/{pass}")
     public void updatePassword(@PathParam("id") String username, @PathParam("pass") String newPass) {
         userService.updatePassword(username, newPass);
     }

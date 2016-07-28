@@ -1,8 +1,10 @@
 package ru.macrobit.recept.pojo;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import ru.macrobit.recept.abstracts.EntityInterface;
+import ru.macrobit.recept.commons.JsonViews;
 
 import javax.persistence.*;
 import java.util.List;
@@ -11,18 +13,23 @@ import java.util.List;
  * Created by [david] on 19.07.16.
  */
 @Entity
+@org.hibernate.annotations.Entity(dynamicUpdate = true)
 @Table(name = "USERS")
 public class User implements EntityInterface {
     @Id
+    @JsonView(JsonViews.Public.class)
     private String username;
+    @JsonView(JsonViews.Internal.class)
     private String password;
     @ManyToOne(fetch = FetchType.EAGER)
+    @JsonView(JsonViews.Public.class)
     private Lpu lpu;
 
     @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
     @JoinTable(name = "USERROLES", joinColumns = @JoinColumn(name = "username"))
     @MapKey(name = "username")
     @Fetch(FetchMode.SELECT)
+    @JsonView(JsonViews.Public.class)
     private List<String> roles;
 
     public String getUsername() {

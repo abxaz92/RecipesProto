@@ -1,5 +1,7 @@
 package ru.macrobit.recept.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.macrobit.recept.abstracts.AbstractDAO;
@@ -37,6 +39,13 @@ public class UserService extends AbstractDAO<User> {
         } catch (Exception e) {
             throw exception(Status.INTERNAL_SERVER_ERROR, "Что-то пошло не так");
         }
+    }
+
+    @Override
+    public User update(Object id, JsonNode json) throws Exception {
+        ((ObjectNode) json).remove("password");
+        log.info("{}", json);
+        return super.update(id, json);
     }
 
     public static final String encodePassword(String passString) {
