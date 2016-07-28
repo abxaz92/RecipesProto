@@ -52,6 +52,12 @@ public class UserController {
         return userService.update(id, user);
     }
 
+    @PUT
+    @Path("/{id}/{pass}")
+    public void updatePassword(@PathParam("id") String username, @PathParam("pass") String newPass) {
+        userService.updatePassword(username, newPass);
+    }
+
     @DELETE
     @Path("/{id}")
     public void deleteById(@PathParam("id") String id) throws Exception {
