@@ -47,10 +47,10 @@ public class AbstractDAO<T extends EntityInterface> extends ExceptionFactory {
         if (user == null)
             return (T) em.find(type, id);
         try (Session session = em.unwrap(Session.class)) {
-            Criteria criteria = session.createCriteria(type);
-            criteria.add(Restrictions.eq("id", id));
-            criteria.add(getUserscopeCriteria(user));
-            return (T) criteria.uniqueResult();
+            return (T) session.createCriteria(type)
+                    .add(Restrictions.eq("id", id))
+                    .add(getUserscopeCriteria(user))
+                    .uniqueResult();
         }
     }
 
