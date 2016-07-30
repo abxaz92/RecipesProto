@@ -31,7 +31,7 @@ public class DoctorController {
     @GET
     @Path("/{id}")
     public Doctor getById(@PathParam("id") Long id) {
-        return doctorService.findById(id);
+        return doctorService.findById(id, ctx.getCurrentUser());
     }
 
     @GET

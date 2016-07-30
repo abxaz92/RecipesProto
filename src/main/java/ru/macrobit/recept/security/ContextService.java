@@ -35,6 +35,6 @@ public class ContextService {
     }
 
     public User getCurrentUser() {
-        return usersService.findById(getCurrentUserName());
+        return usersService.findById(getCurrentUserName(), null);
     }
 }

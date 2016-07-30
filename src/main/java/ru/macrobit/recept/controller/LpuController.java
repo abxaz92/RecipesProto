@@ -31,7 +31,7 @@ public class LpuController {
     @GET
     @Path("/{id}")
     public Lpu getById(@PathParam("id") Long id) {
-        return lpuService.findById(id);
+        return lpuService.findById(id, ctx.getCurrentUser());
     }
 
     @GET

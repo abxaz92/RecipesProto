@@ -2,6 +2,8 @@ package ru.macrobit.recept.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.macrobit.recept.abstracts.AbstractDAO;
@@ -29,12 +31,12 @@ public class UserService extends AbstractDAO<User> {
         super.insert(user);
     }
 
-    public void updatePassword(String userId, String newPass) {
+    public void updatePassword(String userId, String newPass, User user) {
         try {
-            User user = findById(userId);
+            User userUpd = findById(userId, user);
             utx.begin();
-            user.setPassword(encodePassword(newPass));
-            em.merge(user);
+            userUpd.setPassword(encodePassword(newPass));
+            em.merge(userUpd);
             utx.commit();
         } catch (Exception e) {
             throw exception(Status.INTERNAL_SERVER_ERROR, "Что-то пошло не так");
@@ -58,6 +60,10 @@ public class UserService extends AbstractDAO<User> {
             log.error("{}", e);
             return null;
         }
+    }
 
+    @Override
+    protected Criterion getUserscopeCriteria(User user) {
+        return Restrictions.eq("lpu", user.getLpu());
     }
 }

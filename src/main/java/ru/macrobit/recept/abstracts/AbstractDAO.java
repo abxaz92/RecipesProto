@@ -3,6 +3,7 @@ package ru.macrobit.recept.abstracts;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -42,13 +43,14 @@ public class AbstractDAO<T extends EntityInterface> extends ExceptionFactory {
         this.tablename = tablename;
     }
 
-    public T findById(Object id) {
-        return (T) em.find(type, id);
-    }
-
     public T findById(Object id, User user) {
-        try (Session session = em.unwrap(Session.class)) {
+        if (user == null)
             return (T) em.find(type, id);
+        try (Session session = em.unwrap(Session.class)) {
+            Criteria criteria = session.createCriteria(type);
+            criteria.add(Restrictions.eq("id", id));
+            criteria.add(getUserscopeCriteria(user));
+            return (T) criteria.uniqueResult();
         }
     }
 
@@ -71,7 +73,7 @@ public class AbstractDAO<T extends EntityInterface> extends ExceptionFactory {
     public void deleteById(Object id) {
         try {
             utx.begin();
-            em.remove(findById(id));
+            em.remove(findById(id, null));
             utx.commit();
         } catch (Exception e) {
             e.printStackTrace();
@@ -171,7 +173,7 @@ public class AbstractDAO<T extends EntityInterface> extends ExceptionFactory {
         }
     }
 
-    protected Criteria getUserscopeCriteria(User user) {
+    protected Criterion getUserscopeCriteria(User user) {
         return null;
     }
 }

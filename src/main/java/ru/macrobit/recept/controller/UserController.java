@@ -35,9 +35,6 @@ public class UserController {
     @Path("/{id}")
     @JsonView(JsonViews.Public.class)
     public User getById(@PathParam("id") String id) {
-        log.warn(ctx.getCurrentUserName());
-        log.warn("{}", ctx.getCurrentUser());
-        log.warn("{}", ctx.isCurrentuserAdmin());
         return userService.findById(id, ctx.getCurrentUser());
     }
 
@@ -68,7 +65,7 @@ public class UserController {
     @PUT
     @Path("/password/{id}/{pass}")
     public void updatePassword(@PathParam("id") String username, @PathParam("pass") String newPass) {
-        userService.updatePassword(username, newPass);
+        userService.updatePassword(username, newPass, ctx.getCurrentUser());
     }
 
     @DELETE

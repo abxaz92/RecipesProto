@@ -31,7 +31,7 @@ public class ExemptController {
     @GET
     @Path("/{id}")
     public Exempt getById(@PathParam("id") String id) {
-        return exemptService.findById(id);
+        return exemptService.findById(id, ctx.getCurrentUser());
     }
 
     @GET

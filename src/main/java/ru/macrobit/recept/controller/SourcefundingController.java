@@ -30,7 +30,7 @@ public class SourcefundingController {
     @GET
     @Path("/{id}")
     public Sourcefunding getById(@PathParam("id") Long id) {
-        return sourcefundingService.findById(id);
+        return sourcefundingService.findById(id, ctx.getCurrentUser());
     }
 
     @GET

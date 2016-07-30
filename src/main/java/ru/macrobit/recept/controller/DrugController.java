@@ -31,7 +31,7 @@ public class DrugController {
     @GET
     @Path("/{id}")
     public Drug getById(@PathParam("id") String id) {
-        return drugService.findById(id);
+        return drugService.findById(id, ctx.getCurrentUser());
     }
 
     @GET
