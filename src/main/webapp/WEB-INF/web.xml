@@ -51,10 +51,10 @@
     </session-config>
 
     <login-config>
-        <auth-method>BASIC,FORM</auth-method>
+        <auth-method>BASIC?silent=true,FORM</auth-method>
         <realm-name>recept-jaas-realm</realm-name>
         <form-login-config>
-            <form-login-page>/login/login.html</form-login-page>
+            <form-login-page>/login/login.jsp</form-login-page>
             <form-error-page>/login/loginerr.html</form-error-page>
         </form-login-config>
     </login-config>

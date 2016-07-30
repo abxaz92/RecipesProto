@@ -1,3 +1,4 @@
+<%@ page contentType="text/html; charset=UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,7 +12,7 @@
             padding: 4rem;
             font-size: 0;
             text-align: center;
-            height:100%;
+            height: 100%;
         }
 
         .main-wrap:before {
@@ -38,7 +39,8 @@
 <body>
 <div class="main-wrap">
     <div class="login-form">
-        <div class="site-logo site-logo_large"><a href="/" title="Главная" class="site-logo__image"></a>
+        <div class="site-logo site-logo_large"><a href="/" title="Главная" class="site-logo__image"
+                                                  href="${req.contextPath}"></a>
             <h1 class="site-logo__title">Система ЛЛО</h1>
         </div>
         <form class="login-form__body" action="/recept/j_security_check" method=post>
@@ -48,11 +50,16 @@
             </div>
             <div class="form-group form-group-lg">
                 <label for="pwd">Пароль</label>
-                <input type="password" id="pwd" class="form-control" name="j_password" >
+                <input type="password" id="pwd" class="form-control" name="j_password">
             </div>
             <button type="submit" class="btn btn-primary btn-lg btn-block">Войти в систему</button>
         </form>
     </div>
 </div>
+<%
+    Object obj = request.getAttribute("javax.servlet.forward.request_uri");
+    if (obj != null && !"/recept/login/login.jsp".equals(request.getAttribute("javax.servlet.forward.request_uri")))
+        response.sendError(401, "!!!!!!!!!!");
+%>
 </body>
 </html>
