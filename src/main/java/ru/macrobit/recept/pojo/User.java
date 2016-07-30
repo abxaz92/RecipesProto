@@ -25,10 +25,10 @@ public class User implements EntityInterface {
     @JsonView(JsonViews.Public.class)
     private Lpu lpu;
 
-    @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
+    @ElementCollection(targetClass = String.class, fetch = FetchType.LAZY)
     @JoinTable(name = "USERROLES", joinColumns = @JoinColumn(name = "username"))
     @MapKey(name = "username")
-    @Fetch(FetchMode.SELECT)
+    @Fetch(FetchMode.JOIN)
     @JsonView(JsonViews.Public.class)
     private List<String> roles;
 
