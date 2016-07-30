@@ -6,8 +6,10 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.macrobit.recept.pojo.Doctor;
+import ru.macrobit.recept.security.ContextService;
 import ru.macrobit.recept.service.DoctorService;
 
+import javax.ejb.EJB;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -23,6 +25,8 @@ public class DoctorController {
 
     @Inject
     private DoctorService doctorService;
+    @EJB
+    private ContextService ctx;
 
     @GET
     @Path("/{id}")
@@ -36,7 +40,7 @@ public class DoctorController {
                              @QueryParam("count") String count, @QueryParam("skip") Integer skip,
                              @QueryParam("limit") Integer limit, @QueryParam("sort") String sortProperties,
                              @QueryParam("direction") String sortDirection) throws IOException {
-        return doctorService.findAll(jsonQuery == null ? null : new JSONObject(jsonQuery), skip, limit, count, sortProperties, sortDirection);
+        return doctorService.findAll(jsonQuery == null ? null : new JSONObject(jsonQuery), skip, limit, count, sortProperties, sortDirection, ctx.getCurrentUser());
     }
 
     @POST
@@ -48,13 +52,13 @@ public class DoctorController {
     @PUT
     @Path("/{id}")
     public Doctor put(JsonNode doctor, @PathParam("id") Long id) throws Exception {
-        return doctorService.update(id, doctor);
+        return doctorService.update(id, doctor, ctx.getCurrentUser());
     }
 
     @DELETE
     @Path("/{id}")
     public void deleteById(@PathParam("id") Long id) throws Exception {
-        doctorService.deleteById(id);
+        doctorService.deleteById(id, ctx.getCurrentUser());
     }
 
     @POST

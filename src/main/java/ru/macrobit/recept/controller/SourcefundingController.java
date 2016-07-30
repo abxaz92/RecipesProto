@@ -5,8 +5,10 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.macrobit.recept.pojo.Sourcefunding;
+import ru.macrobit.recept.security.ContextService;
 import ru.macrobit.recept.service.SourcefundingService;
 
+import javax.ejb.EJB;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -22,6 +24,8 @@ public class SourcefundingController {
 
     @Inject
     private SourcefundingService sourcefundingService;
+    @EJB
+    private ContextService ctx;
 
     @GET
     @Path("/{id}")
@@ -35,7 +39,7 @@ public class SourcefundingController {
                              @QueryParam("count") String count, @QueryParam("skip") Integer skip,
                              @QueryParam("limit") Integer limit, @QueryParam("sort") String sortProperties,
                              @QueryParam("direction") String sortDirection) throws IOException {
-        return sourcefundingService.findAll(jsonQuery == null ? null : new JSONObject(jsonQuery), skip, limit, count, sortProperties, sortDirection);
+        return sourcefundingService.findAll(jsonQuery == null ? null : new JSONObject(jsonQuery), skip, limit, count, sortProperties, sortDirection, ctx.getCurrentUser());
     }
 
     @POST
@@ -47,7 +51,7 @@ public class SourcefundingController {
     @PUT
     @Path("/{id}")
     public Sourcefunding put(JsonNode sourcefunding, @PathParam("id") Long id) throws Exception {
-        return sourcefundingService.update(id, sourcefunding);
+        return sourcefundingService.update(id, sourcefunding, ctx.getCurrentUser());
     }
 
     @DELETE

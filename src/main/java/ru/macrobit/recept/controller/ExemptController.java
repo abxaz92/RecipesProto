@@ -6,8 +6,10 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.macrobit.recept.pojo.Exempt;
+import ru.macrobit.recept.security.ContextService;
 import ru.macrobit.recept.service.ExemptService;
 
+import javax.ejb.EJB;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -23,6 +25,8 @@ public class ExemptController {
 
     @Inject
     private ExemptService exemptService;
+    @EJB
+    private ContextService ctx;
 
     @GET
     @Path("/{id}")
@@ -36,7 +40,7 @@ public class ExemptController {
                              @QueryParam("count") String count, @QueryParam("skip") Integer skip,
                              @QueryParam("limit") Integer limit, @QueryParam("sort") String sortProperties,
                              @QueryParam("direction") String sortDirection) throws IOException {
-        return exemptService.findAll(jsonQuery == null ? null : new JSONObject(jsonQuery), skip, limit, count, sortProperties, sortDirection);
+        return exemptService.findAll(jsonQuery == null ? null : new JSONObject(jsonQuery), skip, limit, count, sortProperties, sortDirection, ctx.getCurrentUser());
     }
 
     @POST
@@ -48,13 +52,13 @@ public class ExemptController {
     @PUT
     @Path("/{id}")
     public Exempt put(JsonNode exempt, @PathParam("id") String id) throws Exception {
-        return exemptService.update(id, exempt);
+        return exemptService.update(id, exempt, ctx.getCurrentUser());
     }
 
     @DELETE
     @Path("/{id}")
     public void deleteById(@PathParam("id") String id) throws Exception {
-        exemptService.deleteById(id);
+        exemptService.deleteById(id, ctx.getCurrentUser());
     }
 
     @POST

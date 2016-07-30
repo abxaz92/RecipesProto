@@ -7,9 +7,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.macrobit.recept.commons.JsonViews;
 import ru.macrobit.recept.pojo.User;
+import ru.macrobit.recept.security.ContextService;
 import ru.macrobit.recept.service.UserService;
 
 import javax.annotation.security.RolesAllowed;
+import javax.ejb.EJB;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -26,12 +28,17 @@ public class UserController {
 
     @Inject
     private UserService userService;
+    @EJB
+    private ContextService ctx;
 
     @GET
     @Path("/{id}")
     @JsonView(JsonViews.Public.class)
     public User getById(@PathParam("id") String id) {
-        return userService.findById(id);
+        log.warn(ctx.getCurrentUserName());
+        log.warn("{}", ctx.getCurrentUser());
+        log.warn("{}", ctx.isCurrentuserAdmin());
+        return userService.findById(id, ctx.getCurrentUser());
     }
 
     @GET
@@ -41,7 +48,7 @@ public class UserController {
                              @QueryParam("count") String count, @QueryParam("skip") Integer skip,
                              @QueryParam("limit") Integer limit, @QueryParam("sort") String sortProperties,
                              @QueryParam("direction") String sortDirection) throws IOException {
-        return userService.findAll(jsonQuery == null ? null : new JSONObject(jsonQuery), skip, limit, count, sortProperties, sortDirection);
+        return userService.findAll(jsonQuery == null ? null : new JSONObject(jsonQuery), skip, limit, count, sortProperties, sortDirection, ctx.getCurrentUser());
     }
 
     @POST
@@ -55,7 +62,7 @@ public class UserController {
     @Path("/{id}")
     @JsonView(JsonViews.Public.class)
     public User put(JsonNode user, @PathParam("id") String id) throws Exception {
-        return userService.update(id, user);
+        return userService.update(id, user, ctx.getCurrentUser());
     }
 
     @PUT
@@ -67,6 +74,6 @@ public class UserController {
     @DELETE
     @Path("/{id}")
     public void deleteById(@PathParam("id") String id) throws Exception {
-        userService.deleteById(id);
+        userService.deleteById(id, ctx.getCurrentUser());
     }
 }

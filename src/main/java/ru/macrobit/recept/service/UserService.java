@@ -42,10 +42,10 @@ public class UserService extends AbstractDAO<User> {
     }
 
     @Override
-    public User update(Object id, JsonNode json) throws Exception {
+    public User update(Object id, JsonNode json, User user) throws Exception {
         ((ObjectNode) json).remove("password");
         log.info("{}", json);
-        return super.update(id, json);
+        return super.update(id, json, user);
     }
 
     public static final String encodePassword(String passString) {

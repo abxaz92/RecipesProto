@@ -6,8 +6,10 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.macrobit.recept.pojo.drug.Drug;
+import ru.macrobit.recept.security.ContextService;
 import ru.macrobit.recept.service.DrugService;
 
+import javax.ejb.EJB;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -23,6 +25,8 @@ public class DrugController {
 
     @Inject
     private DrugService drugService;
+    @EJB
+    private ContextService ctx;
 
     @GET
     @Path("/{id}")
@@ -36,7 +40,7 @@ public class DrugController {
                              @QueryParam("count") String count, @QueryParam("skip") Integer skip,
                              @QueryParam("limit") Integer limit, @QueryParam("sort") String sortProperties,
                              @QueryParam("direction") String sortDirection) throws IOException {
-        return drugService.findAll(jsonQuery == null ? null : new JSONObject(jsonQuery), skip, limit, count, sortProperties, sortDirection);
+        return drugService.findAll(jsonQuery == null ? null : new JSONObject(jsonQuery), skip, limit, count, sortProperties, sortDirection, ctx.getCurrentUser());
     }
 
     @POST
@@ -48,13 +52,13 @@ public class DrugController {
     @PUT
     @Path("/{id}")
     public Drug put(JsonNode drug, @PathParam("id") String id) throws Exception {
-        return drugService.update(id, drug);
+        return drugService.update(id, drug, ctx.getCurrentUser());
     }
 
     @DELETE
     @Path("/{id}")
     public void deleteById(@PathParam("id") String id) throws Exception {
-        drugService.deleteById(id);
+        drugService.deleteById(id, ctx.getCurrentUser());
     }
 
     @POST
