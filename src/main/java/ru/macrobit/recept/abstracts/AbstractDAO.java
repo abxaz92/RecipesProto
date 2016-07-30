@@ -47,10 +47,9 @@ public class AbstractDAO<T extends EntityInterface> extends ExceptionFactory {
         if (user == null)
             return (T) em.find(type, id);
         try (Session session = em.unwrap(Session.class)) {
-            return (T) session.createCriteria(type)
-                    .add(Restrictions.eq("id", id))
-                    .add(getUserscopeCriteria(user))
-                    .uniqueResult();
+            Criteria criteria = getUserscopeCriteria(session, user);
+            criteria.add(Restrictions.eq("id", id));
+            return (T) criteria.uniqueResult();
         }
     }
 
@@ -106,7 +105,7 @@ public class AbstractDAO<T extends EntityInterface> extends ExceptionFactory {
 
     public Object findAll(JSONObject jsonQuery, Integer skip, Integer limit, String count, String sortProperties, String sortDirection, User user) {
         try (Session session = em.unwrap(Session.class)) {
-            Criteria criteria = session.createCriteria(type);
+            Criteria criteria = getUserscopeCriteria(session, user);
             if (jsonQuery != null)
                 combineCriteria(jsonQuery, criteria);
 
@@ -121,6 +120,7 @@ public class AbstractDAO<T extends EntityInterface> extends ExceptionFactory {
             if (sortProperties != null) {
                 criteria.addOrder("asc".equals(sortDirection) ? Order.asc(sortProperties) : Order.desc(sortProperties));
             }
+
             List<T> list = criteria.list();
             return list;
         } catch (Exception e) {
@@ -173,7 +173,17 @@ public class AbstractDAO<T extends EntityInterface> extends ExceptionFactory {
         }
     }
 
-    protected Criterion getUserscopeCriteria(User user) {
+    private Criteria getUserscopeCriteria(Session session, User user) {
+        if (user == null)
+            return session.createCriteria(type);
+        Criteria criteria = session.createCriteria(type);
+        Criterion criterion = getUserscopeCriterion(user);
+        if (criterion != null)
+            criteria.add(criterion);
+        return criteria;
+    }
+
+    protected Criterion getUserscopeCriterion(User user) {
         return null;
     }
 }

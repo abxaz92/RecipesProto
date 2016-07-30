@@ -8,8 +8,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.macrobit.recept.abstracts.AbstractDAO;
 import ru.macrobit.recept.pojo.User;
+import ru.macrobit.recept.security.ContextService;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.ws.rs.core.Response.Status;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
@@ -20,6 +22,9 @@ import java.security.MessageDigest;
 @ApplicationScoped
 public class UserService extends AbstractDAO<User> {
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
+
+    @Inject
+    ContextService ctx;
 
     public UserService() {
         super("users", User.class);
@@ -63,7 +68,9 @@ public class UserService extends AbstractDAO<User> {
     }
 
     @Override
-    protected Criterion getUserscopeCriteria(User user) {
-        return Restrictions.eq("lpu", user.getLpu());
+    protected Criterion getUserscopeCriterion(User user) {
+        if (!ctx.isCurrentuserAdmin())
+            return Restrictions.eq("lpu", user.getLpu());
+        else return null;
     }
 }

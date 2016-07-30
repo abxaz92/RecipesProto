@@ -22,7 +22,7 @@ import java.io.IOException;
  */
 @Path("/user")
 @Produces(MediaType.APPLICATION_JSON)
-@RolesAllowed({"ADMIN"})
+@RolesAllowed({"ADMIN", "MIAC"})
 public class UserController {
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
