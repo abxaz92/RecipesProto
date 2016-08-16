@@ -15,7 +15,7 @@ import javax.persistence.Table;
 public class FarmGroup implements EntityInterface {
     @Id
     private Long id;
-    @Column(length = 50)
+    @Column(length = 1024)
     private String name;
     @Column(length = 200)
     private String fname;

@@ -15,7 +15,7 @@ import javax.persistence.Table;
 public class Dose implements EntityInterface {
     @Id
     private Long id;
-    @Column(length = 30)
+    @Column(length = 1024)
     private String name;
 
     public Long getId() {
