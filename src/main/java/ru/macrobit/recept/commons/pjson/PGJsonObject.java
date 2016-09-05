@@ -1,13 +1,12 @@
 package ru.macrobit.recept.commons.pjson;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.usertype.UserType;
 import org.postgresql.util.PGobject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -20,7 +19,6 @@ import java.sql.Types;
  * Created by Bazar on 26.08.14.
  */
 public class PGJsonObject implements UserType {
-    private static final Logger log = LoggerFactory.getLogger(PGJsonObject.class);
     protected static final ObjectMapper objectMapper = new ObjectMapper();
 
     static {
@@ -28,11 +26,13 @@ public class PGJsonObject implements UserType {
     }
 
     @Override
+    @JsonIgnore
     public int[] sqlTypes() {
         return new int[]{Types.JAVA_OBJECT};
     }
 
     @Override
+    @JsonIgnore
     public Class returnedClass() {
         return this.getClass();
     }
@@ -51,14 +51,12 @@ public class PGJsonObject implements UserType {
     }
 
     @Override
+    @JsonIgnore
     public Object nullSafeGet(ResultSet resultSet, String[] names, SessionImplementor sessionImplementor, Object o) throws HibernateException, SQLException {
         if (resultSet.getObject(names[0]) == null) {
             return null;
         }
-        log.info(String.valueOf(resultSet.getObject(names[0])));
-        log.info(String.valueOf(resultSet.getObject(names[0]) instanceof PGobject));
         PGobject pGobject = (PGobject) resultSet.getObject(names[0]);
-        log.info(String.valueOf(pGobject.getValue()));
         Object jsonObject = null;
         try {
             jsonObject = objectMapper.readValue(pGobject.getValue(), this.returnedClass());
@@ -69,6 +67,7 @@ public class PGJsonObject implements UserType {
     }
 
     @Override
+    @JsonIgnore
     public void nullSafeSet(PreparedStatement preparedStatement, Object value, int index, SessionImplementor sessionImplementor) throws HibernateException, SQLException {
         if (value == null) {
             preparedStatement.setNull(index, Types.NULL);
@@ -87,6 +86,7 @@ public class PGJsonObject implements UserType {
     }
 
     @Override
+    @JsonIgnore
     public Object deepCopy(Object o) throws HibernateException {
         Object copy = null;
         try {
@@ -98,21 +98,25 @@ public class PGJsonObject implements UserType {
     }
 
     @Override
+    @JsonIgnore
     public boolean isMutable() {
         return false;
     }
 
     @Override
+    @JsonIgnore
     public Serializable disassemble(Object o) throws HibernateException {
         return (Serializable) this.deepCopy(o);
     }
 
     @Override
+    @JsonIgnore
     public Object assemble(Serializable serializable, Object o) throws HibernateException {
         return this.deepCopy(serializable);
     }
 
     @Override
+    @JsonIgnore
     public Object replace(Object o, Object o2, Object o3) throws HibernateException {
         return this.deepCopy(o);
     }

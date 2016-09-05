@@ -51,7 +51,7 @@
     </session-config>
 
     <login-config>
-        <auth-method>BASIC?silent=true,FORM</auth-method>
+        <auth-method>BASIC,FORM</auth-method>
         <realm-name>recept-jaas-realm</realm-name>
         <form-login-config>
             <form-login-page>/login/login.jsp</form-login-page>

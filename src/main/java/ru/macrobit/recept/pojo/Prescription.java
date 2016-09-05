@@ -5,6 +5,7 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
 import ru.macrobit.recept.abstracts.EntityInterface;
+import ru.macrobit.recept.entities.PrescriptionInfo;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,7 +16,7 @@ import java.util.Date;
  * Created by david on 08.07.16.
  */
 @Entity
-//@TypeDefs({@TypeDef(name = "DeseaseObject", typeClass = Desease.class)})
+@TypeDefs({@TypeDef(name = "PrescriptionInfoObject", typeClass = PrescriptionInfo.class)})
 public class Prescription implements EntityInterface {
     @Id
     @GeneratedValue(generator = "uuid")
@@ -30,17 +31,6 @@ public class Prescription implements EntityInterface {
     private Date date;
     private long dateCreation;
     private Long lpuId; // ЛПУ
-    @Type(type = "DeseaseObject")
-    private Desease desease; // заболевание
-    @Type(type = "DoctorObject")
-    private Doctor doctor; // врача
-
-//    private List<> drug; // препарат 1
-//    private float amount; //Количество единиц лекарственного средства 1
-//    private float amount2; //Количество единиц лекарственного средства 2
-//    private float amount3; //Количество единиц лекарственного средства 3
-//    private Exempt exempt; // льготник
-
     private String notification; //Информация о приеме
     private String signsale; // Признак отоваренности рецепта
     private String status; // статус рецепта
@@ -50,7 +40,8 @@ public class Prescription implements EntityInterface {
     private float duration; //Продолжительность
     private String signa; //Signa
     private String form; //форма рецепта
-
+    @Type(type = "PrescriptionInfoObject")
+    private PrescriptionInfo info;
 
     public String getId() {
         return id;
@@ -124,20 +115,12 @@ public class Prescription implements EntityInterface {
         this.dateCreation = dateCreation;
     }
 
-    public Desease getDesease() {
-        return desease;
+    public Long getLpuId() {
+        return lpuId;
     }
 
-    public void setDesease(Desease desease) {
-        this.desease = desease;
-    }
-
-    public Doctor getDoctor() {
-        return doctor;
-    }
-
-    public void setDoctor(Doctor doctor) {
-        this.doctor = doctor;
+    public void setLpuId(Long lpuId) {
+        this.lpuId = lpuId;
     }
 
     public String getNotification() {
@@ -212,11 +195,11 @@ public class Prescription implements EntityInterface {
         this.form = form;
     }
 
-    public Long getLpuId() {
-        return lpuId;
+    public PrescriptionInfo getInfo() {
+        return info;
     }
 
-    public void setLpuId(Long lpuId) {
-        this.lpuId = lpuId;
+    public void setInfo(PrescriptionInfo info) {
+        this.info = info;
     }
 }
