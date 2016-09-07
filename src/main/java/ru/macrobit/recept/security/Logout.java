@@ -47,12 +47,12 @@ public class Logout extends HttpServlet {
             } else {
                 response.setContentType("text/html");
                 response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
-                response.setHeader("Location", "/recept//login");
+                response.setHeader("Location", "/recept/login");
             }
         } catch (Exception e) {
             response.setContentType("text/html");
             response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
-            response.setHeader("Location", "/recept//login");
+            response.setHeader("Location", "/recept/login");
         }
     }
 }
