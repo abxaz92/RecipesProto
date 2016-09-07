@@ -46,7 +46,7 @@
         <form class="login-form__body" action="/recept/j_security_check" method=post>
             <div class="form-group form-group-lg">
                 <label for="email">Имя пользователя</label>
-                <input type="text" id="login" class="form-control" name="j_username">
+                <input type="text" id="login" class="form-control" name="j_username" autofocus>
             </div>
             <div class="form-group form-group-lg">
                 <label for="pwd">Пароль</label>
