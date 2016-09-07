@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>ЛЛО</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="/recept/login/styles.css" rel="stylesheet">
+    <link href="/recept/styles.css" rel="stylesheet" type="text/css">
     <style>
         .main-wrap {
             padding: 40px;
@@ -58,8 +58,11 @@
 </div>
 <%
     Object obj = request.getAttribute("javax.servlet.forward.request_uri");
-    if (obj != null && !"/recept/login/login.jsp".equals(request.getAttribute("javax.servlet.forward.request_uri")))
-        response.sendError(401, "!!!!!!!!!!");
+    String address = String.valueOf(request.getAttribute("javax.servlet.forward.request_uri"));
+    if (obj != null && !address.contains("recept/login")) {
+        response.setHeader("Location", "/recept/login");
+        response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
+    }
 %>
 </body>
 </html>

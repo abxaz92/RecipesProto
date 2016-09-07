@@ -16,6 +16,13 @@
         <web-resource-collection>
             <web-resource-name>Admin</web-resource-name>
             <url-pattern>/rest/user/*</url-pattern>
+            <url-pattern>/rest/doctort/*</url-pattern>
+            <url-pattern>/rest/drug/*</url-pattern>
+            <url-pattern>/rest/exempt/*</url-pattern>
+            <url-pattern>/rest/lpu/*</url-pattern>
+            <url-pattern>/rest/prescription/*</url-pattern>
+            <url-pattern>/rest/sourcefunding/*</url-pattern>
+            <url-pattern>/login/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>ADMIN</role-name>
@@ -51,8 +58,8 @@
     </session-config>
 
     <login-config>
-        <auth-method>BASIC,FORM</auth-method>
-        <realm-name>recept-jaas-realm</realm-name>
+        <auth-method>BASIC?silent=true,FORM</auth-method>
+        <realm-name>Admin</realm-name>
         <form-login-config>
             <form-login-page>/login/login.jsp</form-login-page>
             <form-error-page>/login/loginerr.html</form-error-page>

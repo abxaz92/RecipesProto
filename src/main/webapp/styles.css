@@ -1,7 +1,7 @@
 @charset "UTF-8";
 @font-face {
     font-family: "hn";
-    src: url(/recept/login/fonts/hn-medium/font.eot?ca078bfd17e5e0f02639de546848cc5d) format("embedded-opentype"), url(/recept/login/fonts/hn-medium/font.ttf?9e0235acba42dadbf1e5658e79a3f1b8) format("truetype"), url(/recept/login/fonts/hn-medium/font.woff?d039af3d19376196ce60b23bc6390205) format("woff"), url(/recept/login/fonts/hn-medium/font.svg?9a3896187dd82b7738a6e2bb1f317773) format("svg");
+    src: url(/recept/fonts/hn-medium/font.eot?ca078bfd17e5e0f02639de546848cc5d) format("embedded-opentype"), url(/recept/fonts/hn-medium/font.ttf?9e0235acba42dadbf1e5658e79a3f1b8) format("truetype"), url(/recept/fonts/hn-medium/font.woff?d039af3d19376196ce60b23bc6390205) format("woff"), url(/recept/fonts/hn-medium/font.svg?9a3896187dd82b7738a6e2bb1f317773) format("svg");
 }
 
 [class*="icon-"] {
@@ -473,8 +473,8 @@
  * -------------------------- */
 @font-face {
     font-family: 'FontAwesome';
-    src: url(/recept/login/fonts/font-awesome/fontawesome-webfont.eot?25a32416abee198dd821b0b17a198a8f);
-    src: url(/recept/login/fonts/font-awesome/fontawesome-webfont.eot?25a32416abee198dd821b0b17a198a8f?#iefix&v=4.6.3) format("embedded-opentype"), url(/recept/login/fonts/font-awesome/fontawesome-webfont.woff2?e6cf7c6ec7c2d6f670ae9d762604cb0b) format("woff2"), url(/recept/login/fonts/font-awesome/fontawesome-webfont.woff?c8ddf1e5e5bf3682bc7bebf30f394148) format("woff"), url(/recept/login/fonts/font-awesome/fontawesome-webfont.ttf?1dc35d25e61d819a9c357074014867ab) format("truetype"), url(/recept/login/fonts/font-awesome/fontawesome-webfont.svg?d7c639084f684d66a1bc66855d193ed8#fontawesomeregular) format("svg");
+    src: url(/recept/fonts/font-awesome/fontawesome-webfont.eot?25a32416abee198dd821b0b17a198a8f);
+    src: url(/recept/fonts/font-awesome/fontawesome-webfont.eot?25a32416abee198dd821b0b17a198a8f?#iefix&v=4.6.3) format("embedded-opentype"), url(/recept/fonts/font-awesome/fontawesome-webfont.woff2?e6cf7c6ec7c2d6f670ae9d762604cb0b) format("woff2"), url(/recept/fonts/font-awesome/fontawesome-webfont.woff?c8ddf1e5e5bf3682bc7bebf30f394148) format("woff"), url(/recept/fonts/font-awesome/fontawesome-webfont.ttf?1dc35d25e61d819a9c357074014867ab) format("truetype"), url(/recept/fonts/font-awesome/fontawesome-webfont.svg?d7c639084f684d66a1bc66855d193ed8#fontawesomeregular) format("svg");
     font-weight: normal;
     font-style: normal;
 }
@@ -2725,7 +2725,7 @@ header > * {
 .site-logo__image {
     width: 120px;
     width: 12rem;
-    background: #65b6a9 url(/recept/login/logo.png?8d6ba40d91853fc9108ae76ae7b54ab3) no-repeat center;
+    background: #65b6a9 url(/recept/logo.png?8d6ba40d91853fc9108ae76ae7b54ab3) no-repeat center;
     background-size: 6.4rem;
     cursor: pointer;
     transition: background-color .3s, box-shadow .3s;
