@@ -62,7 +62,6 @@
         <realm-name>Admin</realm-name>
         <form-login-config>
             <form-login-page>/login/login.jsp</form-login-page>
-            <form-error-page>/login/loginerr.html</form-error-page>
         </form-login-config>
     </login-config>
 

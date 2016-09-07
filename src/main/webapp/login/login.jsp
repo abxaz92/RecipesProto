@@ -61,7 +61,7 @@
     String address = String.valueOf(request.getAttribute("javax.servlet.forward.request_uri"));
     if (obj != null && !address.contains("recept/login")) {
         response.setHeader("Location", "/recept/login");
-        response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
+        response.sendError(401, "/recept/login");
     }
 %>
 </body>

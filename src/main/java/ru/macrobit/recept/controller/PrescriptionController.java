@@ -5,6 +5,7 @@ import ru.macrobit.recept.pojo.Prescription;
 import ru.macrobit.recept.security.ContextService;
 import ru.macrobit.recept.service.PrescriptionService;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -18,6 +19,7 @@ import java.io.IOException;
 @ApplicationScoped
 @Path("/prescription")
 @Produces(MediaType.APPLICATION_JSON) // тип возврщаемых данных JSON
+@RolesAllowed({"ADMIN", "MIAC"})
 public class PrescriptionController {
     @Inject
     private PrescriptionService prescriptionService;
