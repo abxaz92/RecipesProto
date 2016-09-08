@@ -9,7 +9,6 @@ import ru.macrobit.recept.pojo.Doctor;
 import ru.macrobit.recept.security.ContextService;
 import ru.macrobit.recept.service.DoctorService;
 
-import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -21,7 +20,6 @@ import java.io.IOException;
  */
 @Path("/doctor")
 @Produces(MediaType.APPLICATION_JSON)
-@RolesAllowed({"ADMIN", "MIAC"})
 public class DoctorController {
     private static final Logger log = LoggerFactory.getLogger(DoctorController.class);
 

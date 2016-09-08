@@ -21,6 +21,7 @@ import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Основной каркас для работы с базой данных
@@ -130,20 +131,38 @@ public class AbstractDAO<T extends EntityInterface> extends ExceptionFactory {
 
 
     public static void combineCriteria(JsonNode jsonQuery, Criteria criteria) {
-
         jsonQuery.fields().forEachRemaining(jsonNodeEntry -> {
-            if (jsonNodeEntry.getValue().isArray()) {
-                ArrayNode arrayNode = (ArrayNode) jsonNodeEntry.getValue();
+            JsonNode value = jsonNodeEntry.getValue();
+            if (value.isArray()) {
+                ArrayNode arrayNode = (ArrayNode) value;
                 Object[] fields = new Object[arrayNode.size()];
                 int i = 0;
-                for (JsonNode jsonNode : jsonNodeEntry.getValue()) {
+                for (JsonNode jsonNode : value) {
                     fields[i] = Recept.castJsonValue(jsonNode);
                     i++;
                 }
                 criteria.add(Restrictions.in(jsonNodeEntry.getKey(), fields));
-            } else if (!jsonNodeEntry.getValue().isObject()) {
-
-                criteria.add(Restrictions.eq(jsonNodeEntry.getKey(), Recept.castJsonValue(jsonNodeEntry.getValue())));
+            } else if (!value.isObject()) {
+                criteria.add(Restrictions.eq(jsonNodeEntry.getKey(), Recept.castJsonValue(value)));
+            } else {
+                Map.Entry<String, JsonNode> resctriction = value.fields().next();
+                switch (resctriction.getKey()) {
+                    case "$lt":
+                        criteria.add(Restrictions.lt(jsonNodeEntry.getKey(), Recept.castJsonValue(resctriction.getValue())));
+                        break;
+                    case "$lte":
+                        criteria.add(Restrictions.le(jsonNodeEntry.getKey(), Recept.castJsonValue(resctriction.getValue())));
+                        break;
+                    case "$gt":
+                        criteria.add(Restrictions.gt(jsonNodeEntry.getKey(), Recept.castJsonValue(resctriction.getValue())));
+                        break;
+                    case "$gte":
+                        criteria.add(Restrictions.ge(jsonNodeEntry.getKey(), Recept.castJsonValue(resctriction.getValue())));
+                        break;
+                    case "$regex":
+                        criteria.add(Restrictions.ilike(jsonNodeEntry.getKey(), resctriction.getValue().asText()));
+                        break;
+                }
             }
         });
     }
