@@ -113,4 +113,14 @@ public class Recept {
         }
         return null;
     }
+
+    public static Object castJsonValue(JsonNode jsonNode) {
+        if (jsonNode.isInt()) {
+            return jsonNode.longValue();
+        } else if (jsonNode.isFloat()) {
+            return jsonNode.floatValue();
+        } else {
+            return jsonNode.textValue();
+        }
+    }
 }

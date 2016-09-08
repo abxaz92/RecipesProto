@@ -20,7 +20,6 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -135,23 +134,18 @@ public class AbstractDAO<T extends EntityInterface> extends ExceptionFactory {
         jsonQuery.fields().forEachRemaining(jsonNodeEntry -> {
             if (jsonNodeEntry.getValue().isArray()) {
                 ArrayNode arrayNode = (ArrayNode) jsonNodeEntry.getValue();
-                String[] fields = new String[arrayNode.size()];
+                Object[] fields = new Object[arrayNode.size()];
                 int i = 0;
                 for (JsonNode jsonNode : jsonNodeEntry.getValue()) {
-                    fields[i] = jsonNode.asText();
+                    fields[i] = Recept.castJsonValue(jsonNode);
                     i++;
                 }
-                log.info(Arrays.toString(fields));
                 criteria.add(Restrictions.in(jsonNodeEntry.getKey(), fields));
+            } else if (!jsonNodeEntry.getValue().isObject()) {
+
+                criteria.add(Restrictions.eq(jsonNodeEntry.getKey(), Recept.castJsonValue(jsonNodeEntry.getValue())));
             }
         });
-
-
-        /*jsonQuery.keySet().stream().forEach(key -> {
-            Object obj = jsonQuery.get(key);
-
-            criteria.add(Restrictions.eq(key, jsonQuery.get(key)));
-        });*/
     }
 
     public void update(T entity) throws Exception {
