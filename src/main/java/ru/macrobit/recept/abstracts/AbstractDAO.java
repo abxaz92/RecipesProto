@@ -1,13 +1,13 @@
 package ru.macrobit.recept.abstracts;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.macrobit.recept.commons.ExceptionFactory;
@@ -20,6 +20,7 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -103,7 +104,7 @@ public class AbstractDAO<T extends EntityInterface> extends ExceptionFactory {
 
     }
 
-    public Object findAll(JSONObject jsonQuery, Integer skip, Integer limit, String count, String sortProperties, String sortDirection, User user) {
+    public Object findAll(JsonNode jsonQuery, Integer skip, Integer limit, String count, String sortProperties, String sortDirection, User user) {
         try (Session session = em.unwrap(Session.class)) {
             Criteria criteria = getUserscopeCriteria(session, user);
             if (jsonQuery != null)
@@ -120,7 +121,6 @@ public class AbstractDAO<T extends EntityInterface> extends ExceptionFactory {
             if (sortProperties != null) {
                 criteria.addOrder("asc".equals(sortDirection) ? Order.asc(sortProperties) : Order.desc(sortProperties));
             }
-
             List<T> list = criteria.list();
             return list;
         } catch (Exception e) {
@@ -130,10 +130,28 @@ public class AbstractDAO<T extends EntityInterface> extends ExceptionFactory {
     }
 
 
-    public static void combineCriteria(JSONObject jsonQuery, Criteria criteria) {
-        jsonQuery.keySet().stream().forEach(key -> {
-            criteria.add(Restrictions.eq(key, jsonQuery.get(key)));
+    public static void combineCriteria(JsonNode jsonQuery, Criteria criteria) {
+
+        jsonQuery.fields().forEachRemaining(jsonNodeEntry -> {
+            if (jsonNodeEntry.getValue().isArray()) {
+                ArrayNode arrayNode = (ArrayNode) jsonNodeEntry.getValue();
+                String[] fields = new String[arrayNode.size()];
+                int i = 0;
+                for (JsonNode jsonNode : jsonNodeEntry.getValue()) {
+                    fields[i] = jsonNode.asText();
+                    i++;
+                }
+                log.info(Arrays.toString(fields));
+                criteria.add(Restrictions.in(jsonNodeEntry.getKey(), fields));
+            }
         });
+
+
+        /*jsonQuery.keySet().stream().forEach(key -> {
+            Object obj = jsonQuery.get(key);
+
+            criteria.add(Restrictions.eq(key, jsonQuery.get(key)));
+        });*/
     }
 
     public void update(T entity) throws Exception {

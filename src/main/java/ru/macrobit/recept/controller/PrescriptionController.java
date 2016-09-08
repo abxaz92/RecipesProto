@@ -1,6 +1,8 @@
 package ru.macrobit.recept.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.json.JSONObject;
+import ru.macrobit.recept.commons.Recept;
 import ru.macrobit.recept.pojo.Prescription;
 import ru.macrobit.recept.security.ContextService;
 import ru.macrobit.recept.service.PrescriptionService;
@@ -38,7 +40,7 @@ public class PrescriptionController {
                              @QueryParam("count") String count, @QueryParam("skip") Integer skip,
                              @QueryParam("limit") Integer limit, @QueryParam("sort") String sortProperties,
                              @QueryParam("direction") String sortDirection) throws IOException {
-        return prescriptionService.findAll(jsonQuery == null ? null : new JSONObject(jsonQuery), skip, limit, count, sortProperties, sortDirection, ctx.getCurrentUser());
+        return prescriptionService.findAll(jsonQuery == null ? null : Recept.MAPPER.readValue(jsonQuery, JsonNode.class), skip, limit, count, sortProperties, sortDirection, ctx.getCurrentUser());
     }
 
     @POST

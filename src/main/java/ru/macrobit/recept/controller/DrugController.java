@@ -2,9 +2,9 @@ package ru.macrobit.recept.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.macrobit.recept.commons.Recept;
 import ru.macrobit.recept.pojo.drug.Drug;
 import ru.macrobit.recept.security.ContextService;
 import ru.macrobit.recept.service.DrugService;
@@ -42,7 +42,7 @@ public class DrugController {
                              @QueryParam("count") String count, @QueryParam("skip") Integer skip,
                              @QueryParam("limit") Integer limit, @QueryParam("sort") String sortProperties,
                              @QueryParam("direction") String sortDirection) throws IOException {
-        return drugService.findAll(jsonQuery == null ? null : new JSONObject(jsonQuery), skip, limit, count, sortProperties, sortDirection, ctx.getCurrentUser());
+        return drugService.findAll(jsonQuery == null ? null : Recept.MAPPER.readValue(jsonQuery, JsonNode.class), skip, limit, count, sortProperties, sortDirection, ctx.getCurrentUser());
     }
 
     @POST

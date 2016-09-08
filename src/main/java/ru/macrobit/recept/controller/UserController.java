@@ -2,10 +2,10 @@ package ru.macrobit.recept.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.JsonNode;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.macrobit.recept.commons.JsonViews;
+import ru.macrobit.recept.commons.Recept;
 import ru.macrobit.recept.pojo.User;
 import ru.macrobit.recept.security.ContextService;
 import ru.macrobit.recept.service.UserService;
@@ -45,7 +45,7 @@ public class UserController {
                              @QueryParam("count") String count, @QueryParam("skip") Integer skip,
                              @QueryParam("limit") Integer limit, @QueryParam("sort") String sortProperties,
                              @QueryParam("direction") String sortDirection) throws IOException {
-        return userService.findAll(jsonQuery == null ? null : new JSONObject(jsonQuery), skip, limit, count, sortProperties, sortDirection, ctx.getCurrentUser());
+        return userService.findAll(jsonQuery == null ? null : Recept.MAPPER.readValue(jsonQuery, JsonNode.class), skip, limit, count, sortProperties, sortDirection, ctx.getCurrentUser());
     }
 
     @POST
