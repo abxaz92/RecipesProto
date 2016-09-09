@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Created by david on 11.07.16.
@@ -63,15 +65,16 @@ public class ExemptService extends AbstractDAO<Exempt> {
 
         List<Category> res = new ArrayList<>();
         List<Exempt> exempts = DbfProcessor.loadData(Recept.createFile(files.get("REG.DBF").getBody(InputStream.class, null), "/tmp/exemptsMt.dbf"), new ExemptMzRowMapper());
-        List<Category> categories = DbfProcessor.loadData(Recept.createFile(files.get("LREG.DBF").getBody(InputStream.class, null), "/tmp/exemptCats.dbf"), new ExemptCategoryRowMapper());
-        for (int i = 0; i < 10; i++) {
-            res.add(categories.get(i));
-        }
+        Map<String, Category> categoriesMap = DbfProcessor
+                .loadData(Recept.createFile(files.get("LREG.DBF")
+                        .getBody(InputStream.class, null), "/tmp/exemptCats.dbf"), new ExemptCategoryRowMapper())
+                .stream()
+                .collect(Collectors.toMap(Category::getId, Function.identity()));
 /*                try {
                     insert(exempts);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }*/
-        return res;
+        return null;
     }
 }
