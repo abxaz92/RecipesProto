@@ -1,17 +1,23 @@
 package ru.macrobit.recept.service;
 
 import org.jamel.dbf.processor.DbfProcessor;
+import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 import ru.macrobit.recept.abstracts.AbstractDAO;
 import ru.macrobit.recept.commons.Recept;
 import ru.macrobit.recept.dbfmappers.ExemptMTRowMapper;
+import ru.macrobit.recept.dbfmappers.ExemptMzRowMapper;
+import ru.macrobit.recept.dbfmappers.drug.ExemptCategoryRowMapper;
 import ru.macrobit.recept.pojo.Exempt;
+import ru.macrobit.recept.pojo.entities.Category;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by david on 11.07.16.
@@ -45,23 +51,27 @@ public class ExemptService extends AbstractDAO<Exempt> {
         return res;
     }
 
-    /*public Object uploadMZDBF(MultipartFormDataInput input) {
-        List<Exempt> res = new ArrayList<>();
-        input.getFormDataMap().forEach((key, val) -> val.stream().forEach(inputPart -> {
-            try (InputStream inputStream = inputPart.getBody(InputStream.class, null)) {
-                List<Exempt> exempts = DbfProcessor.loadData(Recept.createFile(inputStream, "/tmp/exempts.dbf"), new ExemptMTRowMapper());
-                for (int i = 0; i < 100; i++) {
-                    res.add(exempts.get(i));
-                }
-                try {
+    public Object uploadMZDBF(MultipartFormDataInput input) throws IOException {
+        Map<String, InputPart> files = new HashMap<>();
+        input.getFormDataMap().values().forEach(inputParts -> {
+            inputParts.forEach(inputPart -> {
+                files.put(Recept.getFileName(inputPart), inputPart);
+
+            });
+
+        });
+
+        List<Category> res = new ArrayList<>();
+        List<Exempt> exempts = DbfProcessor.loadData(Recept.createFile(files.get("REG.DBF").getBody(InputStream.class, null), "/tmp/exemptsMt.dbf"), new ExemptMzRowMapper());
+        List<Category> categories = DbfProcessor.loadData(Recept.createFile(files.get("LREG.DBF").getBody(InputStream.class, null), "/tmp/exemptCats.dbf"), new ExemptCategoryRowMapper());
+        for (int i = 0; i < 10; i++) {
+            res.add(categories.get(i));
+        }
+/*                try {
                     insert(exempts);
                 } catch (Exception e) {
                     e.printStackTrace();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }));
+                }*/
         return res;
-    }*/
+    }
 }

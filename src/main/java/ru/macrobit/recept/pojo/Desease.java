@@ -1,11 +1,8 @@
 package ru.macrobit.recept.pojo;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import ru.macrobit.recept.abstracts.EntityInterface;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 /**
@@ -14,20 +11,9 @@ import javax.persistence.Id;
 @Entity
 public class Desease implements EntityInterface {
     @Id
-    @GeneratedValue(generator = "generator")
-    @GenericGenerator(name = "generator", strategy = "sequence-identity", parameters = @Parameter(name = "sequence", value = "desease_id_seq"))
-    private Long id;
-    private String name;
     private String code;
+    private String name;
     private String parent;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getCode() {
         return code;

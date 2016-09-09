@@ -36,8 +36,8 @@ public class ExemptMzRowMapper implements DbfRowMapper<Exempt> {
         } catch (Exception e) {
         }
         exe.setAddress(a);
-        Number number = Recept.getNumber(row[10]);
-        exe.setLpuId(number != null ? number.longValue() : null);
+//        Number number = Recept.getNumber(row[10]);
+//        exe.setLpuId(number != null ? number.longValue() : null);
         exe.setDescription(Recept.getString(row[11], ENCODING));
         String docType = Recept.getString(row[13], ENCODING);
 
