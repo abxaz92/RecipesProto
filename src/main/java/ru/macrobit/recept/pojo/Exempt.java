@@ -49,6 +49,7 @@ public class Exempt implements EntityInterface {
     private String documentNumber;
     private String documentType;
     private boolean invalid;
+    private String description;
 
     public Long getId() {
         return id;
@@ -272,5 +273,13 @@ public class Exempt implements EntityInterface {
 
     public void setInvalid(boolean invalid) {
         this.invalid = invalid;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
