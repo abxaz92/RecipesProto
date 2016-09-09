@@ -64,10 +64,18 @@ public class ExemptController {
     }
 
     @POST
-    @Path("/file")
+    @Path("/file/mintrud")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
     public Object uploadDBF(MultipartFormDataInput input) throws IOException {
-        return exemptService.uploadDBF(input);
+        return exemptService.uploadMintrudDBF(input);
     }
+
+/*    @POST
+    @Path("/file/mz")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Object uploadMzDBF(MultipartFormDataInput input) throws IOException {
+        return exemptService.uploadMZDBF(input);
+    }*/
 }

@@ -17,7 +17,7 @@ public class Exempt implements EntityInterface {
     @Id
     @GeneratedValue(generator = "generator")
     @GenericGenerator(name = "generator", strategy = "sequence-identity", parameters = @org.hibernate.annotations.Parameter(name = "sequence", value = "exempt_id_seq"))
-    private String id;
+    private Long id;
     private String areaId;
     private String fileNumber;
     private String fileNumberPens;
@@ -50,11 +50,11 @@ public class Exempt implements EntityInterface {
     private String documentType;
     private boolean invalid;
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
