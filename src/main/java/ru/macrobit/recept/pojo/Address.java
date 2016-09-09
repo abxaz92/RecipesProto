@@ -1,19 +1,16 @@
 package ru.macrobit.recept.pojo;
 
-import org.hibernate.annotations.GenericGenerator;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.TypeDef;
+import org.hibernate.annotations.TypeDefs;
+import ru.macrobit.recept.commons.pjson.PGJsonObject;
 
 /**
  * Created by david on 11.07.16.
  */
-@Entity
-public class Address {
-    @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
+@TypeDefs({@TypeDef(name = "AddressObject", typeClass = Address.class)})
+public class Address extends PGJsonObject {
+    @JsonIgnore
     private String id;
     private String region;
     private String locality;

@@ -1,6 +1,9 @@
 package ru.macrobit.recept.pojo;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+import org.hibernate.annotations.TypeDefs;
 import ru.macrobit.recept.abstracts.EntityInterface;
 
 import javax.persistence.*;
@@ -9,17 +12,18 @@ import javax.persistence.*;
  * Created by david on 11.07.16.
  */
 @Entity
+@TypeDefs({@TypeDef(name = "AddressObject", typeClass = Address.class)})
 public class Exempt implements EntityInterface {
     @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    @GeneratedValue(generator = "generator")
+    @GenericGenerator(name = "generator", strategy = "sequence-identity", parameters = @org.hibernate.annotations.Parameter(name = "sequence", value = "exempt_id_seq"))
     private String id;
     private String areaId;
     private String fileNumber;
     private String fileNumberPens;
     private Long dateBirth;
     private String gender;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+    @Type(type = "AddressObject")
     private Address address;
     private String disabilityGroup;
     private String maxLg;

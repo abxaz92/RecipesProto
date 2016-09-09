@@ -1,10 +1,8 @@
 package ru.macrobit.recept.pojo;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.TypeDef;
-import org.hibernate.annotations.TypeDefs;
+import org.hibernate.annotations.Parameter;
 import ru.macrobit.recept.abstracts.EntityInterface;
-import ru.macrobit.recept.commons.pjson.PGJsonObject;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,21 +12,20 @@ import javax.persistence.Id;
  * Created by david on 7/8/16.
  */
 @Entity
-@TypeDefs({@TypeDef(name = "DeseaseObject", typeClass = Desease.class)})
-public class Desease extends PGJsonObject implements EntityInterface {
+public class Desease implements EntityInterface {
     @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
-    private String id;
+    @GeneratedValue(generator = "generator")
+    @GenericGenerator(name = "generator", strategy = "sequence-identity", parameters = @Parameter(name = "sequence", value = "desease_id_seq"))
+    private Long id;
     private String name;
     private String code;
     private String parent;
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
