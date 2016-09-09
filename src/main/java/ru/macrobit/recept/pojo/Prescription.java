@@ -1,9 +1,6 @@
 package ru.macrobit.recept.pojo;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
-import org.hibernate.annotations.TypeDef;
-import org.hibernate.annotations.TypeDefs;
+import org.hibernate.annotations.*;
 import ru.macrobit.recept.abstracts.EntityInterface;
 import ru.macrobit.recept.entities.PrescriptionInfo;
 
@@ -18,10 +15,10 @@ import java.util.Date;
 @Entity
 @TypeDefs({@TypeDef(name = "PrescriptionInfoObject", typeClass = PrescriptionInfo.class)})
 public class Prescription implements EntityInterface {
+    @GenericGenerator(name = "generator", strategy = "sequence-identity", parameters = @Parameter(name = "sequence", value = "prescription_id_seq"))
     @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
-    private String id;
+    @GeneratedValue(generator = "generator")
+    private Long id;
     private String sourceFunding; // источник финансирования (принимает следующие значения: 1. Федеральный бюджет, 2. Региональный бюджет, 3. Муниципальный бюджет)
     private Double percentagePayment;  // % оплаты из источника финансирования (может принмать следующие значения: 50% и 100%)
     private String validity; // Срок действия рецепта (может принимать значения: 1 месяц, 2 месяца, 3 месяца)
@@ -29,7 +26,7 @@ public class Prescription implements EntityInterface {
     private String number; // Номер рецепта
     private long issuedate; // Дата выписки рецепта
     private Date date;
-    private long dateCreation;
+    private Date dateCreation;
     private Long lpuId; // ЛПУ
     private String notification; //Информация о приеме
     private String signsale; // Признак отоваренности рецепта
@@ -43,11 +40,11 @@ public class Prescription implements EntityInterface {
     @Type(type = "PrescriptionInfoObject")
     private PrescriptionInfo info;
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -107,11 +104,11 @@ public class Prescription implements EntityInterface {
         this.date = date;
     }
 
-    public long getDateCreation() {
+    public Date getDateCreation() {
         return dateCreation;
     }
 
-    public void setDateCreation(long dateCreation) {
+    public void setDateCreation(Date dateCreation) {
         this.dateCreation = dateCreation;
     }
 

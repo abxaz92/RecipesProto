@@ -15,6 +15,7 @@
             <property name="hibernate.order_inserts" value="true"/>
             <property name="hibernate.order_updates" value="true"/>
             <property name="hibernate.jdbc.batch_versioned_data" value="true"/>
+            <property name="hibernate.jdbc.use_get_generated_keys" value="true"></property>
         </properties>
     </persistence-unit>
 </persistence>
