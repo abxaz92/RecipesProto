@@ -16,10 +16,7 @@ import ru.macrobit.recept.pojo.entities.Category;
 import javax.enterprise.context.ApplicationScoped;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -62,22 +59,33 @@ public class ExemptService extends AbstractDAO<Exempt> {
             });
         });
 
-        List<Category> res = new ArrayList<>();
         List<Exempt> exempts = DbfProcessor.loadData(Recept.createFile(files.get("REG.DBF").getBody(InputStream.class, null), "/tmp/exemptsMt.dbf"), new ExemptMzRowMapper());
-        Map<String, List<Category>> categoriesMap = DbfProcessor
+        List<Category> categories = DbfProcessor
                 .loadData(Recept.createFile(files.get("LREG.DBF")
-                        .getBody(InputStream.class, null), "/tmp/exemptCats.dbf"), new ExemptCategoryRowMapper())
+                        .getBody(InputStream.class, null), "/tmp/exemptCats.dbf"), new ExemptCategoryRowMapper());
+        Map<String, List<Category>> categoriesMap = categories
                 .stream()
                 .collect(Collectors.groupingBy(Category::getId));
         exempts.parallelStream().forEach(exempt -> {
             if (exempt.getCategoryId() != null) {
-                List<Category> categories = categoriesMap.get(exempt.getCategoryId());
-                if (categories != null) {
-                    exempt.setDeseases(Desease.createDeseases(categories));
-                    exempt.setCategories(ExemptCategory.createCategories(categories));
+                List<Category> categors = categoriesMap.get(exempt.getCategoryId());
+                if (categors != null) {
+                    exempt.setDeseases(Desease.createDeseases(categors));
+                    exempt.setCategories(ExemptCategory.createCategories(categors));
                 }
             }
         });
+        Set<ExemptCategory> exemptCategories = new HashSet<>();
+        Set<Desease> deseases = new HashSet<>();
+        categories.stream().forEach(category -> {
+            exemptCategories.add(new ExemptCategory(category));
+            deseases.add(new Desease(category));
+        });
+        /*Map<String, Object> resMap = new HashMap<>();
+        resMap.put("categories", exemptCategories);
+        resMap.put("deseases", deseases);
+        return resMap;*/
+
         return exempts.stream().filter(exempt -> exempt.getDeseases().size() > 1).limit(20).collect(Collectors.toList());
     }
 }

@@ -38,6 +38,22 @@ public class ExemptCategory implements EntityInterface {
         return exemptCategories;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ExemptCategory that = (ExemptCategory) o;
+
+        return code != null ? code.equals(that.code) : that.code == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return code != null ? code.hashCode() : 0;
+    }
+
     public String getCode() {
         return code;
     }

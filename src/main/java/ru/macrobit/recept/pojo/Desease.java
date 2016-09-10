@@ -35,6 +35,21 @@ public class Desease implements EntityInterface {
         return deseases;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Desease desease = (Desease) o;
+
+        return code != null ? code.equals(desease.code) : desease.code == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return code != null ? code.hashCode() : 0;
+    }
+
     public String getCode() {
         return code;
     }
