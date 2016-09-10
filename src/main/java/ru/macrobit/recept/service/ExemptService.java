@@ -8,7 +8,7 @@ import ru.macrobit.recept.abstracts.AbstractDAO;
 import ru.macrobit.recept.commons.Recept;
 import ru.macrobit.recept.dbfmappers.ExemptMTRowMapper;
 import ru.macrobit.recept.dbfmappers.ExemptMzRowMapper;
-import ru.macrobit.recept.dbfmappers.drug.ExemptCategoryRowMapper;
+import ru.macrobit.recept.dbfmappers.ExemptMzCategoryRowMapper;
 import ru.macrobit.recept.pojo.Desease;
 import ru.macrobit.recept.pojo.Exempt;
 import ru.macrobit.recept.pojo.ExemptCategory;
@@ -63,7 +63,7 @@ public class ExemptService extends AbstractDAO<Exempt> {
         List<Exempt> exempts = DbfProcessor.loadData(Recept.createFile(files.get("REG.DBF").getBody(InputStream.class, null), "/tmp/exemptsMt.dbf"), new ExemptMzRowMapper());
         List<Category> categories = DbfProcessor
                 .loadData(Recept.createFile(files.get("LREG.DBF")
-                        .getBody(InputStream.class, null), "/tmp/exemptCats.dbf"), new ExemptCategoryRowMapper());
+                        .getBody(InputStream.class, null), "/tmp/exemptCats.dbf"), new ExemptMzCategoryRowMapper());
         Map<String, List<Category>> categoriesMap = categories
                 .stream()
                 .collect(Collectors.groupingBy(Category::getId));

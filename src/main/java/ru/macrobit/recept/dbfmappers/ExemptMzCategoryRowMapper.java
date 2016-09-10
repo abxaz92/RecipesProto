@@ -1,4 +1,4 @@
-package ru.macrobit.recept.dbfmappers.drug;
+package ru.macrobit.recept.dbfmappers;
 
 import org.jamel.dbf.processor.DbfRowMapper;
 import ru.macrobit.recept.commons.Recept;
@@ -7,7 +7,7 @@ import ru.macrobit.recept.pojo.entities.Category;
 /**
  * Created by [david] on 09.09.16.
  */
-public class ExemptCategoryRowMapper implements DbfRowMapper<Category> {
+public class ExemptMzCategoryRowMapper implements DbfRowMapper<Category> {
     private static final String ENCODING = "windows-1251";
 
     @Override

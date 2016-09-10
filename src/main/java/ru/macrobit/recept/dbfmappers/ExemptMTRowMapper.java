@@ -62,12 +62,7 @@ public class ExemptMTRowMapper implements DbfRowMapper<Exempt> {
         // 43
         String snils = Recept.getString(row[45], ENCODING);
 
-        if (Recept.isSnilsValid(snils)) {
-            exe.setInvalid(false);
-            return exe;
-        } else {
-            exe.setInvalid(true);
-        }
+        exe.setInvalid(!Recept.isSnilsValid(snils));
         exe.setSnils(snils);
         exe.setType(ExemptType.MINTRUD);
         return exe;

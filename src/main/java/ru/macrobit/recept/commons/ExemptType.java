@@ -6,4 +6,5 @@ package ru.macrobit.recept.commons;
 public class ExemptType {
     public static final String MINTRUD = "Минтруд";
     public static final String MINZDRAV = "Минздрав";
+    public static final String FEDERAL = "Федеральный";
 }
