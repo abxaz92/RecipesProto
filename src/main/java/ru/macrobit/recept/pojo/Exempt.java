@@ -56,6 +56,9 @@ public class Exempt implements EntityInterface {
     private String documentType;
     private boolean invalid;
     private String description;
+    private String benefitDoc;
+    private String benefitDocNum;
+    private long categoryCode;
 
     public Long getId() {
         return id;
@@ -295,5 +298,29 @@ public class Exempt implements EntityInterface {
 
     public void setCategories(List<ExemptCategory> categories) {
         this.categories = categories;
+    }
+
+    public String getBenefitDoc() {
+        return benefitDoc;
+    }
+
+    public void setBenefitDoc(String benefitDoc) {
+        this.benefitDoc = benefitDoc;
+    }
+
+    public String getBenefitDocNum() {
+        return benefitDocNum;
+    }
+
+    public void setBenefitDocNum(String benefitDocNum) {
+        this.benefitDocNum = benefitDocNum;
+    }
+
+    public long getCategoryCode() {
+        return categoryCode;
+    }
+
+    public void setCategoryCode(long categoryCode) {
+        this.categoryCode = categoryCode;
     }
 }

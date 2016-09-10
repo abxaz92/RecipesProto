@@ -6,6 +6,9 @@ import ru.macrobit.recept.commons.Recept;
 import ru.macrobit.recept.pojo.Address;
 import ru.macrobit.recept.pojo.Exempt;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -13,6 +16,7 @@ import java.util.Date;
  */
 public class ExemptFederalRowMapper implements DbfRowMapper<Exempt> {
     private static final String ENCODING = "windows-1251";
+    private static final DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
 
     @Override
     public Exempt mapRow(Object[] row) {
@@ -26,7 +30,11 @@ public class ExemptFederalRowMapper implements DbfRowMapper<Exempt> {
         exempt.setFio(nameLast + " " + name + " " + nameMiddle);
 
         exempt.setGender(Recept.getString(row[5], ENCODING));
-        Date date = Recept.getDate(row[6]);
+        Date date = null;
+        try {
+            date = df.parse(Recept.getString(row[6], ENCODING));
+        } catch (ParseException e) {
+        }
         exempt.setDateBirth(date != null ? date.getTime() : null);
         exempt.setDocumentNumber(Recept.getString(row[7], ENCODING));
         Address address = new Address();

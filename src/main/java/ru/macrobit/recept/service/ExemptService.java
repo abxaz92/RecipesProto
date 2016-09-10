@@ -6,13 +6,12 @@ import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 import ru.macrobit.recept.abstracts.AbstractDAO;
 import ru.macrobit.recept.commons.Recept;
-import ru.macrobit.recept.dbfmappers.ExemptMTRowMapper;
-import ru.macrobit.recept.dbfmappers.ExemptMzRowMapper;
-import ru.macrobit.recept.dbfmappers.ExemptMzCategoryRowMapper;
+import ru.macrobit.recept.dbfmappers.*;
 import ru.macrobit.recept.pojo.Desease;
 import ru.macrobit.recept.pojo.Exempt;
 import ru.macrobit.recept.pojo.ExemptCategory;
 import ru.macrobit.recept.pojo.entities.Category;
+import ru.macrobit.recept.pojo.entities.FederalInfo;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.io.IOException;
@@ -97,5 +96,39 @@ public class ExemptService extends AbstractDAO<Exempt> {
         return resMap;*/
 
         return exempts.stream().filter(exempt -> exempt.getDeseases().size() > 1).limit(20).collect(Collectors.toList());
+    }
+
+    public Object uploadFederalDBF(MultipartFormDataInput input) throws IOException {
+        Map<String, InputPart> files = new HashMap<>();
+        input.getFormDataMap().values().forEach(inputParts -> {
+            inputParts.forEach(inputPart -> {
+                files.put(Recept.getFileName(inputPart), inputPart);
+            });
+        });
+
+        List<Exempt> exempts = DbfProcessor.loadData(Recept.createFile(files.get("fp.dbf")
+                .getBody(InputStream.class, null), "/tmp/exemptsFed.dbf"), new ExemptFederalRowMapper());
+        Map<String, List<FederalInfo>> federalInfoMap = DbfProcessor
+                .loadData(Recept.createFile(files.get("fl.dbf")
+                        .getBody(InputStream.class, null), "/tmp/exemptFedInfo.dbf"), new ExemptFederalInfoRowMapper())
+                .stream().collect(Collectors.groupingBy(FederalInfo::getSnils));
+
+        exempts.parallelStream().forEach(exempt -> {
+            if (exempt.getSnils() != null) {
+                List<FederalInfo> federalInfos = federalInfoMap.get(exempt.getSnils());
+                if (federalInfos != null && federalInfos.size() > 0) {
+                    FederalInfo federalInfo = federalInfos.get(0);
+                    if (federalInfo != null) {
+                        exempt.setBenefitDoc(federalInfo.getBenefitDoc());
+                        exempt.setBenefitDocNum(federalInfo.getBenefitDocNum());
+                        exempt.setCategoryCode(federalInfo.getCategoryCode());
+                        exempt.setDateLgBegin(federalInfo.getDateLgBegin());
+                        exempt.setDateLgEnd(federalInfo.getDateLgEnd());
+                    }
+                }
+            }
+        });
+
+        return exempts.stream().limit(20).collect(Collectors.toList());
     }
 }

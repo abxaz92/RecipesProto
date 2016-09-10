@@ -79,4 +79,12 @@ public class ExemptController {
     public Object uploadMzDBF(MultipartFormDataInput input) throws IOException {
         return exemptService.uploadMZDBF(input);
     }
+
+    @POST
+    @Path("/file/federal")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Object uploadFederalDBF(MultipartFormDataInput input) throws IOException {
+        return exemptService.uploadFederalDBF(input);
+    }
 }
