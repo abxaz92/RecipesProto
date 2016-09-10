@@ -129,6 +129,31 @@ public class AbstractDAO<T extends EntityInterface> extends ExceptionFactory {
         }
     }
 
+    public Object findAll(JsonNode jsonQuery, Integer skip, Integer limit, String count, String sortProperties, String sortDirection, User user, Class type) {
+        try (Session session = em.unwrap(Session.class)) {
+            Criteria criteria = getUserscopeCriteria(session, user, type);
+            if (jsonQuery != null)
+                combineCriteria(jsonQuery, criteria);
+
+            if (count != null) {
+                return criteria.setProjection(Projections.rowCount()).uniqueResult();
+            }
+            if (skip != null)
+                criteria.setFirstResult(skip);
+            if (limit != null)
+                criteria.setMaxResults(limit);
+
+            if (sortProperties != null) {
+                criteria.addOrder("asc".equals(sortDirection) ? Order.asc(sortProperties) : Order.desc(sortProperties));
+            }
+            List<T> list = criteria.list();
+            return list;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException();
+        }
+    }
+
 
     public static void combineCriteria(JsonNode jsonQuery, Criteria criteria) {
         jsonQuery.fields().forEachRemaining(jsonNodeEntry -> {
@@ -205,6 +230,16 @@ public class AbstractDAO<T extends EntityInterface> extends ExceptionFactory {
     }
 
     private Criteria getUserscopeCriteria(Session session, User user) {
+        if (user == null)
+            return session.createCriteria(type);
+        Criteria criteria = session.createCriteria(type);
+        Criterion criterion = getUserscopeCriterion(user);
+        if (criterion != null)
+            criteria.add(criterion);
+        return criteria;
+    }
+
+    private Criteria getUserscopeCriteria(Session session, User user, Class type) {
         if (user == null)
             return session.createCriteria(type);
         Criteria criteria = session.createCriteria(type);

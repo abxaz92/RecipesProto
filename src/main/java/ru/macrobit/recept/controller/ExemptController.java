@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.macrobit.recept.commons.Recept;
 import ru.macrobit.recept.pojo.Exempt;
+import ru.macrobit.recept.pojo.LightExempt;
 import ru.macrobit.recept.security.ContextService;
 import ru.macrobit.recept.service.ExemptService;
 
@@ -32,7 +33,7 @@ public class ExemptController {
 
     @GET
     @Path("/{id}")
-    public Exempt getById(@PathParam("id") String id) {
+    public Exempt getById(@PathParam("id") Long id) {
         return exemptService.findById(id, ctx.getCurrentUser());
     }
 
@@ -42,7 +43,7 @@ public class ExemptController {
                              @QueryParam("count") String count, @QueryParam("skip") Integer skip,
                              @QueryParam("limit") Integer limit, @QueryParam("sort") String sortProperties,
                              @QueryParam("direction") String sortDirection) throws IOException {
-        return exemptService.findAll(jsonQuery == null ? null : Recept.MAPPER.readValue(jsonQuery, JsonNode.class), skip, limit, count, sortProperties, sortDirection, ctx.getCurrentUser());
+        return exemptService.findAll(jsonQuery == null ? null : Recept.MAPPER.readValue(jsonQuery, JsonNode.class), skip, limit, count, sortProperties, sortDirection, null, LightExempt.class);
     }
 
     @POST
@@ -53,13 +54,13 @@ public class ExemptController {
 
     @PUT
     @Path("/{id}")
-    public Exempt put(JsonNode exempt, @PathParam("id") String id) throws Exception {
+    public Exempt put(JsonNode exempt, @PathParam("id") Long id) throws Exception {
         return exemptService.update(id, exempt, ctx.getCurrentUser());
     }
 
     @DELETE
     @Path("/{id}")
-    public void deleteById(@PathParam("id") String id) throws Exception {
+    public void deleteById(@PathParam("id") Long id) throws Exception {
         exemptService.deleteById(id, ctx.getCurrentUser());
     }
 

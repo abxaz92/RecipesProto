@@ -1,22 +1,22 @@
 package ru.macrobit.recept.pojo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
-import ru.macrobit.recept.abstracts.EntityInterface;
 
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
- * Created by david on 11.07.16.
+ * Created by [david] on 10.09.16.
  */
 @Entity
 @Table(name = "exempt")
 @TypeDefs({@TypeDef(name = "AddressObject", typeClass = Address.class)})
-public class Exempt implements EntityInterface {
+public class LightExempt {
     @Id
     @GeneratedValue(generator = "generator")
     @GenericGenerator(name = "generator", strategy = "sequence-identity", parameters = @org.hibernate.annotations.Parameter(name = "sequence", value = "exempt_id_seq"))
@@ -38,15 +38,7 @@ public class Exempt implements EntityInterface {
     private String snils;
     private String type;
     private String fio;
-    @ManyToMany(fetch = FetchType.EAGER)
-    private List<ExemptCategory> categories;
-    @ManyToMany(fetch = FetchType.EAGER)
-    private List<Desease> deseases;
-    @JsonIgnore
-    @Transient
-    private String categoryId;
     private Long lpuId;
-
     private String polisN;
     private String polisS;
     private Long dateLgBegin;
@@ -271,29 +263,5 @@ public class Exempt implements EntityInterface {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(String categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    public List<Desease> getDeseases() {
-        return deseases;
-    }
-
-    public void setDeseases(List<Desease> deseases) {
-        this.deseases = deseases;
-    }
-
-    public List<ExemptCategory> getCategories() {
-        return categories;
-    }
-
-    public void setCategories(List<ExemptCategory> categories) {
-        this.categories = categories;
     }
 }

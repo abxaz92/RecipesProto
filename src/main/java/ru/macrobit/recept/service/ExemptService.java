@@ -1,5 +1,6 @@
 package ru.macrobit.recept.service;
 
+import org.hibernate.Session;
 import org.jamel.dbf.processor.DbfProcessor;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
@@ -81,6 +82,15 @@ public class ExemptService extends AbstractDAO<Exempt> {
             exemptCategories.add(new ExemptCategory(category));
             deseases.add(new Desease(category));
         });
+        try (Session session = em.unwrap(Session.class)) {
+            utx.begin();
+            exemptCategories.forEach(session::save);
+            deseases.forEach(session::save);
+            exempts.forEach(session::save);
+            utx.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         /*Map<String, Object> resMap = new HashMap<>();
         resMap.put("categories", exemptCategories);
         resMap.put("deseases", deseases);
