@@ -60,8 +60,8 @@ public class ExemptMzRowMapper implements DbfRowMapper<Exempt> {
         date = Recept.getDate(row[21]);
         exe.setDateReg(date != null ? date.getTime() : null);
         exe.setGender(Recept.getString(row[22], ENCODING));
+        exe.setCategoryId(Recept.getString(row[23], ENCODING));
         exe.setType(ExemptType.MINZDRAV);
-
         if (Recept.isSnilsValid(snils)) {
             exe.setInvalid(false);
             return exe;

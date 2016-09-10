@@ -1,9 +1,12 @@
 package ru.macrobit.recept.pojo;
 
 import ru.macrobit.recept.abstracts.EntityInterface;
+import ru.macrobit.recept.pojo.entities.Category;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by david on 7/8/16.
@@ -14,6 +17,23 @@ public class Desease implements EntityInterface {
     private String code;
     private String name;
     private String parent;
+
+    public Desease() {
+
+    }
+
+    public Desease(Category category) {
+        this.code = category.getMkbCode();
+        this.name = category.getMkbName();
+    }
+
+    public static List<Desease> createDeseases(List<Category> categories) {
+        List<Desease> deseases = new ArrayList<>();
+        categories.stream().forEach(category -> {
+            deseases.add(new Desease(category));
+        });
+        return deseases;
+    }
 
     public String getCode() {
         return code;

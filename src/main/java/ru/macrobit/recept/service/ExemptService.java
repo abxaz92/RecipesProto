@@ -8,7 +8,9 @@ import ru.macrobit.recept.commons.Recept;
 import ru.macrobit.recept.dbfmappers.ExemptMTRowMapper;
 import ru.macrobit.recept.dbfmappers.ExemptMzRowMapper;
 import ru.macrobit.recept.dbfmappers.drug.ExemptCategoryRowMapper;
+import ru.macrobit.recept.pojo.Desease;
 import ru.macrobit.recept.pojo.Exempt;
+import ru.macrobit.recept.pojo.ExemptCategory;
 import ru.macrobit.recept.pojo.entities.Category;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -18,7 +20,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -58,23 +59,25 @@ public class ExemptService extends AbstractDAO<Exempt> {
         input.getFormDataMap().values().forEach(inputParts -> {
             inputParts.forEach(inputPart -> {
                 files.put(Recept.getFileName(inputPart), inputPart);
-
             });
-
         });
 
         List<Category> res = new ArrayList<>();
         List<Exempt> exempts = DbfProcessor.loadData(Recept.createFile(files.get("REG.DBF").getBody(InputStream.class, null), "/tmp/exemptsMt.dbf"), new ExemptMzRowMapper());
-        Map<String, Category> categoriesMap = DbfProcessor
+        Map<String, List<Category>> categoriesMap = DbfProcessor
                 .loadData(Recept.createFile(files.get("LREG.DBF")
                         .getBody(InputStream.class, null), "/tmp/exemptCats.dbf"), new ExemptCategoryRowMapper())
                 .stream()
-                .collect(Collectors.toMap(Category::getId, Function.identity()));
-/*                try {
-                    insert(exempts);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }*/
-        return null;
+                .collect(Collectors.groupingBy(Category::getId));
+        exempts.parallelStream().forEach(exempt -> {
+            if (exempt.getCategoryId() != null) {
+                List<Category> categories = categoriesMap.get(exempt.getCategoryId());
+                if (categories != null) {
+                    exempt.setDeseases(Desease.createDeseases(categories));
+                    exempt.setCategories(ExemptCategory.createCategories(categories));
+                }
+            }
+        });
+        return exempts.stream().filter(exempt -> exempt.getDeseases().size() > 1).limit(20).collect(Collectors.toList());
     }
 }
