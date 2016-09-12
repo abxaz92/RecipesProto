@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
+import ru.macrobit.recept.commons.ExemptType;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -48,6 +49,8 @@ public class LightExempt {
     private String documentType;
     private boolean invalid;
     private String description;
+    @Transient
+    private ExemptType type;
 
     public String getAreaId() {
         return areaId;
@@ -263,5 +266,13 @@ public class LightExempt {
 
     public void setDoc(ExemptId doc) {
         this.doc = doc;
+    }
+
+    public ExemptType getType() {
+        return doc != null ? doc.getType() : null;
+    }
+
+    public void setType(ExemptType type) {
+        this.type = type;
     }
 }
