@@ -128,6 +128,13 @@ public class ExemptService extends AbstractDAO<Exempt> {
                 }
             }
         });
+        try (Session session = em.unwrap(Session.class)) {
+            utx.begin();
+            exempts.stream().forEach(session::saveOrUpdate);
+            utx.commit();
+        } catch (Exception e) {
+
+        }
 
         return exempts.stream().limit(20).collect(Collectors.toList());
     }
