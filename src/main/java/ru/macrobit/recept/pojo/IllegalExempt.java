@@ -3,6 +3,7 @@ package ru.macrobit.recept.pojo;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import ru.macrobit.recept.abstracts.EntityInterface;
+import ru.macrobit.recept.commons.ExemptType;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -48,6 +49,42 @@ public class IllegalExempt implements EntityInterface {
     private String benefitDoc;
     private String benefitDocNum;
     private long categoryCode;
+    private ExemptType type;
+
+    public IllegalExempt() {
+
+    }
+
+    public IllegalExempt(Exempt exempt) {
+        this.areaId = exempt.getAreaId();
+        this.fileNumber = exempt.getFileNumber();
+        this.fileNumberPens = exempt.getFileNumberPens();
+        this.dateBirth = exempt.getDateBirth();
+        this.gender = exempt.getGender();
+        this.address = exempt.getAddress();
+        this.disabilityGroup = exempt.getDisabilityGroup();
+        this.maxLg = exempt.getMaxLg();
+        this.status = exempt.getStatus();
+        this.dateReg = exempt.getDateReg();
+        this.pasportSeries = exempt.getPasportSeries();
+        this.pasportNum = exempt.getPasportNum();
+        this.phone = exempt.getPhone();
+        this.snils = exempt.getSnils();
+        this.fio = exempt.getFio();
+        this.lpuId = exempt.getLpuId();
+        this.polisN = exempt.getPolisN();
+        this.polisS = exempt.getPolisS();
+        this.dateLgBegin = exempt.getDateLgBegin();
+        this.dateLgEnd = exempt.getDateLgEnd();
+        this.rejectLg = exempt.isRejectLg();
+        this.documentNumber = exempt.getDocumentNumber();
+        this.documentType = exempt.getDocumentType();
+        this.invalid = exempt.isInvalid();
+        this.description = exempt.getDescription();
+        this.benefitDoc = exempt.getBenefitDoc();
+        this.benefitDocNum = exempt.getBenefitDocNum();
+        this.categoryCode = exempt.getCategoryCode();
+    }
 
     public Long getId() {
         return id;
@@ -279,5 +316,13 @@ public class IllegalExempt implements EntityInterface {
 
     public void setCategoryCode(long categoryCode) {
         this.categoryCode = categoryCode;
+    }
+
+    public ExemptType getType() {
+        return type;
+    }
+
+    public void setType(ExemptType type) {
+        this.type = type;
     }
 }

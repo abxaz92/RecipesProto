@@ -63,8 +63,8 @@ public class ExemptMzRowMapper implements DbfRowMapper<Exempt> {
         exe.setGender(Recept.getString(row[22], ENCODING));
         exe.setCategoryId(Recept.getString(row[23], ENCODING));
 
-        if (!Recept.isSnilsValid(snils)) {
-            exe.setSnils(snils);
+        exe.setSnils(snils);
+        if (Recept.isSnilsValid(snils)) {
             exe.setId(new ExemptId(exe.getSnils(), ExemptType.MINZDRAV));
         } else if (exe.getPasportNum() != null && exe.getPasportNum().length() > 2) {
             StringBuilder id = new StringBuilder();
