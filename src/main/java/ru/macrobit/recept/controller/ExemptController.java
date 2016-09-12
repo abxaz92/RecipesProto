@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.macrobit.recept.commons.ExemptType;
 import ru.macrobit.recept.commons.Recept;
 import ru.macrobit.recept.pojo.Exempt;
 import ru.macrobit.recept.pojo.ExemptId;
@@ -32,19 +31,13 @@ public class ExemptController {
     private ExemptService exemptService;
     @EJB
     private ContextService ctx;
-    private static final ExemptType[] EXEMPT_TYPES = ExemptType.values();
 
     @GET
     @Path("/{id}")
     public Object getById(@PathParam("id") String id) {
-        String[] ids = id.split(":::");
-        if (ids.length < 2) {
-            return null;
-        }
-        int val = Integer.parseInt(ids[1]);
-        if (val > EXEMPT_TYPES.length - 1 || val < 0)
-            return null;
-        return exemptService.findById(new ExemptId(ids[0], EXEMPT_TYPES[val]), ctx.getCurrentUser());
+        ExemptId exemptId = Exempt.parseExemptId(id);
+        if (exemptId == null) return null;
+        return exemptService.findById(exemptId, ctx.getCurrentUser());
     }
 
     @GET
@@ -65,14 +58,18 @@ public class ExemptController {
 
     @PUT
     @Path("/{id}")
-    public Exempt put(JsonNode exempt, @PathParam("id") Long id) throws Exception {
-        return exemptService.update(id, exempt, ctx.getCurrentUser());
+    public Exempt put(JsonNode exempt, @PathParam("id") String id) throws Exception {
+        ExemptId exemptId = Exempt.parseExemptId(id);
+        if (exemptId == null) return null;
+        return exemptService.update(exemptId, exempt, ctx.getCurrentUser());
     }
 
     @DELETE
     @Path("/{id}")
-    public void deleteById(@PathParam("id") Long id) throws Exception {
-        exemptService.deleteById(id, ctx.getCurrentUser());
+    public void deleteById(@PathParam("id") String id) throws Exception {
+        ExemptId exemptId = Exempt.parseExemptId(id);
+        if (exemptId == null) return;
+        exemptService.deleteById(exemptId, ctx.getCurrentUser());
     }
 
     @POST

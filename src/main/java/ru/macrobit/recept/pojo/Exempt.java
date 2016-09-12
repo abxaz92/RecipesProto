@@ -5,6 +5,7 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
 import ru.macrobit.recept.abstracts.EntityInterface;
+import ru.macrobit.recept.commons.ExemptType;
 
 import javax.persistence.*;
 import java.util.List;
@@ -16,6 +17,9 @@ import java.util.List;
 @Table(name = "exempt")
 @TypeDefs({@TypeDef(name = "AddressObject", typeClass = Address.class)})
 public class Exempt implements EntityInterface {
+    private static final ExemptType[] EXEMPT_TYPES = ExemptType.values();
+
+
     @EmbeddedId
     @JsonIgnore
     private ExemptId doc;
@@ -58,6 +62,17 @@ public class Exempt implements EntityInterface {
     private String benefitDoc;
     private String benefitDocNum;
     private long categoryCode;
+
+    public static ExemptId parseExemptId(String id) {
+        String[] ids = id.split(":::");
+        if (ids.length < 2) {
+            return null;
+        }
+        int val = Integer.parseInt(ids[1]);
+        if (val > EXEMPT_TYPES.length - 1 || val < 0)
+            return null;
+        return new ExemptId(ids[0], EXEMPT_TYPES[val]);
+    }
 
     public String getAreaId() {
         return areaId;

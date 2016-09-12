@@ -50,13 +50,13 @@ public class ExemptCategoryController {
 
     @PUT
     @Path("/{id}")
-    public ExemptCategory put(JsonNode exemptCategory, @PathParam("id") Long id) throws Exception {
+    public ExemptCategory put(JsonNode exemptCategory, @PathParam("id") String id) throws Exception {
         return exemptCategoryService.update(id, exemptCategory, ctx.getCurrentUser());
     }
 
     @DELETE
     @Path("/{id}")
-    public void deleteById(@PathParam("id") Long id) throws Exception {
+    public void deleteById(@PathParam("id") String id) throws Exception {
         exemptCategoryService.deleteById(id, ctx.getCurrentUser());
     }
 }

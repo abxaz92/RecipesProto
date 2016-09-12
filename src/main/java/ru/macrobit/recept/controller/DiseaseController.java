@@ -50,13 +50,13 @@ public class DiseaseController {
 
     @PUT
     @Path("/{id}")
-    public Disease put(JsonNode disease, @PathParam("id") Long id) throws Exception {
+    public Disease put(JsonNode disease, @PathParam("id") String id) throws Exception {
         return diseaseService.update(id, disease, ctx.getCurrentUser());
     }
 
     @DELETE
     @Path("/{id}")
-    public void deleteById(@PathParam("id") Long id) throws Exception {
+    public void deleteById(@PathParam("id") String id) throws Exception {
         diseaseService.deleteById(id, ctx.getCurrentUser());
     }
 }
