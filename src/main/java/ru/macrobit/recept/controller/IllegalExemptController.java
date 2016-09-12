@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.macrobit.recept.commons.Recept;
+import ru.macrobit.recept.pojo.Exempt;
+import ru.macrobit.recept.pojo.ExemptId;
 import ru.macrobit.recept.pojo.IllegalExempt;
 import ru.macrobit.recept.security.ContextService;
 import ru.macrobit.recept.service.IllegalExemptService;
@@ -29,8 +31,10 @@ public class IllegalExemptController {
 
     @GET
     @Path("/{id}")
-    public IllegalExempt getById(@PathParam("id") Long id) {
-        return illegalExemptService.findById(id, ctx.getCurrentUser());
+    public IllegalExempt getById(@PathParam("id") String id) {
+        ExemptId exemptId = Exempt.parseExemptId(id);
+        if (exemptId == null) return null;
+        return illegalExemptService.findById(exemptId, ctx.getCurrentUser());
     }
 
     @GET
@@ -39,7 +43,8 @@ public class IllegalExemptController {
                              @QueryParam("count") String count, @QueryParam("skip") Integer skip,
                              @QueryParam("limit") Integer limit, @QueryParam("sort") String sortProperties,
                              @QueryParam("direction") String sortDirection) throws IOException {
-        return illegalExemptService.findAll(jsonQuery == null ? null : Recept.MAPPER.readValue(jsonQuery, JsonNode.class), skip, limit, count, sortProperties, sortDirection, ctx.getCurrentUser());
+        return illegalExemptService.findAll(jsonQuery == null ? null : Recept.MAPPER.readValue(jsonQuery, JsonNode.class),
+                skip, limit, count, sortProperties, sortDirection, ctx.getCurrentUser());
     }
 
     @POST
@@ -50,13 +55,17 @@ public class IllegalExemptController {
 
     @PUT
     @Path("/{id}")
-    public IllegalExempt put(JsonNode illegalExempt, @PathParam("id") Long id) throws Exception {
-        return illegalExemptService.update(id, illegalExempt, ctx.getCurrentUser());
+    public IllegalExempt put(JsonNode illegalExempt, @PathParam("id") String id) throws Exception {
+        ExemptId exemptId = Exempt.parseExemptId(id);
+        if (exemptId == null) return null;
+        return illegalExemptService.update(exemptId, illegalExempt, ctx.getCurrentUser());
     }
 
     @DELETE
     @Path("/{id}")
-    public void deleteById(@PathParam("id") Long id) throws Exception {
-        illegalExemptService.deleteById(id, ctx.getCurrentUser());
+    public void deleteById(@PathParam("id") String id) throws Exception {
+        ExemptId exemptId = Exempt.parseExemptId(id);
+        if (exemptId == null) return;
+        illegalExemptService.deleteById(exemptId, ctx.getCurrentUser());
     }
 }
