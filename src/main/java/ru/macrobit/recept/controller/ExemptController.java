@@ -4,8 +4,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.macrobit.recept.commons.ExemptType;
 import ru.macrobit.recept.commons.Recept;
 import ru.macrobit.recept.pojo.Exempt;
+import ru.macrobit.recept.pojo.ExemptId;
 import ru.macrobit.recept.pojo.LightExempt;
 import ru.macrobit.recept.security.ContextService;
 import ru.macrobit.recept.service.ExemptService;
@@ -32,9 +34,9 @@ public class ExemptController {
     private ContextService ctx;
 
     @GET
-    @Path("/{id}")
-    public Exempt getById(@PathParam("id") Long id) {
-        return exemptService.findById(id, ctx.getCurrentUser());
+    @Path("/{doc}/{type}")
+    public Exempt getById(@PathParam("doc") String id, @PathParam("type") int exemptType) {
+        return exemptService.findById(new ExemptId(id, ExemptType.values()[exemptType]), ctx.getCurrentUser());
     }
 
     @GET

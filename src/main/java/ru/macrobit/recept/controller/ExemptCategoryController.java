@@ -29,7 +29,7 @@ public class ExemptCategoryController {
 
     @GET
     @Path("/{id}")
-    public ExemptCategory getById(@PathParam("id") Long id) {
+    public ExemptCategory getById(@PathParam("id") String id) {
         return exemptCategoryService.findById(id, ctx.getCurrentUser());
     }
 

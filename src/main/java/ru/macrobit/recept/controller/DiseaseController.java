@@ -29,7 +29,7 @@ public class DiseaseController {
 
     @GET
     @Path("/{id}")
-    public Disease getById(@PathParam("id") Long id) {
+    public Disease getById(@PathParam("id") String id) {
         return diseaseService.findById(id, ctx.getCurrentUser());
     }
 
