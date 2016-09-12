@@ -32,8 +32,10 @@ public class IllegalExemptController {
     @GET
     @Path("/{id}")
     public IllegalExempt getById(@PathParam("id") String id) {
+        log.info(id);
         ExemptId exemptId = Exempt.parseExemptId(id);
         if (exemptId == null) return null;
+        log.info("{} {}", exemptId.getId(), exemptId.getType());
         return illegalExemptService.findById(exemptId, ctx.getCurrentUser());
     }
 

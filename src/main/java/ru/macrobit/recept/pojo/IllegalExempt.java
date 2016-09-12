@@ -318,7 +318,7 @@ public class IllegalExempt implements EntityInterface {
 
     @JsonIgnore
     public String getCompositeId() {
-        return this.snils + " " + this.pasportNum + " " + this.pasportSeries;
+        return this.snils.trim() + " " + this.pasportNum.trim() + " " + this.pasportSeries.trim();
     }
 
     public ExemptId getDoc() {
