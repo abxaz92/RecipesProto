@@ -12,27 +12,27 @@ import java.util.List;
  * Created by david on 7/8/16.
  */
 @Entity
-public class Desease implements EntityInterface {
+public class Disease implements EntityInterface {
     @Id
     private String code;
     private String name;
     private String parent;
 
-    public Desease() {
+    public Disease() {
 
     }
 
-    public Desease(Category category) {
+    public Disease(Category category) {
         this.code = category.getMkbCode();
         this.name = category.getMkbName();
     }
 
-    public static List<Desease> createDeseases(List<Category> categories) {
-        List<Desease> deseases = new ArrayList<>();
+    public static List<Disease> createDeseases(List<Category> categories) {
+        List<Disease> diseases = new ArrayList<>();
         categories.stream().forEach(category -> {
-            deseases.add(new Desease(category));
+            diseases.add(new Disease(category));
         });
-        return deseases;
+        return diseases;
     }
 
     @Override
@@ -40,9 +40,9 @@ public class Desease implements EntityInterface {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Desease desease = (Desease) o;
+        Disease disease = (Disease) o;
 
-        return code != null ? code.equals(desease.code) : desease.code == null;
+        return code != null ? code.equals(disease.code) : disease.code == null;
     }
 
     @Override

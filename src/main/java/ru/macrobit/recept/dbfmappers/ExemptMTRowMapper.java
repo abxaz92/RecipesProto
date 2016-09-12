@@ -5,6 +5,7 @@ import ru.macrobit.recept.commons.ExemptType;
 import ru.macrobit.recept.commons.Recept;
 import ru.macrobit.recept.pojo.Address;
 import ru.macrobit.recept.pojo.Exempt;
+import ru.macrobit.recept.pojo.ExemptId;
 
 import java.util.Date;
 
@@ -64,7 +65,7 @@ public class ExemptMTRowMapper implements DbfRowMapper<Exempt> {
 
         exe.setInvalid(!Recept.isSnilsValid(snils));
         exe.setSnils(snils);
-        exe.setType(ExemptType.MINTRUD);
+        exe.setId(new ExemptId(exe.getSnils(), ExemptType.MINTRUD));
         return exe;
     }
 }

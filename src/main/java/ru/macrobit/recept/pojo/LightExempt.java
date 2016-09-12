@@ -1,13 +1,11 @@
 package ru.macrobit.recept.pojo;
 
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
 
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
@@ -17,10 +15,8 @@ import javax.persistence.Table;
 @Table(name = "exempt")
 @TypeDefs({@TypeDef(name = "AddressObject", typeClass = Address.class)})
 public class LightExempt {
-    @Id
-    @GeneratedValue(generator = "generator")
-    @GenericGenerator(name = "generator", strategy = "sequence-identity", parameters = @org.hibernate.annotations.Parameter(name = "sequence", value = "exempt_id_seq"))
-    private Long id;
+    @EmbeddedId
+    private ExemptId id;
     private String areaId;
     private String fileNumber;
     private String fileNumberPens;
@@ -36,7 +32,6 @@ public class LightExempt {
     private String pasportNum;
     private String phone;
     private String snils;
-    private String type;
     private String fio;
     private Long lpuId;
     private String polisN;
@@ -48,14 +43,6 @@ public class LightExempt {
     private String documentType;
     private boolean invalid;
     private String description;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getAreaId() {
         return areaId;
@@ -169,14 +156,6 @@ public class LightExempt {
         this.snils = snils;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public String getFio() {
         return fio;
     }
@@ -263,5 +242,13 @@ public class LightExempt {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public ExemptId getId() {
+        return id;
+    }
+
+    public void setId(ExemptId id) {
+        this.id = id;
     }
 }

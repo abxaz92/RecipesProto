@@ -5,6 +5,7 @@ import ru.macrobit.recept.commons.ExemptType;
 import ru.macrobit.recept.commons.Recept;
 import ru.macrobit.recept.pojo.Address;
 import ru.macrobit.recept.pojo.Exempt;
+import ru.macrobit.recept.pojo.ExemptId;
 
 import java.util.Date;
 
@@ -61,8 +62,21 @@ public class ExemptMzRowMapper implements DbfRowMapper<Exempt> {
         exe.setDateReg(date != null ? date.getTime() : null);
         exe.setGender(Recept.getString(row[22], ENCODING));
         exe.setCategoryId(Recept.getString(row[23], ENCODING));
-        exe.setType(ExemptType.MINZDRAV);
-        exe.setInvalid(!Recept.isSnilsValid(snils));
+
+        if (!Recept.isSnilsValid(snils)) {
+            exe.setSnils(snils);
+            exe.setId(new ExemptId(exe.getSnils(), ExemptType.MINZDRAV));
+        } else if (exe.getPasportNum() != null && exe.getPasportNum().length() > 2) {
+            StringBuilder id = new StringBuilder();
+            if (exe.getPasportSeries() != null)
+                if (exe.getPasportSeries().length() > 1)
+                    id.append(exe.getPasportSeries());
+            id.append(exe.getPasportNum());
+            exe.setId(new ExemptId(id.toString(), ExemptType.MINZDRAV));
+        } else {
+            exe.setInvalid(true);
+        }
+
         return exe;
     }
 }

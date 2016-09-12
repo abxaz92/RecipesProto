@@ -3,7 +3,7 @@ package ru.macrobit.recept.entities;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
 import ru.macrobit.recept.commons.pjson.PGJsonObject;
-import ru.macrobit.recept.pojo.Desease;
+import ru.macrobit.recept.pojo.Disease;
 import ru.macrobit.recept.pojo.Doctor;
 import ru.macrobit.recept.pojo.Exempt;
 
@@ -14,17 +14,17 @@ import java.util.List;
  */
 @TypeDefs({@TypeDef(name = "PrescriptionInfoObject", typeClass = PrescriptionInfo.class)})
 public class PrescriptionInfo extends PGJsonObject {
-    private Desease desease; // заболевание
+    private Disease disease; // заболевание
     private Doctor doctor; // врача
     private List<DrugAmount> drugs;
     private Exempt exempt;
 
-    public Desease getDesease() {
-        return desease;
+    public Disease getDisease() {
+        return disease;
     }
 
-    public void setDesease(Desease desease) {
-        this.desease = desease;
+    public void setDisease(Disease disease) {
+        this.disease = disease;
     }
 
     public Doctor getDoctor() {

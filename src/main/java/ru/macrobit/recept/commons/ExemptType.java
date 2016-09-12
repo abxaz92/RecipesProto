@@ -1,10 +1,12 @@
 package ru.macrobit.recept.commons;
 
+import java.io.Serializable;
+
 /**
  * Created by david on 11.07.16.
  */
-public class ExemptType {
-    public static final String MINTRUD = "Минтруд";
-    public static final String MINZDRAV = "Минздрав";
-    public static final String FEDERAL = "Федеральный";
+public enum ExemptType implements Serializable {
+    MINTRUD,
+    MINZDRAV,
+    FEDERAL
 }

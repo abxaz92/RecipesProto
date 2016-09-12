@@ -1,7 +1,6 @@
 package ru.macrobit.recept.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
@@ -17,10 +16,8 @@ import java.util.List;
 @Table(name = "exempt")
 @TypeDefs({@TypeDef(name = "AddressObject", typeClass = Address.class)})
 public class Exempt implements EntityInterface {
-    @Id
-    @GeneratedValue(generator = "generator")
-    @GenericGenerator(name = "generator", strategy = "sequence-identity", parameters = @org.hibernate.annotations.Parameter(name = "sequence", value = "exempt_id_seq"))
-    private Long id;
+    @EmbeddedId
+    private ExemptId id;
     private String areaId;
     private String fileNumber;
     private String fileNumberPens;
@@ -36,12 +33,11 @@ public class Exempt implements EntityInterface {
     private String pasportNum;
     private String phone;
     private String snils;
-    private String type;
     private String fio;
     @ManyToMany(fetch = FetchType.EAGER)
     private List<ExemptCategory> categories;
     @ManyToMany(fetch = FetchType.EAGER)
-    private List<Desease> deseases;
+    private List<Disease> diseases;
     @JsonIgnore
     @Transient
     private String categoryId;
@@ -59,14 +55,6 @@ public class Exempt implements EntityInterface {
     private String benefitDoc;
     private String benefitDocNum;
     private long categoryCode;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getAreaId() {
         return areaId;
@@ -180,14 +168,6 @@ public class Exempt implements EntityInterface {
         this.snils = snils;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public String getFio() {
         return fio;
     }
@@ -284,12 +264,12 @@ public class Exempt implements EntityInterface {
         this.categoryId = categoryId;
     }
 
-    public List<Desease> getDeseases() {
-        return deseases;
+    public List<Disease> getDiseases() {
+        return diseases;
     }
 
-    public void setDeseases(List<Desease> deseases) {
-        this.deseases = deseases;
+    public void setDiseases(List<Disease> diseases) {
+        this.diseases = diseases;
     }
 
     public List<ExemptCategory> getCategories() {
@@ -322,5 +302,13 @@ public class Exempt implements EntityInterface {
 
     public void setCategoryCode(long categoryCode) {
         this.categoryCode = categoryCode;
+    }
+
+    public ExemptId getId() {
+        return id;
+    }
+
+    public void setId(ExemptId id) {
+        this.id = id;
     }
 }

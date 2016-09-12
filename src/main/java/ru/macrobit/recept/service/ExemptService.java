@@ -7,7 +7,7 @@ import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 import ru.macrobit.recept.abstracts.AbstractDAO;
 import ru.macrobit.recept.commons.Recept;
 import ru.macrobit.recept.dbfmappers.*;
-import ru.macrobit.recept.pojo.Desease;
+import ru.macrobit.recept.pojo.Disease;
 import ru.macrobit.recept.pojo.Exempt;
 import ru.macrobit.recept.pojo.ExemptCategory;
 import ru.macrobit.recept.pojo.entities.Category;
@@ -70,21 +70,21 @@ public class ExemptService extends AbstractDAO<Exempt> {
             if (exempt.getCategoryId() != null) {
                 List<Category> categors = categoriesMap.get(exempt.getCategoryId());
                 if (categors != null) {
-                    exempt.setDeseases(Desease.createDeseases(categors));
+                    exempt.setDiseases(Disease.createDeseases(categors));
                     exempt.setCategories(ExemptCategory.createCategories(categors));
                 }
             }
         });
         Set<ExemptCategory> exemptCategories = new HashSet<>();
-        Set<Desease> deseases = new HashSet<>();
+        Set<Disease> diseases = new HashSet<>();
         categories.stream().forEach(category -> {
             exemptCategories.add(new ExemptCategory(category));
-            deseases.add(new Desease(category));
+            diseases.add(new Disease(category));
         });
         try (Session session = em.unwrap(Session.class)) {
             utx.begin();
             exemptCategories.forEach(session::saveOrUpdate);
-            deseases.forEach(session::saveOrUpdate);
+            diseases.forEach(session::saveOrUpdate);
             exempts.forEach(session::save);
             utx.commit();
         } catch (Exception e) {
@@ -95,7 +95,7 @@ public class ExemptService extends AbstractDAO<Exempt> {
         resMap.put("deseases", deseases);
         return resMap;*/
 
-        return exempts.stream().filter(exempt -> exempt.getDeseases().size() > 1).limit(20).collect(Collectors.toList());
+        return exempts.stream().filter(exempt -> exempt.getDiseases().size() > 1).limit(20).collect(Collectors.toList());
     }
 
     public Object uploadFederalDBF(MultipartFormDataInput input) throws IOException {

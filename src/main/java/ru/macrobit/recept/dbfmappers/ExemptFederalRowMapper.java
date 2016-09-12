@@ -5,6 +5,7 @@ import ru.macrobit.recept.commons.ExemptType;
 import ru.macrobit.recept.commons.Recept;
 import ru.macrobit.recept.pojo.Address;
 import ru.macrobit.recept.pojo.Exempt;
+import ru.macrobit.recept.pojo.ExemptId;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -53,7 +54,7 @@ public class ExemptFederalRowMapper implements DbfRowMapper<Exempt> {
         }
 
         exempt.setAddress(address);
-        exempt.setType(ExemptType.FEDERAL);
+        exempt.setId(new ExemptId(exempt.getSnils(), ExemptType.FEDERAL));
         exempt.setInvalid(!Recept.isSnilsValid(snils));
         return exempt;
     }
