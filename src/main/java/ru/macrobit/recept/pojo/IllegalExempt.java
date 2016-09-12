@@ -1,25 +1,19 @@
 package ru.macrobit.recept.pojo;
 
-import org.hibernate.annotations.GenericGenerator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Type;
 import ru.macrobit.recept.abstracts.EntityInterface;
-import ru.macrobit.recept.commons.ExemptType;
 
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 
 /**
  * Created by [david] on 12.09.16.
  */
 @Entity
 public class IllegalExempt implements EntityInterface {
-    @Id
-    @GeneratedValue(generator = "generator")
-    @GenericGenerator(name = "generator",
-            strategy = "sequence-identity",
-            parameters = @org.hibernate.annotations.Parameter(name = "sequence", value = "illegalexempt_id_seq"))
-    private Long id;
+    @EmbeddedId
+    private ExemptId id;
     private String areaId;
     private String fileNumber;
     private String fileNumberPens;
@@ -49,13 +43,13 @@ public class IllegalExempt implements EntityInterface {
     private String benefitDoc;
     private String benefitDocNum;
     private long categoryCode;
-    private ExemptType type;
 
     public IllegalExempt() {
 
     }
 
     public IllegalExempt(Exempt exempt) {
+        this.id = exempt.getId();
         this.areaId = exempt.getAreaId();
         this.fileNumber = exempt.getFileNumber();
         this.fileNumberPens = exempt.getFileNumberPens();
@@ -86,11 +80,11 @@ public class IllegalExempt implements EntityInterface {
         this.categoryCode = exempt.getCategoryCode();
     }
 
-    public Long getId() {
+    public ExemptId getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(ExemptId id) {
         this.id = id;
     }
 
@@ -318,11 +312,8 @@ public class IllegalExempt implements EntityInterface {
         this.categoryCode = categoryCode;
     }
 
-    public ExemptType getType() {
-        return type;
-    }
-
-    public void setType(ExemptType type) {
-        this.type = type;
+    @JsonIgnore
+    public String getCompositeId() {
+        return this.snils + " " + this.pasportNum + " " + this.pasportSeries;
     }
 }

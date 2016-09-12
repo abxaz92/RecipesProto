@@ -13,6 +13,7 @@ import ru.macrobit.recept.pojo.entities.Category;
 import ru.macrobit.recept.pojo.entities.FederalInfo;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
@@ -25,7 +26,8 @@ import java.util.stream.Collectors;
 @ApplicationScoped
 public class ExemptService extends AbstractDAO<Exempt> {
     private static final String tablename = "exempt";
-
+    @Inject
+    private IllegalExemptService illegalExemptService;
 
     public ExemptService() {
         super("exempt", Exempt.class);
@@ -81,18 +83,19 @@ public class ExemptService extends AbstractDAO<Exempt> {
             exemptCategories.add(new ExemptCategory(category));
             diseases.add(new Disease(category));
         });
-        List<IllegalExempt> illegalExempts = new ArrayList<>();
+        Map<ExemptId, IllegalExempt> illegalExempts = new HashMap<>();
         ConcurrentHashMap<ExemptId, Exempt> exemptMap = new ConcurrentHashMap<>();
         exempts.stream().forEach(exempt -> {
             if (exempt.getId() == null) {
                 IllegalExempt illegalExempt = new IllegalExempt(exempt);
-                illegalExempt.setType(ExemptType.MINZDRAV);
-                illegalExempts.add(illegalExempt);
+                illegalExempt.setId(new ExemptId(illegalExempt.getCompositeId(), ExemptType.MINZDRAV));
+                illegalExempts.put(illegalExempt.getId(), illegalExempt);
                 return;
             }
             Exempt exempt1 = exemptMap.putIfAbsent(exempt.getId(), exempt);
             if (exempt1 != null) {
-                illegalExempts.add(new IllegalExempt(exempt1));
+                IllegalExempt illegalExempt = new IllegalExempt(exempt);
+                illegalExempts.put(illegalExempt.getId(), illegalExempt);
             }
         });
 
@@ -101,6 +104,7 @@ public class ExemptService extends AbstractDAO<Exempt> {
             exemptCategories.forEach(session::saveOrUpdate);
             diseases.forEach(session::saveOrUpdate);
             exemptMap.values().forEach(session::saveOrUpdate);
+            illegalExempts.values().forEach(session::saveOrUpdate);
             utx.commit();
         } catch (Exception e) {
             e.printStackTrace();
