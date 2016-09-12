@@ -17,6 +17,7 @@ import javax.ejb.EJB;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.io.IOException;
 
 /**
@@ -34,9 +35,14 @@ public class ExemptController {
     private ContextService ctx;
 
     @GET
-    @Path("/{doc}/{type}")
-    public Exempt getById(@PathParam("doc") String id, @PathParam("type") int exemptType) {
-        return exemptService.findById(new ExemptId(id, ExemptType.values()[exemptType]), ctx.getCurrentUser());
+    @Path("/{id}")
+    public Object getById(@PathParam("id") String id) {
+        String[] ids = id.split(":::");
+        if (ids.length < 2) {
+            return Response.status(406).build();
+        }
+        log.warn("{} {}", ids[0], ids[1]);
+        return exemptService.findById(new ExemptId(ids[0], ExemptType.values()[Integer.parseInt(ids[1])]), ctx.getCurrentUser());
     }
 
     @GET
@@ -45,7 +51,8 @@ public class ExemptController {
                              @QueryParam("count") String count, @QueryParam("skip") Integer skip,
                              @QueryParam("limit") Integer limit, @QueryParam("sort") String sortProperties,
                              @QueryParam("direction") String sortDirection) throws IOException {
-        return exemptService.findAll(jsonQuery == null ? null : Recept.MAPPER.readValue(jsonQuery, JsonNode.class), skip, limit, count, sortProperties, sortDirection, null, LightExempt.class);
+        return exemptService.findAll(jsonQuery == null ? null : Recept.MAPPER.readValue(jsonQuery, JsonNode.class),
+                skip, limit, count, sortProperties, sortDirection, null, LightExempt.class);
     }
 
     @POST

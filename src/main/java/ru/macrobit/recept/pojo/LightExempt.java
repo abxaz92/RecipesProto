@@ -1,5 +1,6 @@
 package ru.macrobit.recept.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
@@ -7,6 +8,7 @@ import org.hibernate.annotations.TypeDefs;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * Created by [david] on 10.09.16.
@@ -15,8 +17,11 @@ import javax.persistence.Table;
 @Table(name = "exempt")
 @TypeDefs({@TypeDef(name = "AddressObject", typeClass = Address.class)})
 public class LightExempt {
+    @JsonIgnore
     @EmbeddedId
-    private ExemptId id;
+    private ExemptId doc;
+    @Transient
+    private String id;
     private String areaId;
     private String fileNumber;
     private String fileNumberPens;
@@ -244,11 +249,19 @@ public class LightExempt {
         this.description = description;
     }
 
-    public ExemptId getId() {
-        return id;
+    public String getId() {
+        return doc == null ? null : doc.getId() + ":::" + doc.getType().ordinal();
     }
 
-    public void setId(ExemptId id) {
+    public void setId(String id) {
         this.id = id;
+    }
+
+    public ExemptId getDoc() {
+        return doc;
+    }
+
+    public void setDoc(ExemptId doc) {
+        this.doc = doc;
     }
 }

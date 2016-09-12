@@ -54,7 +54,7 @@ public class ExemptFederalRowMapper implements DbfRowMapper<Exempt> {
         }
 
         exempt.setAddress(address);
-        exempt.setId(new ExemptId(exempt.getSnils(), ExemptType.FEDERAL));
+        exempt.setDoc(new ExemptId(exempt.getSnils(), ExemptType.FEDERAL));
         exempt.setInvalid(!Recept.isSnilsValid(snils));
         return exempt;
     }

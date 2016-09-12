@@ -88,14 +88,14 @@ public class ExemptService extends AbstractDAO<Exempt> {
         exempts.stream().forEach(exempt -> {
             if (exempt.getId() == null) {
                 IllegalExempt illegalExempt = new IllegalExempt(exempt);
-                illegalExempt.setId(new ExemptId(illegalExempt.getCompositeId(), ExemptType.MINZDRAV));
-                illegalExempts.put(illegalExempt.getId(), illegalExempt);
+                illegalExempt.setDoc(new ExemptId(illegalExempt.getCompositeId(), ExemptType.MINZDRAV));
+                illegalExempts.put(illegalExempt.getDoc(), illegalExempt);
                 return;
             }
-            Exempt exempt1 = exemptMap.putIfAbsent(exempt.getId(), exempt);
+            Exempt exempt1 = exemptMap.putIfAbsent(exempt.getDoc(), exempt);
             if (exempt1 != null) {
                 IllegalExempt illegalExempt = new IllegalExempt(exempt);
-                illegalExempts.put(illegalExempt.getId(), illegalExempt);
+                illegalExempts.put(illegalExempt.getDoc(), illegalExempt);
             }
         });
 

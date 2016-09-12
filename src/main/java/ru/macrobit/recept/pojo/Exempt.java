@@ -17,7 +17,10 @@ import java.util.List;
 @TypeDefs({@TypeDef(name = "AddressObject", typeClass = Address.class)})
 public class Exempt implements EntityInterface {
     @EmbeddedId
-    private ExemptId id;
+    @JsonIgnore
+    private ExemptId doc;
+    @Transient
+    private String id;
     private String areaId;
     private String fileNumber;
     private String fileNumberPens;
@@ -304,11 +307,19 @@ public class Exempt implements EntityInterface {
         this.categoryCode = categoryCode;
     }
 
-    public ExemptId getId() {
-        return id;
+    public ExemptId getDoc() {
+        return doc;
     }
 
-    public void setId(ExemptId id) {
+    public void setDoc(ExemptId doc) {
+        this.doc = doc;
+    }
+
+    public String getId() {
+        return doc == null ? null : doc.getId() + ":::" + doc.getType().ordinal();
+    }
+
+    public void setId(String id) {
         this.id = id;
     }
 }

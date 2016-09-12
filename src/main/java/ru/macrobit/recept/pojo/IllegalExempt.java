@@ -6,6 +6,7 @@ import ru.macrobit.recept.abstracts.EntityInterface;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 
 /**
  * Created by [david] on 12.09.16.
@@ -13,7 +14,10 @@ import javax.persistence.Entity;
 @Entity
 public class IllegalExempt implements EntityInterface {
     @EmbeddedId
-    private ExemptId id;
+    @JsonIgnore
+    private ExemptId doc;
+    @Transient
+    private String id;
     private String areaId;
     private String fileNumber;
     private String fileNumberPens;
@@ -49,7 +53,7 @@ public class IllegalExempt implements EntityInterface {
     }
 
     public IllegalExempt(Exempt exempt) {
-        this.id = exempt.getId();
+        this.doc = exempt.getDoc();
         this.areaId = exempt.getAreaId();
         this.fileNumber = exempt.getFileNumber();
         this.fileNumberPens = exempt.getFileNumberPens();
@@ -80,11 +84,11 @@ public class IllegalExempt implements EntityInterface {
         this.categoryCode = exempt.getCategoryCode();
     }
 
-    public ExemptId getId() {
-        return id;
+    public String getId() {
+        return doc == null ? null : doc.getId() + ":::" + doc.getType().ordinal();
     }
 
-    public void setId(ExemptId id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -315,5 +319,13 @@ public class IllegalExempt implements EntityInterface {
     @JsonIgnore
     public String getCompositeId() {
         return this.snils + " " + this.pasportNum + " " + this.pasportSeries;
+    }
+
+    public ExemptId getDoc() {
+        return doc;
+    }
+
+    public void setDoc(ExemptId doc) {
+        this.doc = doc;
     }
 }

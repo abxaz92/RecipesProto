@@ -65,7 +65,7 @@ public class ExemptMTRowMapper implements DbfRowMapper<Exempt> {
 
         exe.setInvalid(!Recept.isSnilsValid(snils));
         exe.setSnils(snils);
-        exe.setId(new ExemptId(exe.getSnils(), ExemptType.MINTRUD));
+        exe.setDoc(new ExemptId(exe.getSnils(), ExemptType.MINTRUD));
         return exe;
     }
 }

@@ -65,14 +65,14 @@ public class ExemptMzRowMapper implements DbfRowMapper<Exempt> {
 
         exe.setSnils(snils);
         if (Recept.isSnilsValid(snils)) {
-            exe.setId(new ExemptId(exe.getSnils(), ExemptType.MINZDRAV));
+            exe.setDoc(new ExemptId(exe.getSnils(), ExemptType.MINZDRAV));
         } else if (exe.getPasportNum() != null && exe.getPasportNum().length() > 2) {
             StringBuilder id = new StringBuilder();
             if (exe.getPasportSeries() != null)
                 if (exe.getPasportSeries().length() > 1)
                     id.append(exe.getPasportSeries());
             id.append(exe.getPasportNum());
-            exe.setId(new ExemptId(id.toString(), ExemptType.MINZDRAV));
+            exe.setDoc(new ExemptId(id.toString(), ExemptType.MINZDRAV));
         } else {
             exe.setInvalid(true);
         }
