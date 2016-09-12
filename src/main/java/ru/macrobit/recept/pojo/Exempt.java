@@ -1,13 +1,13 @@
 package ru.macrobit.recept.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.Type;
-import org.hibernate.annotations.TypeDef;
-import org.hibernate.annotations.TypeDefs;
+import org.hibernate.annotations.*;
 import ru.macrobit.recept.abstracts.EntityInterface;
 import ru.macrobit.recept.commons.ExemptType;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.List;
 
 /**
@@ -42,8 +42,10 @@ public class Exempt implements EntityInterface {
     private String snils;
     private String fio;
     @ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SUBSELECT)
     private List<ExemptCategory> categories;
     @ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SUBSELECT)
     private List<Disease> diseases;
     @JsonIgnore
     @Transient
