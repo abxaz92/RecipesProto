@@ -39,11 +39,10 @@ public class ExemptService extends AbstractDAO<Exempt> {
                 for (int i = 0; i < 100; i++) {
                     res.add(exempts.get(i));
                 }
-                try {
-                    insert(exempts);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                try (Session session = em.unwrap(Session.class)) {
+                    exempts.stream().forEach(session::saveOrUpdate);
                 }
+                insert(exempts);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -85,7 +84,7 @@ public class ExemptService extends AbstractDAO<Exempt> {
             utx.begin();
             exemptCategories.forEach(session::saveOrUpdate);
             diseases.forEach(session::saveOrUpdate);
-            exempts.forEach(session::save);
+            exempts.stream().filter(exempt -> !exempt.isInvalid()).forEach(session::saveOrUpdate);
             utx.commit();
         } catch (Exception e) {
             e.printStackTrace();
