@@ -4,10 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.macrobit.recept.commons.ExceptionFactory;
@@ -185,7 +182,7 @@ public class AbstractDAO<T extends EntityInterface> extends ExceptionFactory {
                         criteria.add(Restrictions.ge(jsonNodeEntry.getKey(), Recept.castJsonValue(resctriction.getValue())));
                         break;
                     case "$regex":
-                        criteria.add(Restrictions.ilike(jsonNodeEntry.getKey(), resctriction.getValue().asText()));
+                        criteria.add(Restrictions.ilike(jsonNodeEntry.getKey(), resctriction.getValue().asText(), MatchMode.ANYWHERE));
                         break;
                 }
             }
