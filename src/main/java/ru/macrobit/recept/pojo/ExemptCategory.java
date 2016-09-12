@@ -1,5 +1,6 @@
 package ru.macrobit.recept.pojo;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import ru.macrobit.recept.abstracts.EntityInterface;
 import ru.macrobit.recept.pojo.entities.Category;
 
@@ -14,6 +15,7 @@ import java.util.List;
 @Entity
 public class ExemptCategory implements EntityInterface {
     @Id
+    @JsonProperty("id")
     private String code;
     private String name;
     private String drugs;

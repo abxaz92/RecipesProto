@@ -17,7 +17,6 @@ import javax.ejb.EJB;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.io.IOException;
 
 /**
@@ -33,16 +32,19 @@ public class ExemptController {
     private ExemptService exemptService;
     @EJB
     private ContextService ctx;
+    private static final ExemptType[] EXEMPT_TYPES = ExemptType.values();
 
     @GET
     @Path("/{id}")
     public Object getById(@PathParam("id") String id) {
         String[] ids = id.split(":::");
         if (ids.length < 2) {
-            return Response.status(406).build();
+            return null;
         }
-        log.warn("{} {}", ids[0], ids[1]);
-        return exemptService.findById(new ExemptId(ids[0], ExemptType.values()[Integer.parseInt(ids[1])]), ctx.getCurrentUser());
+        int val = Integer.parseInt(ids[1]);
+        if (val > EXEMPT_TYPES.length - 1 || val < 0)
+            return null;
+        return exemptService.findById(new ExemptId(ids[0], EXEMPT_TYPES[val]), ctx.getCurrentUser());
     }
 
     @GET
