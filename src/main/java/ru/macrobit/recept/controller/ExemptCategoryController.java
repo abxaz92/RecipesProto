@@ -17,7 +17,7 @@ import java.io.IOException;
 /**
  * Created by [david] on 12.09.16.
  */
-@Path("/category")
+@Path("/benefit")
 @Produces(MediaType.APPLICATION_JSON)
 public class ExemptCategoryController {
     private static final Logger log = LoggerFactory.getLogger(ExemptCategoryController.class);
