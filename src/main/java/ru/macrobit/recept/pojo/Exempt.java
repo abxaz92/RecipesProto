@@ -64,6 +64,8 @@ public class Exempt implements EntityInterface {
     private String benefitDoc;
     private String benefitDocNum;
     private long categoryCode;
+    @Transient
+    private int type;
 
     public static ExemptId parseExemptId(String id) {
         String[] ids = id.split(":::");
@@ -338,5 +340,13 @@ public class Exempt implements EntityInterface {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public int getType() {
+        return doc != null ? doc.getType().ordinal() : null;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 }
