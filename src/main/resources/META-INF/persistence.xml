@@ -17,6 +17,9 @@
             <property name="hibernate.jdbc.batch_size" value="50"/>
             <property name="hibernate.order_inserts" value="true"/>
             <property name="hibernate.order_updates" value="true"/>
+            <!--<property name="hibernate.connection.Charset" value="UTF-8"></property>
+            <property name="hibernate.connection.CharacterEncoding" value="UTF-8"></property>
+            <property name="hibernate.connection.Useunicode" value="true"></property>-->
 
             <property name="hibernate.jdbc.use_get_generated_keys" value="true"></property>
         </properties>

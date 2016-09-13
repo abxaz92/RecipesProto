@@ -184,6 +184,33 @@ public class AbstractDAO<T extends EntityInterface> extends ExceptionFactory {
                     case "$regex":
                         criteria.add(Restrictions.ilike(jsonNodeEntry.getKey(), resctriction.getValue().asText(), MatchMode.ANYWHERE));
                         break;
+                    default:
+                        log.info("{}", Recept.castJsonValue(resctriction.getValue()));
+                        Criteria subCriteria = criteria.createCriteria(jsonNodeEntry.getKey(), jsonNodeEntry.getKey());
+                        if (resctriction.getValue().fields().hasNext()) {
+                            Map.Entry<String, JsonNode> subRestr = resctriction.getValue().fields().next();
+                            switch (subRestr.getKey()) {
+                                case "$lt":
+                                    subCriteria.add(Restrictions.lt(resctriction.getKey(), Recept.castJsonValue(subRestr.getValue())));
+                                    break;
+                                case "$lte":
+                                    subCriteria.add(Restrictions.le(resctriction.getKey(), Recept.castJsonValue(subRestr.getValue())));
+                                    break;
+                                case "$gt":
+                                    subCriteria.add(Restrictions.gt(resctriction.getKey(), Recept.castJsonValue(subRestr.getValue())));
+                                    break;
+                                case "$gte":
+                                    subCriteria.add(Restrictions.ge(resctriction.getKey(), Recept.castJsonValue(subRestr.getValue())));
+                                    break;
+                                case "$regex":
+                                    subCriteria.add(Restrictions.ilike(resctriction.getKey(), subRestr.getValue().asText(), MatchMode.ANYWHERE));
+                                    break;
+                                default:
+                            }
+                            break;
+                        } else {
+                            subCriteria.add(Restrictions.eq(resctriction.getKey(), Recept.castJsonValue(resctriction.getValue())));
+                        }
                 }
             }
         });
@@ -228,8 +255,8 @@ public class AbstractDAO<T extends EntityInterface> extends ExceptionFactory {
 
     private Criteria getUserscopeCriteria(Session session, User user) {
         if (user == null)
-            return session.createCriteria(type);
-        Criteria criteria = session.createCriteria(type);
+            return session.createCriteria(type, "this");
+        Criteria criteria = session.createCriteria(type, "this");
         Criterion criterion = getUserscopeCriterion(user);
         if (criterion != null)
             criteria.add(criterion);
