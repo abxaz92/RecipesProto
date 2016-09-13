@@ -51,8 +51,15 @@ public class ExemptMTRowMapper implements DbfRowMapper<Exempt> {
         date = Recept.getDate(row[35]);
         exe.setDateReg(date != null ? date.getTime() : null);
         // 36
-        exe.setPasportSeries(Recept.getString(row[37], ENCODING));
-        exe.setPasportNum(Recept.getString(row[38], ENCODING));
+        String num = Recept.getString(row[37], ENCODING);
+        String series = Recept.getString(row[38], ENCODING);
+
+        StringBuilder strB = new StringBuilder();
+        if (series != null)
+            strB.append(series);
+        if (num != null)
+            strB.append(" ").append(num);
+        exe.setDocumentNumber(strB.toString().trim());
 
         // 39
         // 40

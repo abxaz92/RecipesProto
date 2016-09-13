@@ -36,8 +36,6 @@ public class Exempt implements EntityInterface {
     private String maxLg;
     private String status;
     private Long dateReg;
-    private String pasportSeries;
-    private String pasportNum;
     private String phone;
     private String snils;
     private String fio;
@@ -156,22 +154,6 @@ public class Exempt implements EntityInterface {
 
     public void setDateReg(Long dateReg) {
         this.dateReg = dateReg;
-    }
-
-    public String getPasportSeries() {
-        return pasportSeries;
-    }
-
-    public void setPasportSeries(String pasportSeries) {
-        this.pasportSeries = pasportSeries;
-    }
-
-    public String getPasportNum() {
-        return pasportNum;
-    }
-
-    public void setPasportNum(String pasportNum) {
-        this.pasportNum = pasportNum;
     }
 
     public String getPhone() {

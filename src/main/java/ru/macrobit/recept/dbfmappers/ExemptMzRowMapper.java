@@ -46,12 +46,8 @@ public class ExemptMzRowMapper implements DbfRowMapper<Exempt> {
             String doc = Recept.getString(row[15], ENCODING).replaceAll(" ", "");
             if ("СВИДЕТЕЛЬСТВО О РОЖДЕНИИ".equals(docType)) {
                 doc = doc.replaceAll("-", "").replaceAll("№", "");
-                exe.setPasportNum(doc);
-            } else {
-                exe.setPasportSeries(doc.substring(0, 4));
-                exe.setPasportNum(doc.substring(3));
             }
-
+            exe.setDocumentNumber(doc.trim());
         } catch (Exception e) {
         }
 
@@ -66,17 +62,11 @@ public class ExemptMzRowMapper implements DbfRowMapper<Exempt> {
         exe.setSnils(snils);
         if (Recept.isSnilsValid(snils)) {
             exe.setDoc(new ExemptId(exe.getSnils(), ExemptType.MINZDRAV));
-        } else if (exe.getPasportNum() != null && exe.getPasportNum().length() > 2) {
-            StringBuilder id = new StringBuilder();
-            if (exe.getPasportSeries() != null)
-                if (exe.getPasportSeries().length() > 1)
-                    id.append(exe.getPasportSeries());
-            id.append(exe.getPasportNum());
-            exe.setDoc(new ExemptId(id.toString(), ExemptType.MINZDRAV));
+        } else if (exe.getDocumentNumber() != null) {
+            exe.setDoc(new ExemptId(exe.getDocumentNumber(), ExemptType.MINZDRAV));
         } else {
             exe.setInvalid(true);
         }
-
         return exe;
     }
 }

@@ -29,8 +29,6 @@ public class IllegalExempt implements EntityInterface {
     private String maxLg;
     private String status;
     private Long dateReg;
-    private String pasportSeries;
-    private String pasportNum;
     private String phone;
     private String snils;
     private String fio;
@@ -64,8 +62,6 @@ public class IllegalExempt implements EntityInterface {
         this.maxLg = exempt.getMaxLg();
         this.status = exempt.getStatus();
         this.dateReg = exempt.getDateReg();
-        this.pasportSeries = exempt.getPasportSeries();
-        this.pasportNum = exempt.getPasportNum();
         this.phone = exempt.getPhone();
         this.snils = exempt.getSnils();
         this.fio = exempt.getFio();
@@ -170,22 +166,6 @@ public class IllegalExempt implements EntityInterface {
 
     public void setDateReg(Long dateReg) {
         this.dateReg = dateReg;
-    }
-
-    public String getPasportSeries() {
-        return pasportSeries;
-    }
-
-    public void setPasportSeries(String pasportSeries) {
-        this.pasportSeries = pasportSeries;
-    }
-
-    public String getPasportNum() {
-        return pasportNum;
-    }
-
-    public void setPasportNum(String pasportNum) {
-        this.pasportNum = pasportNum;
     }
 
     public String getPhone() {
@@ -318,7 +298,7 @@ public class IllegalExempt implements EntityInterface {
 
     @JsonIgnore
     public String getCompositeId() {
-        return this.snils.trim() + " " + this.pasportNum.trim() + " " + this.pasportSeries.trim();
+        return this.snils.trim() + " " + this.documentNumber.trim();
     }
 
     public ExemptId getDoc() {
