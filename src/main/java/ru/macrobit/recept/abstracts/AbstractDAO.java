@@ -101,7 +101,7 @@ public class AbstractDAO<T extends EntityInterface> extends ExceptionFactory {
 
     }
 
-    public Object findAll(JsonNode jsonQuery, Integer skip, Integer limit, String count, String sortProperties, String sortDirection, User user) {
+    public Object find(JsonNode jsonQuery, Integer skip, Integer limit, String count, String sortProperties, String sortDirection, User user) {
         try (Session session = em.unwrap(Session.class)) {
             Criteria criteria = getUserscopeCriteria(session, user);
             if (jsonQuery != null)
@@ -126,7 +126,7 @@ public class AbstractDAO<T extends EntityInterface> extends ExceptionFactory {
         }
     }
 
-    public Object findAll(JsonNode jsonQuery, Integer skip, Integer limit, String count, String sortProperties, String sortDirection, User user, Class type) {
+    public Object find(JsonNode jsonQuery, Integer skip, Integer limit, String count, String sortProperties, String sortDirection, User user, Class type) {
         try (Session session = em.unwrap(Session.class)) {
             Criteria criteria = getUserscopeCriteria(session, user, type);
             if (jsonQuery != null)

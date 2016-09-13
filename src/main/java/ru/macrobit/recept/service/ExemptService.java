@@ -28,28 +28,41 @@ public class ExemptService extends AbstractDAO<Exempt> {
     private static final String tablename = "exempt";
     @Inject
     private IllegalExemptService illegalExemptService;
+    @Inject
+    private ExemptCategoryService exemptCategoryService;
 
     public ExemptService() {
         super("exempt", Exempt.class);
     }
 
-    public Object uploadMintrudDBF(MultipartFormDataInput input) {
-        List<Exempt> res = new ArrayList<>();
-        input.getFormDataMap().forEach((key, val) -> val.stream().forEach(inputPart -> {
-            try (InputStream inputStream = inputPart.getBody(InputStream.class, null)) {
-                List<Exempt> exempts = DbfProcessor.loadData(Recept.createFile(inputStream, "/tmp/exempts.dbf"), new ExemptMTRowMapper());
-                for (int i = 0; i < 100; i++) {
-                    res.add(exempts.get(i));
+    public Object uploadMintrudDBF(MultipartFormDataInput input) throws IOException {
+        Map<String, InputPart> files = new HashMap<>();
+        input.getFormDataMap().values().forEach(inputParts -> {
+            inputParts.forEach(inputPart -> files.put(Recept.getFileName(inputPart), inputPart));
+        });
+
+        List<Exempt> exempts = DbfProcessor.loadData(Recept.createFile(files.get("mintrud.dbf")
+                .getBody(InputStream.class, null), "/tmp/exempts.dbf"), new ExemptMTRowMapper());
+        Map<String, ExemptCategory> categoryMap = exemptCategoryService.getCategoryMap();
+        Map<ExemptId, Exempt> exemptMap = new ConcurrentHashMap<>();
+        exempts.stream().forEach(exempt -> {
+            if (exempt.getCategoryCode() != null) {
+                String[] categories = exempt.getCategoryCode().split(" ");
+                for (int i = 0; i < categories.length; i++) {
+                    exempt.getCategories().add(categoryMap.get(categories[i]));
                 }
-                try (Session session = em.unwrap(Session.class)) {
-                    exempts.stream().forEach(session::saveOrUpdate);
-                }
-                insert(exempts);
-            } catch (IOException e) {
-                e.printStackTrace();
             }
-        }));
-        return res;
+            exemptMap.put(exempt.getDoc(), exempt);
+        });
+
+        try (Session session = em.unwrap(Session.class)) {
+            utx.begin();
+            exemptMap.values().stream().forEach(session::saveOrUpdate);
+            utx.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return exempts.stream().limit(100).collect(Collectors.toList());
     }
 
     public Object uploadMZDBF(MultipartFormDataInput input) throws IOException {
@@ -130,6 +143,8 @@ public class ExemptService extends AbstractDAO<Exempt> {
                         .getBody(InputStream.class, null), "/tmp/exemptFedInfo.dbf"), new ExemptFederalInfoRowMapper())
                 .stream().collect(Collectors.groupingBy(FederalInfo::getSnils));
 
+        Map<String, ExemptCategory> categoryMap = exemptCategoryService.getCategoryMap();
+
         exempts.parallelStream().forEach(exempt -> {
             if (exempt.getSnils() != null) {
                 List<FederalInfo> federalInfos = federalInfoMap.get(exempt.getSnils());
@@ -138,10 +153,12 @@ public class ExemptService extends AbstractDAO<Exempt> {
                     if (federalInfo != null) {
                         exempt.setBenefitDoc(federalInfo.getBenefitDoc());
                         exempt.setBenefitDocNum(federalInfo.getBenefitDocNum());
-                        exempt.setCategoryCode(federalInfo.getCategoryCode());
                         exempt.setDateLgBegin(federalInfo.getDateLgBegin());
                         exempt.setDateLgEnd(federalInfo.getDateLgEnd());
                     }
+                }
+                if (exempt.getCategoryCode() != null) {
+                    exempt.getCategories().add(categoryMap.get(exempt.getCategoryCode()));
                 }
             }
         });

@@ -46,7 +46,7 @@ public class ExemptController {
                              @QueryParam("count") String count, @QueryParam("skip") Integer skip,
                              @QueryParam("limit") Integer limit, @QueryParam("sort") String sortProperties,
                              @QueryParam("direction") String sortDirection) throws IOException {
-        return exemptService.findAll(jsonQuery == null ? null : Recept.MAPPER.readValue(jsonQuery, JsonNode.class),
+        return exemptService.find(jsonQuery == null ? null : Recept.MAPPER.readValue(jsonQuery, JsonNode.class),
                 skip, limit, count, sortProperties, sortDirection, null, LightExempt.class);
     }
 

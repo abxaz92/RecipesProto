@@ -13,6 +13,7 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by [david] on 12.09.16.
@@ -39,13 +40,20 @@ public class ExemptCategoryController {
                              @QueryParam("count") String count, @QueryParam("skip") Integer skip,
                              @QueryParam("limit") Integer limit, @QueryParam("sort") String sortProperties,
                              @QueryParam("direction") String sortDirection) throws IOException {
-        return exemptCategoryService.findAll(jsonQuery == null ? null : Recept.MAPPER.readValue(jsonQuery, JsonNode.class), skip, limit, count, sortProperties, sortDirection, ctx.getCurrentUser());
+        return exemptCategoryService.find(jsonQuery == null ? null : Recept.MAPPER.readValue(jsonQuery, JsonNode.class), skip, limit, count, sortProperties, sortDirection, ctx.getCurrentUser());
     }
 
     @POST
     public ExemptCategory post(ExemptCategory exemptCategory) throws Exception {
         exemptCategoryService.insert(exemptCategory);
         return exemptCategory;
+    }
+
+    @POST
+    @Path("/multi")
+    public List<ExemptCategory> post(List<ExemptCategory> categories) throws Exception {
+        exemptCategoryService.insert(categories);
+        return categories;
     }
 
     @PUT

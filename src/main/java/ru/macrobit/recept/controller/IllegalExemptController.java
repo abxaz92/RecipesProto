@@ -45,7 +45,7 @@ public class IllegalExemptController {
                              @QueryParam("count") String count, @QueryParam("skip") Integer skip,
                              @QueryParam("limit") Integer limit, @QueryParam("sort") String sortProperties,
                              @QueryParam("direction") String sortDirection) throws IOException {
-        return illegalExemptService.findAll(jsonQuery == null ? null : Recept.MAPPER.readValue(jsonQuery, JsonNode.class),
+        return illegalExemptService.find(jsonQuery == null ? null : Recept.MAPPER.readValue(jsonQuery, JsonNode.class),
                 skip, limit, count, sortProperties, sortDirection, ctx.getCurrentUser());
     }
 

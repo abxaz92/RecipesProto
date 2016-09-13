@@ -46,6 +46,8 @@ public class ExemptMTRowMapper implements DbfRowMapper<Exempt> {
         exe.setDisabilityGroup(Recept.getString(row[15], ENCODING));
         // 16 - 33
 
+        exe.setCategoryCode(Recept.getString(row[33], ENCODING));
+
         exe.setStatus(Recept.getString(row[34], ENCODING));
 
         date = Recept.getDate(row[35]);

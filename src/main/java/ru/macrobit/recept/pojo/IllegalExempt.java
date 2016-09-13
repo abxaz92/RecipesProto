@@ -44,7 +44,6 @@ public class IllegalExempt implements EntityInterface {
     private String description;
     private String benefitDoc;
     private String benefitDocNum;
-    private long categoryCode;
 
     public IllegalExempt() {
 
@@ -77,7 +76,6 @@ public class IllegalExempt implements EntityInterface {
         this.description = exempt.getDescription();
         this.benefitDoc = exempt.getBenefitDoc();
         this.benefitDocNum = exempt.getBenefitDocNum();
-        this.categoryCode = exempt.getCategoryCode();
     }
 
     public String getId() {
@@ -286,14 +284,6 @@ public class IllegalExempt implements EntityInterface {
 
     public void setBenefitDocNum(String benefitDocNum) {
         this.benefitDocNum = benefitDocNum;
-    }
-
-    public long getCategoryCode() {
-        return categoryCode;
-    }
-
-    public void setCategoryCode(long categoryCode) {
-        this.categoryCode = categoryCode;
     }
 
     @JsonIgnore

@@ -38,6 +38,7 @@ public class ExemptFederalRowMapper implements DbfRowMapper<Exempt> {
         }
         exempt.setDateBirth(date != null ? date.getTime() : null);
         exempt.setDocumentNumber(Recept.getString(row[7], ENCODING));
+
         Address address = new Address();
         String addr = Recept.getString(row[9], ENCODING);
         String[] addrElems = addr.split(",");
@@ -52,8 +53,10 @@ public class ExemptFederalRowMapper implements DbfRowMapper<Exempt> {
             address.setAppartment(addrElems[7]);
         } catch (Exception e) {
         }
-
         exempt.setAddress(address);
+
+        exempt.setCategoryCode(Recept.getString(row[17], ENCODING));
+
         exempt.setDoc(new ExemptId(exempt.getSnils(), ExemptType.FEDERAL));
         exempt.setInvalid(!Recept.isSnilsValid(snils));
         return exempt;

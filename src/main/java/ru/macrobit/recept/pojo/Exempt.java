@@ -8,6 +8,7 @@ import ru.macrobit.recept.commons.ExemptType;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,10 +42,10 @@ public class Exempt implements EntityInterface {
     private String fio;
     @ManyToMany(fetch = FetchType.EAGER)
     @Fetch(FetchMode.SUBSELECT)
-    private List<ExemptCategory> categories;
+    private List<ExemptCategory> categories = new ArrayList<>();
     @ManyToMany(fetch = FetchType.EAGER)
     @Fetch(FetchMode.SUBSELECT)
-    private List<Disease> diseases;
+    private List<Disease> diseases = new ArrayList<>();
     @JsonIgnore
     @Transient
     private String categoryId;
@@ -61,7 +62,9 @@ public class Exempt implements EntityInterface {
     private String description;
     private String benefitDoc;
     private String benefitDocNum;
-    private long categoryCode;
+    @JsonIgnore
+    @Transient
+    private String categoryCode;
     @Transient
     private int type;
 
@@ -300,11 +303,11 @@ public class Exempt implements EntityInterface {
         this.benefitDocNum = benefitDocNum;
     }
 
-    public long getCategoryCode() {
+    public String getCategoryCode() {
         return categoryCode;
     }
 
-    public void setCategoryCode(long categoryCode) {
+    public void setCategoryCode(String categoryCode) {
         this.categoryCode = categoryCode;
     }
 

@@ -20,6 +20,7 @@ public class ExemptCategory implements EntityInterface {
     private String name;
     private String drugs;
     private String sovmest;
+    private int type;
 
     public ExemptCategory() {
 
@@ -86,5 +87,13 @@ public class ExemptCategory implements EntityInterface {
 
     public void setSovmest(String sovmest) {
         this.sovmest = sovmest;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 }
