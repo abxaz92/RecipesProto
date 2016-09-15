@@ -7,6 +7,8 @@ import ru.macrobit.recept.entities.PrescriptionInfo;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.util.Date;
 
 /**
@@ -19,20 +21,31 @@ public class Prescription implements EntityInterface {
     @Id
     @GeneratedValue(generator = "generator")
     private Long id;
+
     /**
      * источник финансирования (принимает следующие значения: 1. Федеральный бюджет, 2. Региональный бюджет, 3. Муниципальный бюджет)
      */
+    @Min(1)
+    @Max(3)
     private int sourceFunding;
-    private Double percentagePayment;  // % оплаты из источника финансирования (может принмать следующие значения: 50% и 100%)
-    private String validity; // Срок действия рецепта (может принимать значения: 1 месяц, 2 месяца, 3 месяца)
+
+    @Max(100)
+    @Min(0)
+    private double percentagePayment;  // % оплаты из источника финансирования (может принмать следующие значения: 50% и 100%)
+
+    /**
+     * Срок действия рецепта (может принимать значения: 1 месяц, 2 месяца, 3 месяца)
+     */
+    @Min(1)
+    private int validity;
     private String series; // серия рецепта
     private String number; // Номер рецепта
-    private long issuedate; // Дата выписки рецепта
+
     private Date date;
     private Date dateCreation;
     private Long lpuId; // ЛПУ
     private String notification; //Информация о приеме
-    private String signsale; // Признак отоваренности рецепта
+    private boolean signsale; // Признак отоваренности рецепта
     private String status; // статус рецепта
     private boolean archive; // Архив
     private float num; //Кол. приемов в день
@@ -59,19 +72,19 @@ public class Prescription implements EntityInterface {
         this.sourceFunding = sourceFunding;
     }
 
-    public Double getPercentagePayment() {
+    public double getPercentagePayment() {
         return percentagePayment;
     }
 
-    public void setPercentagePayment(Double percentagePayment) {
+    public void setPercentagePayment(double percentagePayment) {
         this.percentagePayment = percentagePayment;
     }
 
-    public String getValidity() {
+    public int getValidity() {
         return validity;
     }
 
-    public void setValidity(String validity) {
+    public void setValidity(int validity) {
         this.validity = validity;
     }
 
@@ -89,14 +102,6 @@ public class Prescription implements EntityInterface {
 
     public void setNumber(String number) {
         this.number = number;
-    }
-
-    public long getIssuedate() {
-        return issuedate;
-    }
-
-    public void setIssuedate(long issuedate) {
-        this.issuedate = issuedate;
     }
 
     public Date getDate() {
@@ -129,14 +134,6 @@ public class Prescription implements EntityInterface {
 
     public void setNotification(String notification) {
         this.notification = notification;
-    }
-
-    public String getSignsale() {
-        return signsale;
-    }
-
-    public void setSignsale(String signsale) {
-        this.signsale = signsale;
     }
 
     public String getStatus() {
@@ -201,5 +198,13 @@ public class Prescription implements EntityInterface {
 
     public void setInfo(PrescriptionInfo info) {
         this.info = info;
+    }
+
+    public boolean isSignsale() {
+        return signsale;
+    }
+
+    public void setSignsale(boolean signsale) {
+        this.signsale = signsale;
     }
 }
