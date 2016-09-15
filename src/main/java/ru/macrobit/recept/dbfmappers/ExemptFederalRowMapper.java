@@ -1,6 +1,8 @@
 package ru.macrobit.recept.dbfmappers;
 
 import org.jamel.dbf.processor.DbfRowMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.macrobit.recept.commons.ExemptType;
 import ru.macrobit.recept.commons.Recept;
 import ru.macrobit.recept.pojo.Address;
@@ -18,6 +20,7 @@ import java.util.Date;
 public class ExemptFederalRowMapper implements DbfRowMapper<Exempt> {
     private static final String ENCODING = "windows-1251";
     private static final DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
+    private static final Logger logger = LoggerFactory.getLogger(ExemptFederalRowMapper.class);
 
     @Override
     public Exempt mapRow(Object[] row) {
@@ -37,7 +40,17 @@ public class ExemptFederalRowMapper implements DbfRowMapper<Exempt> {
         } catch (ParseException e) {
         }
         exempt.setDateBirth(date != null ? date.getTime() : null);
-        exempt.setDocumentNumber(Recept.getString(row[7], ENCODING));
+        String docNumber = Recept.getString(row[7], ENCODING).trim();
+        exempt.setDocumentNumber(docNumber);
+        int lastSpaceIndex = docNumber.lastIndexOf(" ");
+        if (lastSpaceIndex != -1) {
+            exempt.setDocNum(docNumber.substring(lastSpaceIndex).trim());
+            exempt.setDocSer(docNumber.substring(0, lastSpaceIndex).trim().replace(" ", ""));
+        } else {
+            exempt.setInvalid(true);
+            exempt.setDescription("Неверно указан документ");
+        }
+        logger.info("{}, '{}:{}'", exempt.getDocumentNumber(), exempt.getDocSer(), exempt.getDocNum());
 
         Address address = new Address();
         String addr = Recept.getString(row[9], ENCODING);

@@ -62,6 +62,8 @@ public class Exempt implements EntityInterface {
     private String description;
     private String benefitDoc;
     private String benefitDocNum;
+    private String docNum;
+    private String docSer;
     @JsonIgnore
     @Transient
     private String categoryCode;
@@ -333,5 +335,21 @@ public class Exempt implements EntityInterface {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public String getDocNum() {
+        return docNum;
+    }
+
+    public void setDocNum(String docNum) {
+        this.docNum = docNum;
+    }
+
+    public String getDocSer() {
+        return docSer;
+    }
+
+    public void setDocSer(String docSer) {
+        this.docSer = docSer;
     }
 }
