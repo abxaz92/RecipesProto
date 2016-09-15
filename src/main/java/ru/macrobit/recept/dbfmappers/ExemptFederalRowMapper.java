@@ -42,14 +42,7 @@ public class ExemptFederalRowMapper implements DbfRowMapper<Exempt> {
         exempt.setDateBirth(date != null ? date.getTime() : null);
         String docNumber = Recept.getString(row[7], ENCODING).trim();
         exempt.setDocumentNumber(docNumber);
-        int lastSpaceIndex = docNumber.lastIndexOf(" ");
-        if (lastSpaceIndex != -1) {
-            exempt.setDocNum(docNumber.substring(lastSpaceIndex).trim());
-            exempt.setDocSer(docNumber.substring(0, lastSpaceIndex).trim().replace(" ", ""));
-        } else {
-            exempt.setInvalid(true);
-            exempt.setDescription("Неверно указан документ");
-        }
+        exempt.doParseDocumentInfo();
         logger.info("{}, '{}:{}'", exempt.getDocumentNumber(), exempt.getDocSer(), exempt.getDocNum());
 
         Address address = new Address();
@@ -71,7 +64,9 @@ public class ExemptFederalRowMapper implements DbfRowMapper<Exempt> {
         exempt.setCategoryCode(Recept.getString(row[17], ENCODING));
 
         exempt.setDoc(new ExemptId(exempt.getSnils(), ExemptType.FEDERAL));
-        exempt.setInvalid(!Recept.isSnilsValid(snils));
+        if (!Recept.isSnilsValid(snils)) {
+            exempt.setInvalid(true);
+        }
         return exempt;
     }
 }

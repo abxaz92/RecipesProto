@@ -81,6 +81,18 @@ public class Exempt implements EntityInterface {
         return new ExemptId(ids[0], EXEMPT_TYPES[val]);
     }
 
+    @JsonIgnore
+    public void doParseDocumentInfo() {
+        int lastSpaceIndex = documentNumber.lastIndexOf(" ");
+        if (lastSpaceIndex != -1) {
+            this.setDocNum(documentNumber.substring(lastSpaceIndex).trim());
+            this.setDocSer(documentNumber.substring(0, lastSpaceIndex).trim().replace(" ", ""));
+        } else {
+            this.setInvalid(true);
+            this.setDescription("Неверно указан документ");
+        }
+    }
+
     public String getAreaId() {
         return areaId;
     }
@@ -352,4 +364,5 @@ public class Exempt implements EntityInterface {
     public void setDocSer(String docSer) {
         this.docSer = docSer;
     }
+
 }

@@ -108,26 +108,22 @@ public class ExemptService extends AbstractDAO<Exempt> {
             Exempt exempt1 = exemptMap.putIfAbsent(exempt.getDoc(), exempt);
             if (exempt1 != null) {
                 IllegalExempt illegalExempt = new IllegalExempt(exempt);
-                illegalExempts.put(illegalExempt.getDoc(), illegalExempt);
+                if (illegalExempt.getDoc().getId() != null)
+                    illegalExempts.put(illegalExempt.getDoc(), illegalExempt);
             }
         });
 
         try (Session session = em.unwrap(Session.class)) {
-            utx.begin();
+            session.getTransaction().begin();
             exemptCategories.forEach(session::saveOrUpdate);
             diseases.forEach(session::saveOrUpdate);
             exemptMap.values().forEach(session::saveOrUpdate);
-            illegalExempts.values().forEach(session::saveOrUpdate);
-            utx.commit();
+//            illegalExempts.values().forEach(session::saveOrUpdate);
+            session.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        /*Map<String, Object> resMap = new HashMap<>();
-        resMap.put("categories", exemptCategories);
-        resMap.put("deseases", deseases);
-        return resMap;*/
-
-        return illegalExempts;
+        return illegalExempts.values();
     }
 
     public Object uploadFederalDBF(MultipartFormDataInput input) throws IOException {
@@ -162,13 +158,13 @@ public class ExemptService extends AbstractDAO<Exempt> {
                 }
             }
         });
-/*        try (Session session = em.unwrap(Session.class)) {
+        try (Session session = em.unwrap(Session.class)) {
             utx.begin();
             exempts.stream().forEach(session::saveOrUpdate);
             utx.commit();
         } catch (Exception e) {
 
-        }*/
+        }
 
         return exempts.stream().limit(20).collect(Collectors.toList());
     }
