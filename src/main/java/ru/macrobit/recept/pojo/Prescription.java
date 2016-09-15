@@ -19,7 +19,10 @@ public class Prescription implements EntityInterface {
     @Id
     @GeneratedValue(generator = "generator")
     private Long id;
-    private String sourceFunding; // источник финансирования (принимает следующие значения: 1. Федеральный бюджет, 2. Региональный бюджет, 3. Муниципальный бюджет)
+    /**
+     * источник финансирования (принимает следующие значения: 1. Федеральный бюджет, 2. Региональный бюджет, 3. Муниципальный бюджет)
+     */
+    private int sourceFunding;
     private Double percentagePayment;  // % оплаты из источника финансирования (может принмать следующие значения: 50% и 100%)
     private String validity; // Срок действия рецепта (может принимать значения: 1 месяц, 2 месяца, 3 месяца)
     private String series; // серия рецепта
@@ -48,11 +51,11 @@ public class Prescription implements EntityInterface {
         this.id = id;
     }
 
-    public String getSourceFunding() {
+    public int getSourceFunding() {
         return sourceFunding;
     }
 
-    public void setSourceFunding(String sourceFunding) {
+    public void setSourceFunding(int sourceFunding) {
         this.sourceFunding = sourceFunding;
     }
 
